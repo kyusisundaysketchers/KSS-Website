@@ -230,6 +230,7 @@ section{scroll-margin-top:100px}
 
 /* Interactive sketchbook */
 .sketchbook-section{overflow:hidden}
+.sketchbook-tagline{font-size:12px;font-style:italic;color:var(--muted);letter-spacing:.02em;margin:10px 0 0}
 .sketchbook-counter{font-size:11px;color:var(--muted);letter-spacing:.12em;padding-bottom:8px}
 .book-wrap{position:relative;display:flex;align-items:center;justify-content:center;gap:18px}
 .book{
@@ -271,9 +272,18 @@ section{scroll-margin-top:100px}
   position:relative;z-index:2;font-family:var(--display);font-size:20px;
   text-align:center;color:rgba(33,31,27,.38)
 }
-.placeholder-sketch img{position:relative;z-index:3;width:100%;height:100%;object-fit:cover;display:block}
+.placeholder-sketch img{position:relative;z-index:3;width:100%;height:100%;object-fit:cover;display:block;transition:transform .25s ease}
 .placeholder-sketch.has-image{border-style:solid;border-color:var(--line)}
 .placeholder-sketch.has-image:before,.placeholder-sketch.has-image:after,.placeholder-sketch.has-image span{display:none}
+.page-stamp{
+  display:none;position:absolute;right:6%;bottom:6%;z-index:4;
+  padding:4px 9px;background:rgba(238,233,222,.88);
+  border:1px solid rgba(33,31,27,.22);border-radius:2px;
+  font-family:var(--display);font-style:italic;font-size:11px;
+  color:var(--ink);letter-spacing:.02em;transform:rotate(-3deg);
+  box-shadow:0 3px 8px rgba(30,22,15,.18);pointer-events:none;
+}
+.placeholder-sketch.has-image .page-stamp{display:block}
 .page-caption{font-family:var(--display);font-size:18px;line-height:1;margin-top:4px}
 .book-spine{
   position:absolute;left:50%;top:0;bottom:0;width:2px;z-index:8;
@@ -311,6 +321,37 @@ section{scroll-margin-top:100px}
 .sketchbook-info p{font-size:11px;color:var(--muted);margin:0}
 .mobile-book-hint{display:none;text-align:center;font-size:10px;color:var(--muted);letter-spacing:.08em;margin-top:14px}
 
+.view-controls{
+  display:flex;align-items:center;justify-content:center;gap:10px;
+  width:fit-content;margin:22px auto 0;padding:7px 10px;
+  border:1px solid var(--line);border-radius:999px;
+  background:rgba(255,255,255,.35);
+}
+.view-controls button{
+  width:28px;height:28px;border-radius:50%;border:1px solid transparent;
+  background:transparent;color:var(--ink);font-size:15px;line-height:1;
+  display:grid;place-items:center;cursor:pointer;transition:.2s;
+}
+.view-controls button:hover{background:rgba(33,31,27,.08)}
+.view-controls button:disabled{opacity:.3;cursor:default;background:none}
+.view-controls button svg{width:15px;height:15px}
+#zoomLevel{font-size:11px;color:var(--muted);min-width:36px;text-align:center;letter-spacing:.02em}
+.view-controls-divider{width:1px;height:18px;background:var(--line)}
+.loupe-toggle.active{background:var(--ink);color:var(--paper)}
+.view-controls-hint{
+  text-align:center;font-size:10px;color:var(--muted);
+  letter-spacing:.06em;text-transform:uppercase;margin-top:12px
+}
+.loupe{
+  position:fixed;width:150px;height:150px;border-radius:50%;
+  border:3px solid rgba(255,250,242,.95);
+  box-shadow:0 0 0 1px rgba(33,31,27,.3),0 16px 34px rgba(25,18,12,.35);
+  overflow:hidden;pointer-events:none;z-index:70;display:none;
+}
+.loupe.active{display:block}
+.loupe-inner{position:absolute;top:0;left:0}
+.loupe-inner img{width:100%;height:100%;object-fit:cover;display:block}
+
 @media(max-width:800px){
   .book-wrap{gap:8px}
   .book{width:calc(100% - 48px);perspective:1300px}
@@ -324,6 +365,8 @@ section{scroll-margin-top:100px}
   .sketchbook-info{width:100%;display:block;margin-top:18px}
   .sketchbook-info p{margin-top:12px}
   .mobile-book-hint{display:block}
+  .view-controls-hint{display:none}
+  .loupe{width:110px;height:110px}
 }
 
 /* Mobile */
@@ -425,6 +468,7 @@ section{scroll-margin-top:100px}
       <div>
         <div class="label">The KSS archive</div>
         <h2>The Sketchbook</h2>
+        <p class="sketchbook-tagline">Life drawing, session by session · Quezon City</p>
       </div>
       <div class="sketchbook-counter"><span id="pageCurrent">01</span> / <span id="pageTotal">06</span></div>
     </div>
@@ -441,6 +485,7 @@ section{scroll-margin-top:100px}
               <div class="placeholder-sketch" id="leftArtwork">
                 <img id="leftArtworkImg" alt="">
                 <span>SKETCH<br>PLACEHOLDER</span>
+                <div class="page-stamp" id="leftStamp"></div>
               </div>
               <div class="page-caption" id="leftCaption">KSS archive</div>
             </div>
@@ -453,6 +498,7 @@ section{scroll-margin-top:100px}
               <div class="placeholder-sketch" id="rightArtwork">
                 <img id="rightArtworkImg" alt="">
                 <span>SKETCH<br>PLACEHOLDER</span>
+                <div class="page-stamp" id="rightStamp"></div>
               </div>
               <div class="page-caption" id="rightCaption">Recent session</div>
             </div>
@@ -463,7 +509,7 @@ section{scroll-margin-top:100px}
               <div class="page-inner">
                 <div class="page-label">KYUSI SUNDAY SKETCHERS</div>
                 <div class="page-number" id="turnFrontNo">03</div>
-                <div class="placeholder-sketch" id="turnFrontArtwork"><img id="turnFrontArtworkImg" alt=""><span>SKETCH<br>PLACEHOLDER</span></div>
+                <div class="placeholder-sketch" id="turnFrontArtwork"><img id="turnFrontArtworkImg" alt=""><span>SKETCH<br>PLACEHOLDER</span><div class="page-stamp" id="turnFrontStamp"></div></div>
                 <div class="page-caption" id="turnFrontCaption">Life drawing</div>
               </div>
             </div>
@@ -471,7 +517,7 @@ section{scroll-margin-top:100px}
               <div class="page-inner">
                 <div class="page-label">KYUSI SUNDAY SKETCHERS</div>
                 <div class="page-number" id="turnBackNo">04</div>
-                <div class="placeholder-sketch" id="turnBackArtwork"><img id="turnBackArtworkImg" alt=""><span>SKETCH<br>PLACEHOLDER</span></div>
+                <div class="placeholder-sketch" id="turnBackArtwork"><img id="turnBackArtworkImg" alt=""><span>SKETCH<br>PLACEHOLDER</span><div class="page-stamp" id="turnBackStamp"></div></div>
                 <div class="page-caption" id="turnBackCaption">Community</div>
               </div>
             </div>
@@ -483,6 +529,21 @@ section{scroll-margin-top:100px}
       </div>
 
       <button class="book-arrow book-next" id="bookNext" type="button" aria-label="Next page">→</button>
+    </div>
+
+    <div class="view-controls" id="viewControls">
+      <button type="button" id="zoomOut" aria-label="Zoom out">−</button>
+      <span id="zoomLevel">100%</span>
+      <button type="button" id="zoomIn" aria-label="Zoom in">+</button>
+      <span class="view-controls-divider" aria-hidden="true"></span>
+      <button type="button" id="loupeToggle" class="loupe-toggle" aria-label="Magnifier" aria-pressed="false">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6.5"></circle><path d="m20 20-4.8-4.8"></path></svg>
+      </button>
+    </div>
+    <p class="view-controls-hint" id="viewControlsHint">Drag the page to turn · drag the glass across it</p>
+
+    <div class="loupe" id="loupe" aria-hidden="true">
+      <div class="loupe-inner" id="loupeInner"><img id="loupeImg" alt=""></div>
     </div>
 
     <div class="sketchbook-info">
@@ -608,16 +669,16 @@ nav.querySelectorAll('a').forEach(link=>link.addEventListener('click',()=>setMen
 addEventListener('keydown',e=>{if(e.key==='Escape')setMenu(false)});
 
 const pages = [
-  {title:'UKIT', meta:'Life Drawing Session · with Pablo Galleries · 5 Aug 2026', caption:'Until the next session!', image:'assets/sketchbook/ukit-1.jpg'},
-  {title:'Pagsibol', meta:'Figure Drawing Workshop · with Joji Vidal · 15 Feb 2026', caption:'Sharing some drawings!', image:'assets/sketchbook/pagsibol-1.jpg'},
-  {title:'Pagsibol', meta:'Figure Drawing Workshop · with Joji Vidal · 15 Feb 2026', caption:'Draw the figure with great confidence', image:'assets/sketchbook/pagsibol-2.jpg'},
-  {title:'Serene', meta:'Outdoor Sketching Session · 14 Dec 2025', caption:'model: kenjiruu', image:'assets/sketchbook/serene-1.jpg'},
-  {title:'Serene', meta:'Outdoor Sketching Session · 14 Dec 2025', caption:'watercolor, white pen on kraft', image:'assets/sketchbook/serene-2.jpg'},
-  {title:'Pair of Kings', meta:'Life Drawing Session · 27 Apr 2025', caption:'PRRM, QC', image:'assets/sketchbook/pair-of-kings-1.jpg'},
-  {title:'Pair of Kings', meta:'Life Drawing Session · 27 Apr 2025', caption:'Pair of Kings', image:'assets/sketchbook/pair-of-kings-2.jpg'},
-  {title:'Silingan', meta:'KSS’s First Life Drawing Session · 16 Mar 2025', caption:'Mistaking it for a toned paper', image:'assets/sketchbook/silingan-1.jpg'},
-  {title:'Silingan', meta:'KSS’s First Life Drawing Session · 16 Mar 2025', caption:'Focused instead on the torso only', image:'assets/sketchbook/silingan-2.jpg'},
-  {title:'Silingan', meta:'KSS’s First Life Drawing Session · 16 Mar 2025', caption:'Done using the non-dominant hand', image:'assets/sketchbook/silingan-3.jpg'},
+  {title:'UKIT', meta:'Life Drawing Session · with Pablo Galleries · 5 Aug 2026', date:'5 Aug 2026', caption:'Until the next session!', image:'assets/sketchbook/ukit-1.jpg'},
+  {title:'Pagsibol', meta:'Figure Drawing Workshop · with Joji Vidal · 15 Feb 2026', date:'15 Feb 2026', caption:'Sharing some drawings!', image:'assets/sketchbook/pagsibol-1.jpg'},
+  {title:'Pagsibol', meta:'Figure Drawing Workshop · with Joji Vidal · 15 Feb 2026', date:'15 Feb 2026', caption:'Draw the figure with great confidence', image:'assets/sketchbook/pagsibol-2.jpg'},
+  {title:'Serene', meta:'Outdoor Sketching Session · 14 Dec 2025', date:'14 Dec 2025', caption:'model: kenjiruu', image:'assets/sketchbook/serene-1.jpg'},
+  {title:'Serene', meta:'Outdoor Sketching Session · 14 Dec 2025', date:'14 Dec 2025', caption:'watercolor, white pen on kraft', image:'assets/sketchbook/serene-2.jpg'},
+  {title:'Pair of Kings', meta:'Life Drawing Session · 27 Apr 2025', date:'27 Apr 2025', caption:'PRRM, QC', image:'assets/sketchbook/pair-of-kings-1.jpg'},
+  {title:'Pair of Kings', meta:'Life Drawing Session · 27 Apr 2025', date:'27 Apr 2025', caption:'Pair of Kings', image:'assets/sketchbook/pair-of-kings-2.jpg'},
+  {title:'Silingan', meta:'KSS’s First Life Drawing Session · 16 Mar 2025', date:'16 Mar 2025', caption:'Mistaking it for a toned paper', image:'assets/sketchbook/silingan-1.jpg'},
+  {title:'Silingan', meta:'KSS’s First Life Drawing Session · 16 Mar 2025', date:'16 Mar 2025', caption:'Focused instead on the torso only', image:'assets/sketchbook/silingan-2.jpg'},
+  {title:'Silingan', meta:'KSS’s First Life Drawing Session · 16 Mar 2025', date:'16 Mar 2025', caption:'Done using the non-dominant hand', image:'assets/sketchbook/silingan-3.jpg'},
 ];
 
 const book=document.getElementById('book');
@@ -646,14 +707,17 @@ const turnFrontArtworkImg=document.getElementById('turnFrontArtworkImg');
 const turnBackArtworkImg=document.getElementById('turnBackArtworkImg');
 
 function setArtwork(imgEl,containerEl,page){
+  const stampEl=containerEl.querySelector('.page-stamp');
   if(page.image){
     imgEl.src=page.image;
     imgEl.alt=page.title+' — '+page.caption;
     containerEl.classList.add('has-image');
+    if(stampEl)stampEl.textContent=page.date||'';
   }else{
     imgEl.removeAttribute('src');
     imgEl.alt='';
     containerEl.classList.remove('has-image');
+    if(stampEl)stampEl.textContent='';
   }
 }
 
@@ -691,6 +755,7 @@ function updateStaticPages(){
   current.textContent=fmt(index+1);
   prev.disabled=index<=0;
   next.disabled=index>=pages.length-2;
+  if(typeof setZoom==='function')setZoom(100);
 }
 
 function setTurningContent(direction){
@@ -748,14 +813,14 @@ prev.addEventListener('click',()=>finishFlip('prev'));
 next.addEventListener('click',()=>finishFlip('next'));
 
 book.addEventListener('pointerdown',e=>{
-  if(animating)return;
+  if(loupeOn||animating)return;
   pointerDown=true;
   pointerStartX=e.clientX;
   book.setPointerCapture?.(e.pointerId);
 });
 
 book.addEventListener('pointermove',e=>{
-  if(!pointerDown||animating)return;
+  if(loupeOn||!pointerDown||animating)return;
   const dx=e.clientX-pointerStartX;
   if(Math.abs(dx)<5)return;
   const direction=dx<0?'next':'prev';
@@ -765,7 +830,7 @@ book.addEventListener('pointermove',e=>{
 });
 
 book.addEventListener('pointerup',e=>{
-  if(!pointerDown)return;
+  if(loupeOn||!pointerDown)return;
   pointerDown=false;
   const dx=e.clientX-pointerStartX;
   if(Math.abs(dx)>12){
@@ -788,6 +853,71 @@ addEventListener('keydown',e=>{
   if(e.key==='ArrowRight')finishFlip('next');
   if(e.key==='ArrowLeft')finishFlip('prev');
 });
+
+// Zoom controls
+const zoomOutBtn=document.getElementById('zoomOut');
+const zoomInBtn=document.getElementById('zoomIn');
+const zoomLevelEl=document.getElementById('zoomLevel');
+const zoomableImgs=[leftArtworkImg,rightArtworkImg,turnFrontArtworkImg,turnBackArtworkImg];
+let zoomPct=100;
+const ZOOM_MIN=100,ZOOM_MAX=200,ZOOM_STEP=25;
+
+function applyZoom(){
+  const scale=zoomPct/100;
+  zoomableImgs.forEach(img=>{img.style.transform=`scale(${scale})`});
+  zoomLevelEl.textContent=zoomPct+'%';
+  zoomOutBtn.disabled=zoomPct<=ZOOM_MIN;
+  zoomInBtn.disabled=zoomPct>=ZOOM_MAX;
+}
+function setZoom(pct){
+  zoomPct=Math.max(ZOOM_MIN,Math.min(ZOOM_MAX,pct));
+  applyZoom();
+}
+zoomOutBtn.addEventListener('click',()=>setZoom(zoomPct-ZOOM_STEP));
+zoomInBtn.addEventListener('click',()=>setZoom(zoomPct+ZOOM_STEP));
+applyZoom();
+
+// Magnifier loupe — drag (touch) or move the pointer (mouse) across a page to
+// see a zoomed patch of whichever artwork is under the cursor.
+const loupe=document.getElementById('loupe');
+const loupeInner=document.getElementById('loupeInner');
+const loupeImg=document.getElementById('loupeImg');
+const loupeToggle=document.getElementById('loupeToggle');
+const LOUPE_ZOOM=2.6;
+let loupeOn=false;
+
+function updateLoupe(clientX,clientY){
+  const target=document.elementFromPoint(clientX,clientY);
+  const container=target&&target.closest?target.closest('.placeholder-sketch.has-image'):null;
+  if(!container){loupe.classList.remove('active');return}
+  const img=container.querySelector('img');
+  const rect=container.getBoundingClientRect();
+  const px=Math.max(0,Math.min(clientX-rect.left,rect.width));
+  const py=Math.max(0,Math.min(clientY-rect.top,rect.height));
+  const lensSize=loupe.offsetWidth||150;
+
+  if(loupeImg.src!==img.src)loupeImg.src=img.src;
+  loupeInner.style.width=(rect.width*LOUPE_ZOOM)+'px';
+  loupeInner.style.height=(rect.height*LOUPE_ZOOM)+'px';
+  loupeInner.style.transform=`translate(${-(px*LOUPE_ZOOM-lensSize/2)}px, ${-(py*LOUPE_ZOOM-lensSize/2)}px)`;
+  loupe.style.left=(clientX-lensSize/2)+'px';
+  loupe.style.top=(clientY-lensSize/2)+'px';
+  loupe.classList.add('active');
+}
+function hideLoupe(){loupe.classList.remove('active')}
+function setLoupeOn(on){
+  loupeOn=on;
+  loupeToggle.classList.toggle('active',on);
+  loupeToggle.setAttribute('aria-pressed',on?'true':'false');
+  if(!on)hideLoupe();
+}
+
+loupeToggle.addEventListener('click',()=>setLoupeOn(!loupeOn));
+book.addEventListener('pointerdown',e=>{if(loupeOn){book.setPointerCapture?.(e.pointerId);updateLoupe(e.clientX,e.clientY)}});
+book.addEventListener('pointermove',e=>{if(loupeOn)updateLoupe(e.clientX,e.clientY)});
+book.addEventListener('pointerup',()=>{if(loupeOn)hideLoupe()});
+book.addEventListener('pointerleave',()=>{if(loupeOn)hideLoupe()});
+book.addEventListener('pointercancel',()=>{if(loupeOn)hideLoupe()});
 
 updateStaticPages();
 </script>
