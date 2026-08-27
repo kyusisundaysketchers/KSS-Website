@@ -231,6 +231,102 @@ section{scroll-margin-top:100px}
 .event-photo div{display:flex;flex-direction:column;align-items:center;gap:10px}
 .event-photo small{font-size:8px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted)}
 
+
+/* Interactive sketchbook */
+.sketchbook-section{overflow:hidden}
+.sketchbook-counter{font-size:11px;color:var(--muted);letter-spacing:.12em;padding-bottom:8px}
+.book-wrap{position:relative;display:flex;align-items:center;justify-content:center;gap:18px}
+.book{
+  width:min(900px,calc(100% - 80px));position:relative;
+  perspective:1800px;touch-action:pan-y;user-select:none;
+}
+.book-spread{
+  position:relative;display:grid;grid-template-columns:1fr 1fr;
+  aspect-ratio:1.7;border:1px solid rgba(33,31,27,.16);
+  box-shadow:0 22px 45px rgba(45,35,25,.12);overflow:visible;
+}
+.book-page{
+  position:relative;overflow:hidden;
+  background:
+    linear-gradient(90deg,rgba(80,60,40,.035),transparent 12%,transparent 88%,rgba(80,60,40,.035)),
+    #f2ecdf;
+}
+.book-left{border-right:1px solid rgba(33,31,27,.08)}
+.book-page:after{
+  content:"";position:absolute;inset:0;pointer-events:none;
+  background:linear-gradient(90deg,rgba(40,30,20,.07),transparent 12%,transparent 88%,rgba(40,30,20,.045));
+}
+.page-inner{position:absolute;inset:7%;display:flex;flex-direction:column}
+.page-label{font-size:7px;letter-spacing:.19em;text-transform:uppercase;color:var(--muted)}
+.page-number{margin-top:5px;font-size:8px;color:var(--muted)}
+.placeholder-sketch{
+  position:relative;flex:1;margin:5% 3%;display:grid;place-items:center;
+  border:1px dashed rgba(33,31,27,.22);overflow:hidden;
+  background:
+    radial-gradient(ellipse at 48% 45%,rgba(70,60,50,.09) 0 11%,transparent 12%),
+    radial-gradient(ellipse at 40% 58%,rgba(70,60,50,.07) 0 16%,transparent 17%);
+}
+.placeholder-sketch:before,.placeholder-sketch:after{
+  content:"";position:absolute;border:1px solid rgba(33,31,27,.13);
+  width:52%;height:62%;border-radius:48% 52% 45% 55%;transform:rotate(-8deg)
+}
+.placeholder-sketch:after{width:42%;height:48%;transform:rotate(10deg);border-radius:52% 45% 55% 48%}
+.placeholder-sketch span{
+  position:relative;z-index:2;font-family:var(--display);font-size:20px;
+  text-align:center;color:rgba(33,31,27,.38)
+}
+.page-caption{font-family:var(--display);font-size:18px;line-height:1;margin-top:4px}
+.book-spine{
+  position:absolute;left:50%;top:0;bottom:0;width:2px;z-index:8;
+  background:linear-gradient(90deg,rgba(40,30,20,.04),rgba(40,30,20,.2),rgba(255,255,255,.3),rgba(40,30,20,.04));
+  transform:translateX(-50%);pointer-events:none
+}
+.book-shadow{
+  position:absolute;left:9%;right:9%;bottom:-23px;height:30px;
+  background:rgba(45,35,25,.13);filter:blur(17px);z-index:-1
+}
+.turning-page{
+  position:absolute;inset:0 0 0 50%;z-index:10;transform-origin:left center;
+  transform:rotateY(0deg);transform-style:preserve-3d;pointer-events:none;
+  transition:transform .55s cubic-bezier(.2,.8,.2,1);
+}
+.turn-face{
+  position:absolute;inset:0;backface-visibility:hidden;overflow:hidden;
+  background:#f2ecdf;border-left:1px solid rgba(33,31,27,.12);
+}
+.turn-face .page-inner{inset:7%}
+.turn-back{transform:rotateY(180deg)}
+.book-arrow{
+  width:44px;height:44px;border:1px solid var(--line);border-radius:50%;
+  background:rgba(238,233,222,.8);color:var(--ink);cursor:pointer;font-size:20px;
+  transition:.2s;flex:0 0 auto
+}
+.book-arrow:hover{transform:scale(1.06);background:var(--ink);color:var(--paper)}
+.book-arrow:disabled{opacity:.3;cursor:default;transform:none}
+.sketchbook-info{
+  width:min(900px,calc(100% - 80px));margin:22px auto 0;
+  display:flex;justify-content:space-between;align-items:end;gap:20px
+}
+.book-title{font-family:var(--display);font-size:31px}
+.book-meta{font-size:10px;color:var(--muted);margin-top:4px}
+.sketchbook-info p{font-size:11px;color:var(--muted);margin:0}
+.mobile-book-hint{display:none;text-align:center;font-size:10px;color:var(--muted);letter-spacing:.08em;margin-top:14px}
+
+@media(max-width:800px){
+  .book-wrap{gap:8px}
+  .book{width:calc(100% - 48px);perspective:1300px}
+  .book-spread{aspect-ratio:1.08;grid-template-columns:1fr 1fr}
+  .book-page .page-inner{inset:8% 7%}
+  .placeholder-sketch{margin:8% 0}
+  .placeholder-sketch span{font-size:15px}
+  .page-caption{font-size:15px}
+  .page-label{font-size:6px}
+  .book-arrow{width:36px;height:36px;font-size:16px}
+  .sketchbook-info{width:100%;display:block;margin-top:18px}
+  .sketchbook-info p{margin-top:12px}
+  .mobile-book-hint{display:block}
+}
+
 /* Mobile */
 @media(max-width:800px){
   .event-facts{gap:18px}
@@ -324,18 +420,79 @@ section{scroll-margin-top:100px}
   </div>
 </section>
 
-<section class="section" id="sketchbook">
+<section class="section sketchbook-section" id="sketchbook">
   <div class="container">
     <div class="section-head">
-      <div><div class="label">From the community</div><h2>Recent Sketches</h2></div>
-      <a class="viewall" href="https://www.instagram.com/kyusisundaysketchers/" target="_blank" rel="noopener">View all sketches ↗</a>
+      <div>
+        <div class="label">The KSS archive</div>
+        <h2>The Sketchbook</h2>
+      </div>
+      <div class="sketchbook-counter"><span id="pageCurrent">01</span> / <span id="pageTotal">06</span></div>
     </div>
-    <div class="sketch-row">
-      <article class="card"><div class="card-image"></div><div class="card-meta"><div class="card-title">Sketch 01</div><div class="card-sub">Session title · Date</div></div></article>
-      <article class="card"><div class="card-image"></div><div class="card-meta"><div class="card-title">Sketch 02</div><div class="card-sub">Session title · Date</div></div></article>
-      <article class="card"><div class="card-image"></div><div class="card-meta"><div class="card-title">Sketch 03</div><div class="card-sub">Session title · Date</div></div></article>
-      <article class="card"><div class="card-image"></div><div class="card-meta"><div class="card-title">Sketch 04</div><div class="card-sub">Session title · Date</div></div></article>
+
+    <div class="book-wrap" id="bookWrap">
+      <button class="book-arrow book-prev" id="bookPrev" type="button" aria-label="Previous page">←</button>
+
+      <div class="book" id="book" aria-label="Interactive KSS sketchbook">
+        <div class="book-spread">
+          <div class="book-page book-left">
+            <div class="page-inner">
+              <div class="page-label">KYUSI SUNDAY SKETCHERS</div>
+              <div class="page-number" id="leftPageNo">01</div>
+              <div class="placeholder-sketch" id="leftArtwork">
+                <span>SKETCH<br>PLACEHOLDER</span>
+              </div>
+              <div class="page-caption" id="leftCaption">KSS archive</div>
+            </div>
+          </div>
+
+          <div class="book-page book-right">
+            <div class="page-inner">
+              <div class="page-label">KYUSI SUNDAY SKETCHERS</div>
+              <div class="page-number" id="rightPageNo">02</div>
+              <div class="placeholder-sketch" id="rightArtwork">
+                <span>SKETCH<br>PLACEHOLDER</span>
+              </div>
+              <div class="page-caption" id="rightCaption">Recent session</div>
+            </div>
+          </div>
+
+          <div class="turning-page" id="turningPage" aria-hidden="true">
+            <div class="turn-face turn-front">
+              <div class="page-inner">
+                <div class="page-label">KYUSI SUNDAY SKETCHERS</div>
+                <div class="page-number" id="turnFrontNo">03</div>
+                <div class="placeholder-sketch"><span>SKETCH<br>PLACEHOLDER</span></div>
+                <div class="page-caption" id="turnFrontCaption">Life drawing</div>
+              </div>
+            </div>
+            <div class="turn-face turn-back">
+              <div class="page-inner">
+                <div class="page-label">KYUSI SUNDAY SKETCHERS</div>
+                <div class="page-number" id="turnBackNo">04</div>
+                <div class="placeholder-sketch"><span>SKETCH<br>PLACEHOLDER</span></div>
+                <div class="page-caption" id="turnBackCaption">Community</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="book-spine" aria-hidden="true"></div>
+        <div class="book-shadow" aria-hidden="true"></div>
+      </div>
+
+      <button class="book-arrow book-next" id="bookNext" type="button" aria-label="Next page">→</button>
     </div>
+
+    <div class="sketchbook-info">
+      <div>
+        <div class="book-title" id="bookTitle">Pagaspas</div>
+        <div class="book-meta" id="bookMeta">Life Drawing Session · Event archive</div>
+      </div>
+      <p>Drag or swipe the page to explore the archive.</p>
+    </div>
+
+    <div class="mobile-book-hint">Swipe left or right to turn the page</div>
   </div>
 </section>
 
@@ -443,6 +600,154 @@ function setMenu(open){
 menu.addEventListener('click',()=>setMenu(nav.dataset.open!=='1'));
 nav.querySelectorAll('a').forEach(link=>link.addEventListener('click',()=>setMenu(false)));
 addEventListener('keydown',e=>{if(e.key==='Escape')setMenu(false)});
+
+const pages = [
+  {title:'KSS Sketchbook', meta:'Opening page · Community archive', caption:'Welcome to the sketchbook'},
+  {title:'KSS Sketchbook', meta:'Community archive · Page 02', caption:'Drawing together'},
+  {title:'Pagaspas', meta:'Life Drawing Session · Event archive', caption:'Life drawing'},
+  {title:'Pagaspas', meta:'Life Drawing Session · Event archive', caption:'Selected sketch'},
+  {title:'Serene', meta:'Life Drawing Session · Event archive', caption:'The session'},
+  {title:'Serene', meta:'Life Drawing Session · Event archive', caption:'Community'},
+];
+
+const book=document.getElementById('book');
+const turning=document.getElementById('turningPage');
+const prev=document.getElementById('bookPrev');
+const next=document.getElementById('bookNext');
+const current=document.getElementById('pageCurrent');
+const total=document.getElementById('pageTotal');
+const title=document.getElementById('bookTitle');
+const meta=document.getElementById('bookMeta');
+const leftNo=document.getElementById('leftPageNo');
+const rightNo=document.getElementById('rightPageNo');
+const leftCap=document.getElementById('leftCaption');
+const rightCap=document.getElementById('rightCaption');
+const turnFrontNo=document.getElementById('turnFrontNo');
+const turnBackNo=document.getElementById('turnBackNo');
+const turnFrontCap=document.getElementById('turnFrontCaption');
+const turnBackCap=document.getElementById('turnBackCaption');
+
+total.textContent=String(pages.length).padStart(2,'0');
+
+let index=0;
+let animating=false;
+let pointerStartX=0;
+let pointerDown=false;
+let dragProgress=0;
+
+function fmt(n){return String(n).padStart(2,'0')}
+
+function updateStaticPages(){
+  const leftIndex=Math.min(index,pages.length-1);
+  const rightIndex=Math.min(index+1,pages.length-1);
+  const l=pages[leftIndex], r=pages[rightIndex];
+
+  leftNo.textContent=fmt(leftIndex+1);
+  rightNo.textContent=fmt(rightIndex+1);
+  leftCap.textContent=l.caption;
+  rightCap.textContent=r.caption;
+  title.textContent=l.title;
+  meta.textContent=l.meta;
+  current.textContent=fmt(index+1);
+  prev.disabled=index<=0;
+  next.disabled=index>=pages.length-2;
+}
+
+function setTurningContent(direction){
+  const frontIndex=direction==='next' ? index+2 : index-1;
+  const backIndex=direction==='next' ? index+3 : index;
+  const f=pages[Math.max(0,Math.min(frontIndex,pages.length-1))];
+  const b=pages[Math.max(0,Math.min(backIndex,pages.length-1))];
+
+  turnFrontNo.textContent=fmt(Math.max(1,frontIndex+1));
+  turnBackNo.textContent=fmt(Math.max(1,backIndex+1));
+  turnFrontCap.textContent=f.caption;
+  turnBackCap.textContent=b.caption;
+}
+
+function finishFlip(direction){
+  if(animating)return;
+  if(direction==='next' && index>=pages.length-2)return;
+  if(direction==='prev' && index<=0)return;
+
+  animating=true;
+  setTurningContent(direction);
+  turning.style.transition='transform .55s cubic-bezier(.2,.8,.2,1)';
+  turning.style.transform=direction==='next'?'rotateY(-180deg)':'rotateY(180deg)';
+
+  setTimeout(()=>{
+    index += direction==='next'?2:-2;
+    index=Math.max(0,Math.min(index,pages.length-2));
+    turning.style.transition='none';
+    turning.style.transform='rotateY(0deg)';
+    updateStaticPages();
+    requestAnimationFrame(()=>{animating=false});
+  },570);
+}
+
+function dragFlip(progress,direction){
+  if(animating)return;
+  setTurningContent(direction);
+  turning.style.transition='none';
+  const angle=direction==='next' ? -180*progress : 180*progress;
+  turning.style.transform=`rotateY(${angle}deg)`;
+}
+
+function finishDrag(progress,direction){
+  const shouldFlip=progress>.28;
+  if(shouldFlip) finishFlip(direction);
+  else{
+    turning.style.transition='transform .35s ease-out';
+    turning.style.transform='rotateY(0deg)';
+  }
+}
+
+prev.addEventListener('click',()=>finishFlip('prev'));
+next.addEventListener('click',()=>finishFlip('next'));
+
+book.addEventListener('pointerdown',e=>{
+  if(animating)return;
+  pointerDown=true;
+  pointerStartX=e.clientX;
+  book.setPointerCapture?.(e.pointerId);
+});
+
+book.addEventListener('pointermove',e=>{
+  if(!pointerDown||animating)return;
+  const dx=e.clientX-pointerStartX;
+  if(Math.abs(dx)<5)return;
+  const direction=dx<0?'next':'prev';
+  const progress=Math.min(1,Math.abs(dx)/Math.max(180,book.clientWidth*.45));
+  dragProgress=progress;
+  dragFlip(progress,direction);
+});
+
+book.addEventListener('pointerup',e=>{
+  if(!pointerDown)return;
+  pointerDown=false;
+  const dx=e.clientX-pointerStartX;
+  if(Math.abs(dx)>12){
+    finishDrag(dragProgress,dx<0?'next':'prev');
+  }else{
+    turning.style.transition='transform .25s ease-out';
+    turning.style.transform='rotateY(0deg)';
+  }
+  dragProgress=0;
+});
+
+book.addEventListener('pointercancel',()=>{
+  pointerDown=false;
+  turning.style.transition='transform .25s ease-out';
+  turning.style.transform='rotateY(0deg)';
+  dragProgress=0;
+});
+
+addEventListener('keydown',e=>{
+  if(e.key==='ArrowRight')finishFlip('next');
+  if(e.key==='ArrowLeft')finishFlip('prev');
+});
+
+updateStaticPages();
 </script>
 </body>
 </html>
