@@ -1,0 +1,445 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#eee9de">
+<title>Kyusi Sunday Sketchers — Fiestang Pinoy · 1st Anniversary</title>
+<meta name="description" content="Kyusi Sunday Sketchers turns one. Fiestang Pinoy is a Filipino-inspired anniversary morning of live sketching on 4 October 2026 at Racket Room Cubao.">
+<style>
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600&family=Instrument+Serif:ital@0;1&display=swap');
+
+:root{
+  --paper:#eee9de;
+  --paper-2:#e7e0d2;
+  --ink:#211f1b;
+  --muted:#6f6a61;
+  --line:rgba(33,31,27,.16);
+  --accent:#7e5944;
+  --max:1180px;
+  --display:"Instrument Serif", Georgia, serif;
+  --sans:"DM Sans", Arial, sans-serif;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+  margin:0;color:var(--ink);background:var(--paper);
+  font-family:var(--sans);-webkit-font-smoothing:antialiased;
+}
+body:before{
+  content:"";position:fixed;inset:0;pointer-events:none;z-index:20;opacity:.28;
+  background:
+    radial-gradient(circle at 15% 10%,rgba(255,255,255,.8),transparent 30%),
+    radial-gradient(circle at 80% 70%,rgba(100,70,40,.08),transparent 35%),
+    repeating-linear-gradient(0deg,rgba(80,60,40,.018) 0 1px,transparent 1px 4px);
+}
+a{color:inherit;text-decoration:none}
+button{font:inherit}
+.container{width:min(var(--max),calc(100% - 48px));margin:auto}
+
+/* Header */
+.header{
+  position:sticky;top:0;z-index:50;
+  background:rgba(238,233,222,.86);
+  backdrop-filter:blur(14px);
+  border-bottom:1px solid transparent;
+  transition:.25s;
+}
+.header.scrolled{border-bottom-color:var(--line)}
+.nav{
+  min-height:84px;display:flex;align-items:center;justify-content:space-between;gap:28px;
+}
+.brand{display:flex;align-items:center;gap:12px}
+.brand img{width:58px;height:58px;object-fit:contain;mix-blend-mode:multiply}
+.brand-text{font-family:var(--display);font-size:24px;line-height:.9}
+.brand-text small{
+  display:block;font-family:var(--sans);font-size:8px;letter-spacing:.18em;
+  text-transform:uppercase;margin-top:6px;color:var(--muted)
+}
+.navlinks{display:flex;align-items:center;gap:30px;font-size:13px}
+.navlinks a{position:relative;color:#4d4942}
+.navlinks a:after{content:"";position:absolute;left:0;right:0;bottom:-8px;height:1px;background:var(--ink);transform:scaleX(0);transition:.2s}
+.navlinks a:hover:after{transform:scaleX(1)}
+.cta{
+  display:inline-flex;align-items:center;justify-content:center;gap:9px;
+  padding:12px 18px;border-radius:999px;background:var(--ink);color:var(--paper);
+  font-size:13px;transition:transform .2s,background .2s;
+}
+.cta:hover{transform:translateY(-2px);background:#000}
+.menu{display:none;border:0;background:none;padding:8px;font-size:22px}
+
+/* Hero */
+.hero{min-height:calc(100svh - 84px);display:grid;align-items:center;padding:72px 0 84px}
+.hero-grid{display:grid;grid-template-columns:.72fr 1.28fr;align-items:center;gap:64px}
+.eyebrow,.label{
+  font-size:10px;letter-spacing:.22em;text-transform:uppercase;color:var(--muted)
+}
+.hero h1{
+  font-family:var(--display);font-size:clamp(54px,7vw,94px);font-weight:400;
+  line-height:.91;margin:18px 0 24px;letter-spacing:-.025em;
+}
+.hero h1 em{display:block}
+.hero-copy{max-width:430px;font-size:16px;line-height:1.65;color:#555047}
+.hero-actions{display:flex;gap:12px;margin-top:30px;flex-wrap:wrap}
+.secondary{
+  display:inline-flex;align-items:center;justify-content:center;padding:11px 17px;
+  border:1px solid var(--line);border-radius:999px;font-size:13px;
+}
+.hero-art{
+  position:relative;min-height:570px;border:1px solid var(--line);
+  background:
+    linear-gradient(145deg,rgba(255,255,255,.55),rgba(217,205,185,.28)),
+    repeating-linear-gradient(90deg,transparent 0 42px,rgba(90,70,50,.045) 42px 43px);
+  display:grid;place-items:center;overflow:hidden;box-shadow:0 22px 55px rgba(50,40,30,.08);
+  transform:rotate(.5deg);transition:transform .5s;
+}
+.hero-art:hover{transform:rotate(0) translateY(-3px)}
+.hero-art:before,.hero-art:after{
+  content:"";position:absolute;border:1px solid rgba(33,31,27,.1);inset:24px;pointer-events:none
+}
+.hero-art:after{inset:auto 10% 12%;height:1px;background:var(--line);border:0}
+.placeholder-drawing{
+  width:72%;aspect-ratio:1.25;border:1px dashed rgba(33,31,27,.28);
+  display:grid;place-items:center;text-align:center;color:var(--muted);
+  position:relative;
+}
+.placeholder-drawing:before{
+  content:"";position:absolute;width:62%;height:70%;border:1px solid rgba(33,31,27,.18);
+  border-radius:50% 48% 52% 45%;transform:rotate(-7deg)
+}
+.placeholder-drawing span{position:relative;font-family:var(--display);font-size:30px}
+.note{
+  position:absolute;padding:12px 16px;background:#ded0ae;color:#3c3329;
+  font-family:var(--display);font-style:italic;box-shadow:0 8px 18px rgba(40,30,20,.1);
+}
+.note.one{left:7%;top:13%;transform:rotate(-5deg)}
+.note.two{right:8%;bottom:15%;transform:rotate(4deg)}
+.hero-caption{
+  position:absolute;left:9%;bottom:6%;font-size:9px;letter-spacing:.16em;
+  text-transform:uppercase;color:var(--muted)
+}
+
+/* Sections */
+section{scroll-margin-top:100px}
+.section{padding:92px 0}
+.section-head{display:flex;align-items:end;justify-content:space-between;gap:24px;margin-bottom:30px}
+.section-head h2{font-family:var(--display);font-size:clamp(42px,5vw,68px);font-weight:400;line-height:.95;margin:8px 0 0}
+.viewall{font-size:12px;text-decoration:underline;text-underline-offset:5px}
+
+/* Sketchbook */
+.sketch-row{
+  display:grid;grid-template-columns:repeat(4,1fr);gap:16px;
+}
+.card{min-width:0}
+.card-image{
+  aspect-ratio:1/1.12;border:1px solid var(--line);
+  background:linear-gradient(145deg,#ddd4c4,#f7f2e8 52%,#d5cbb9);
+  position:relative;overflow:hidden;transition:.3s;
+}
+.card-image:before{
+  content:"SKETCH\nPLACEHOLDER";white-space:pre;position:absolute;inset:12%;
+  border:1px dashed rgba(33,31,27,.24);display:grid;place-items:center;text-align:center;
+  font-family:var(--display);font-size:21px;color:rgba(33,31,27,.42);
+}
+.card:hover .card-image{transform:translateY(-5px) rotate(-1deg);box-shadow:0 16px 30px rgba(40,30,20,.1)}
+.card-meta{padding:13px 2px 0}
+.card-title{font-family:var(--display);font-size:25px}
+.card-sub{font-size:11px;color:var(--muted);margin-top:4px}
+
+/* Event */
+.event{
+  background:#ddd2bc;position:relative;overflow:hidden;padding:58px;
+  border-top:1px solid var(--line);border-bottom:1px solid var(--line);
+}
+.event-grid{display:grid;grid-template-columns:.8fr 1.2fr;gap:52px;align-items:center}
+.event-photo{
+  aspect-ratio:1.05;border:1px solid rgba(33,31,27,.18);
+  background:linear-gradient(145deg,#c9bca5,#f0e9dc);
+  display:grid;place-items:center;transform:rotate(-2deg);box-shadow:0 18px 30px rgba(50,40,30,.1)
+}
+.event-photo span{font-family:var(--display);font-size:27px;color:#6d6357}
+.event h2{font-family:var(--display);font-weight:400;font-size:clamp(50px,6vw,82px);line-height:.9;margin:12px 0 22px}
+.event-details{display:flex;gap:24px;flex-wrap:wrap;font-size:12px;color:#554e44}
+.event p{max-width:600px;color:#595248;line-height:1.65}
+
+/* Sessions */
+.session-list{border-top:1px solid var(--line)}
+.session{
+  display:grid;grid-template-columns:70px 1fr auto;gap:20px;align-items:center;
+  padding:20px 8px;border-bottom:1px solid var(--line);transition:.25s;
+}
+.session:hover{padding-left:18px;background:rgba(255,255,255,.25)}
+.session-no{font-size:11px;color:var(--muted)}
+.session-name{font-family:var(--display);font-size:30px}
+.session-type{font-size:11px;color:var(--muted);margin-top:4px}
+.session-arrow{font-size:20px}
+
+/* Community */
+.community-grid{display:grid;grid-template-columns:.9fr 1.1fr;gap:70px;align-items:center}
+.community-art{
+  min-height:380px;border:1px solid var(--line);background:
+  radial-gradient(circle at 30% 35%,rgba(100,80,60,.12),transparent 18%),
+  radial-gradient(circle at 65% 55%,rgba(100,80,60,.1),transparent 20%),
+  linear-gradient(135deg,#e0d7c7,#f4efe5);
+  position:relative;overflow:hidden;
+}
+.community-art:before{
+  content:"COMMUNITY\nPLACEHOLDER";white-space:pre;position:absolute;inset:15%;
+  border:1px dashed rgba(33,31,27,.2);display:grid;place-items:center;text-align:center;
+  font-family:var(--display);font-size:28px;color:rgba(33,31,27,.38)
+}
+.community-copy h2{font-family:var(--display);font-weight:400;font-size:clamp(48px,5.5vw,76px);line-height:.92;margin:12px 0 20px}
+.community-copy p{max-width:600px;line-height:1.7;color:#5d564c}
+
+/* Footer */
+.footer{border-top:1px solid var(--line);padding:34px 0 48px}
+.footer-grid{display:flex;justify-content:space-between;gap:30px;align-items:end}
+.footer-brand{font-family:var(--display);font-size:24px}
+.footer small{display:block;color:var(--muted);font-size:10px;letter-spacing:.12em;text-transform:uppercase;margin-top:6px}
+.footer-links{display:flex;gap:24px;font-size:12px}
+.footer-note{font-size:11px;color:var(--muted)}
+
+
+.anniv-badge{
+  display:inline-flex;align-items:center;gap:9px;margin-top:8px;
+  padding:7px 11px;border:1px solid var(--line);border-radius:999px;
+  font-size:10px;letter-spacing:.12em;text-transform:uppercase;
+}
+.anniv-badge strong{
+  font-family:var(--display);font-size:17px;font-weight:400;letter-spacing:0
+}
+.event-facts{
+  display:flex;gap:28px;flex-wrap:wrap;margin-top:28px;
+  padding-top:18px;border-top:1px solid var(--line);max-width:500px
+}
+.event-facts div{display:flex;flex-direction:column;gap:4px}
+.event-facts strong{font-family:var(--display);font-size:24px;font-weight:400}
+.event-facts span{font-size:9px;color:var(--muted);letter-spacing:.12em;text-transform:uppercase}
+.event-lede{font-family:var(--display);font-size:23px;line-height:1.15;max-width:620px;color:#39342d}
+.event-location{font-size:11px;color:#5a5349;margin:14px 0 0}
+.station-grid{
+  display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin:28px 0
+}
+.station-grid div{
+  padding:15px 13px;border:1px solid rgba(33,31,27,.14);background:rgba(255,255,255,.22);
+  min-height:120px;display:flex;flex-direction:column;align-items:flex-start
+}
+.station-grid b{font-size:9px;color:var(--muted);letter-spacing:.15em}
+.station-grid strong{font-family:var(--display);font-size:21px;font-weight:400;margin:8px 0 5px}
+.station-grid span{font-size:10px;line-height:1.4;color:var(--muted)}
+.event-photo{padding:30px}
+.event-photo div{display:flex;flex-direction:column;align-items:center;gap:10px}
+.event-photo small{font-size:8px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted)}
+
+/* Mobile */
+@media(max-width:800px){
+  .event-facts{gap:18px}
+  .event-facts strong{font-size:21px}
+  .station-grid{grid-template-columns:1fr}
+  .station-grid div{min-height:auto}
+  .event-lede{font-size:21px}
+
+  .container{width:min(100% - 32px,var(--max))}
+  .nav{min-height:70px}
+  .brand img{width:48px;height:48px}
+  .brand-text{font-size:20px}
+  .navlinks,.nav>.cta{display:none}
+  .menu{display:block}
+  .hero{min-height:auto;padding:48px 0 54px}
+  .hero-grid{grid-template-columns:1fr;gap:34px}
+  .hero h1{font-size:clamp(54px,15vw,78px);margin-top:15px}
+  .hero-copy{font-size:15px}
+  .hero-art{min-height:410px;transform:none}
+  .hero-art:hover{transform:none}
+  .section{padding:64px 0}
+  .section-head{align-items:start}
+  .section-head h2{font-size:50px}
+  .sketch-row{
+    display:flex;overflow-x:auto;gap:12px;padding:4px 0 18px;
+    scroll-snap-type:x mandatory;-webkit-overflow-scrolling:touch;
+  }
+  .sketch-row .card{flex:0 0 76%;scroll-snap-align:start}
+  .event{padding:34px 20px;margin-inline:-16px}
+  .event-grid{grid-template-columns:1fr;gap:34px}
+  .event-photo{max-width:330px;margin:auto}
+  .event h2{font-size:58px}
+  .session{grid-template-columns:38px 1fr 20px;gap:10px}
+  .session-name{font-size:26px}
+  .community-grid{grid-template-columns:1fr;gap:34px}
+  .community-art{min-height:280px}
+  .footer-grid{display:grid;gap:25px}
+  .footer-links{flex-wrap:wrap}
+}
+@media(prefers-reduced-motion:reduce){
+  html{scroll-behavior:auto}
+  *{transition:none!important}
+}
+</style>
+</head>
+<body>
+<header class="header" id="header">
+  <div class="container nav">
+    <a class="brand" href="#">
+      <img src="assets/kss-logo.jpg" alt="Kyusi Sunday Sketchers logo">
+      <span class="brand-text">Kyusi Sunday<br>Sketchers<small>Quezon City</small></span>
+    </a>
+    <nav class="navlinks" aria-label="Primary">
+      <a href="#sketchbook">Sketchbook</a>
+      <a href="#sessions">Sessions</a>
+      <a href="#about">About</a>
+    </nav>
+    <a class="cta" href="#join">Join Us <span>→</span></a>
+    <button class="menu" id="menu" aria-label="Open menu">☰</button>
+  </div>
+</header>
+
+<main>
+<section class="hero">
+  <div class="container hero-grid">
+    <div>
+      <div class="eyebrow">Kyusi Sunday Sketchers · 1st Anniversary</div>
+      <div class="anniv-badge"><strong>01</strong> Fiestang Pinoy</div>
+      <h1>One year of<br>drawing<br><em>together.</em></h1>
+      <p class="hero-copy">
+        A Filipino-inspired anniversary celebration of live sketching,
+        community, and art — three themed stations, live models, and a room
+        full of people drawing together.
+      </p>
+      <div class="event-facts">
+        <div><strong>4 Oct 2026</strong><span>Sunday</span></div>
+        <div><strong>9:40–12:40</strong><span>Programme</span></div>
+        <div><strong>24</strong><span>Places</span></div>
+      </div>
+      <div class="hero-actions">
+        <a class="cta" href="#event">See the Anniversary Event →</a>
+        <a class="secondary" href="#join">Registration opening soon</a>
+      </div>
+    </div>
+    <div class="hero-art" aria-label="Reserved space for the hero KSS artwork">
+      <div class="placeholder-drawing"><span>Fiestang Pinoy<br>event artwork</span></div>
+      <div class="note one">same people.<br>new sketches.</div>
+      <div class="note two">draw · meet · create</div>
+      <div class="hero-caption">Hero image placeholder · replace with KSS session artwork</div>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="sketchbook">
+  <div class="container">
+    <div class="section-head">
+      <div><div class="label">From the community</div><h2>Recent Sketches</h2></div>
+      <a class="viewall" href="#sketchbook">View all sketches →</a>
+    </div>
+    <div class="sketch-row">
+      <article class="card"><div class="card-image"></div><div class="card-meta"><div class="card-title">Sketch 01</div><div class="card-sub">Session title · Date</div></div></article>
+      <article class="card"><div class="card-image"></div><div class="card-meta"><div class="card-title">Sketch 02</div><div class="card-sub">Session title · Date</div></div></article>
+      <article class="card"><div class="card-image"></div><div class="card-meta"><div class="card-title">Sketch 03</div><div class="card-sub">Session title · Date</div></div></article>
+      <article class="card"><div class="card-image"></div><div class="card-meta"><div class="card-title">Sketch 04</div><div class="card-sub">Session title · Date</div></div></article>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="events">
+  <div class="container">
+    <div class="event">
+      <div class="event-grid">
+        <div class="event-photo" aria-label="Reserved space for the Fiestang Pinoy event artwork">
+          <div>
+            <span>Event artwork<br>placeholder</span>
+            <small>Fiestang Pinoy · KSS turns one</small>
+          </div>
+        </div>
+        <div>
+          <div class="label">Upcoming · 1st Anniversary</div>
+          <h2>Fiestang<br>Pinoy</h2>
+          <p class="event-lede">Kyusi Sunday Sketchers turns one. We're marking it the way we started: a room full of people drawing together.</p>
+          <div class="event-details">
+            <span>◷ Sunday, 4 October 2026</span>
+            <span>⌖ Racket Room Cubao</span>
+            <span>◎ 24 places</span>
+          </div>
+          <div class="event-location">94 10th Ave, Cubao, Quezon City</div>
+          <p>Three themed stations, live models, and small colour groups rotating through the morning. Doors and check-in from 9:00 AM. The official programme runs 9:40 AM–12:40 PM; the venue closes at 1:00 PM.</p>
+
+          <div class="station-grid">
+            <div><b>01</b><strong>Amorsolo-ish</strong><span>Filipino light & everyday warmth</span></div>
+            <div><b>02</b><strong>Artistic Nude</strong><span>Form, gesture & movement</span></div>
+            <div><b>03</b><strong>Encanto</strong><span>Filipino-inspired folklore</span></div>
+          </div>
+
+          <a class="cta" href="#join">Registration opening soon →</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="sessions">
+  <div class="container">
+    <div class="section-head">
+      <div><div class="label">The archive</div><h2>Recent Sessions</h2></div>
+      <a class="viewall" href="#sessions">View all →</a>
+    </div>
+    <div class="session-list">
+      <a class="session" href="#"><span class="session-no">01</span><span><div class="session-name">Pagaspas</div><div class="session-type">Life Drawing Session · Event details</div></span><span class="session-arrow">↗</span></a>
+      <a class="session" href="#"><span class="session-no">02</span><span><div class="session-name">Serene</div><div class="session-type">Life Drawing Session · Event details</div></span><span class="session-arrow">↗</span></a>
+      <a class="session" href="#"><span class="session-no">03</span><span><div class="session-name">Silindro</div><div class="session-type">Drawing Session · Event details</div></span><span class="session-arrow">↗</span></a>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="about">
+  <div class="container community-grid">
+    <div class="community-art" aria-label="Reserved space for a KSS community photo"></div>
+    <div class="community-copy">
+      <div class="label">About Kyusi Sunday Sketchers</div>
+      <h2>More than sketches.<br><em>A creative community.</em></h2>
+      <p>
+        Kyusi Sunday Sketchers is a non-profit built by artists for artists,
+        creating space, support, and opportunities for the creative community.
+      </p>
+      <a class="cta" href="#join">Learn More →</a>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="join">
+  <div class="container">
+    <div class="section-head">
+      <div><div class="label">Come draw with us</div><h2>Join KSS</h2></div>
+    </div>
+    <p class="hero-copy">Registration for Fiestang Pinoy will open here. The page can later link directly to the KSS registration form once it is live.</p>
+    <div class="hero-actions">
+      <a class="cta" href="#" onclick="return false">Registration opening soon →</a>
+      <a class="secondary" href="https://www.instagram.com/kyusisundaysketchers/" target="_blank" rel="noopener">Instagram ↗</a>
+    </div>
+  </div>
+</section>
+</main>
+
+<footer class="footer">
+  <div class="container footer-grid">
+    <div><div class="footer-brand">Kyusi Sunday Sketchers</div><small>Quezon City</small></div>
+    <div class="footer-links">
+      <a href="https://www.instagram.com/kyusisundaysketchers/" target="_blank" rel="noopener">Instagram</a>
+      <a href="#join">Join Us</a>
+      <a href="#about">About</a>
+    </div>
+    <div class="footer-note">Sketching, connecting, creating.</div>
+  </div>
+</footer>
+
+<script>
+const header=document.getElementById('header');
+addEventListener('scroll',()=>header.classList.toggle('scrolled',scrollY>8),{passive:true});
+
+const menu=document.getElementById('menu');
+menu.addEventListener('click',()=>{
+  const nav=document.querySelector('.navlinks');
+  const open=nav.dataset.open==='1';
+  nav.dataset.open=open?'0':'1';
+  nav.style.cssText=open?'':'position:absolute;left:16px;right:16px;top:66px;display:flex;flex-direction:column;align-items:flex-start;padding:18px;background:rgba(238,233,222,.98);border:1px solid var(--line);box-shadow:0 16px 30px rgba(30,25,20,.1);border-radius:12px;gap:18px';
+});
+</script>
+</body>
+</html>
