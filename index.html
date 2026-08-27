@@ -289,7 +289,7 @@ section{scroll-margin-top:100px}
       <a href="#about">About</a>
     </nav>
     <a class="cta" href="#join">Join Us <span>→</span></a>
-    <button class="menu" id="menu" aria-label="Open menu">☰</button>
+    <button class="menu" id="menu" aria-label="Open menu" aria-expanded="false">☰</button>
   </div>
 </header>
 
@@ -328,7 +328,7 @@ section{scroll-margin-top:100px}
   <div class="container">
     <div class="section-head">
       <div><div class="label">From the community</div><h2>Recent Sketches</h2></div>
-      <a class="viewall" href="#sketchbook">View all sketches →</a>
+      <a class="viewall" href="https://www.instagram.com/kyusisundaysketchers/" target="_blank" rel="noopener">View all sketches ↗</a>
     </div>
     <div class="sketch-row">
       <article class="card"><div class="card-image"></div><div class="card-meta"><div class="card-title">Sketch 01</div><div class="card-sub">Session title · Date</div></div></article>
@@ -356,7 +356,7 @@ section{scroll-margin-top:100px}
           <div class="event-details">
             <span>◷ Sunday, 4 October 2026</span>
             <span>⌖ Racket Room Cubao</span>
-            <span>◎ 24 places</span>
+            <span>◎ 24 slots</span>
           </div>
           <div class="event-location">94 10th Ave, Cubao, Quezon City</div>
           <p>Three themed stations, live models, and small colour groups rotating through the morning. Doors and check-in from 9:00 AM. The official programme runs 9:40 AM–12:40 PM; the venue closes at 1:00 PM.</p>
@@ -378,7 +378,7 @@ section{scroll-margin-top:100px}
   <div class="container">
     <div class="section-head">
       <div><div class="label">The archive</div><h2>Recent Sessions</h2></div>
-      <a class="viewall" href="#sessions">View all →</a>
+      <a class="viewall" href="https://www.instagram.com/kyusisundaysketchers/" target="_blank" rel="noopener">View all ↗</a>
     </div>
     <div class="session-list">
       <a class="session" href="#"><span class="session-no">01</span><span><div class="session-name">Pagaspas</div><div class="session-type">Life Drawing Session · Event details</div></span><span class="session-arrow">↗</span></a>
@@ -434,12 +434,15 @@ const header=document.getElementById('header');
 addEventListener('scroll',()=>header.classList.toggle('scrolled',scrollY>8),{passive:true});
 
 const menu=document.getElementById('menu');
-menu.addEventListener('click',()=>{
-  const nav=document.querySelector('.navlinks');
-  const open=nav.dataset.open==='1';
-  nav.dataset.open=open?'0':'1';
-  nav.style.cssText=open?'':'position:absolute;left:16px;right:16px;top:66px;display:flex;flex-direction:column;align-items:flex-start;padding:18px;background:rgba(238,233,222,.98);border:1px solid var(--line);box-shadow:0 16px 30px rgba(30,25,20,.1);border-radius:12px;gap:18px';
-});
+const nav=document.querySelector('.navlinks');
+function setMenu(open){
+  nav.dataset.open=open?'1':'0';
+  nav.style.cssText=open?'position:absolute;left:16px;right:16px;top:66px;display:flex;flex-direction:column;align-items:flex-start;padding:18px;background:rgba(238,233,222,.98);border:1px solid var(--line);box-shadow:0 16px 30px rgba(30,25,20,.1);border-radius:12px;gap:18px':'';
+  menu.setAttribute('aria-expanded',open?'true':'false');
+}
+menu.addEventListener('click',()=>setMenu(nav.dataset.open!=='1'));
+nav.querySelectorAll('a').forEach(link=>link.addEventListener('click',()=>setMenu(false)));
+addEventListener('keydown',e=>{if(e.key==='Escape')setMenu(false)});
 </script>
 </body>
 </html>
