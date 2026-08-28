@@ -1,30 +1,26 @@
-# Kyusi Sunday Sketchers — Interactive Prototype
+# Kyusi Sunday Sketchers — Website
 
-Phase 1 website prototype with the KSS 1st Anniversary event and an interactive Sketchbook.
+Public site for the KSS 1st Anniversary — Fiestang Pinoy, with an interactive Sketchbook.
 
 ## Sketchbook interaction
 
-- Desktop: click previous/next, drag the page, or use keyboard arrows.
-- Mobile: swipe left/right.
-- The placeholder artwork lives inside the turning page, so it rotates with the page.
-- Replace the placeholder artwork with real KSS sketches later.
+- Desktop: click previous/next, drag the page, or use keyboard arrows. Toggle the magnifier to inspect artwork closely.
+- Mobile: swipe left/right; the magnifier works with touch too.
+- The artwork lives inside the turning page, so it rotates with the page.
+- Sketchbook entries without artwork yet show an editorial "Sketch coming soon" placeholder rather than a dev-looking one — drop a real image path into the `pages` array in the script to replace it.
 
-## Current event
+## Confirmed event details
 
 Fiestang Pinoy — KSS 1st Anniversary
-Sunday, 4 October 2026
+Sunday, 4 October 2026 · 8:30 AM–12:30 PM (doors open at 8:30 AM)
 Racket Room Cubao
 94 10th Ave, Cubao, Quezon City
-Programme: 9:40 AM–12:40 PM
-Capacity: 24 places
+Capacity: 24 slots
 
-The event artwork, sketches, and documentation photos remain placeholders.
+Registration is not yet open. The CTA config (`REGISTRATION_URL` near the top of the public `<script>` in `index.html`) is the single place to wire up the real registration link once it exists — every `[data-cta="register"]` element updates from it.
 
 ## Organiser area
 
-The page also carries the organiser admin panel (login-gated, `#admin`) that used
-to live in the separate `Sunday-Sketch` repo: budget, run-of-show, groups,
-live event-day timer, and other planning content. It renders no planning data
-itself — everything is fetched from Supabase only after a signed-in session
-passes `is_admin()` under Row Level Security. See `supabase-schema.sql` and
-`migrations/` for the backend.
+The admin panel (login-gated, budget/run-of-show/groups/live event-day timer/etc.) lives in **`admin.html`**, a separate, unlinked page — it is intentionally not reachable from the public site's navigation or footer, and carries a `noindex` meta tag. It renders no planning data itself: everything is fetched from Supabase only after a signed-in session passes `is_admin()` under Row Level Security. See `supabase-schema.sql` and `migrations/` for the backend.
+
+Note this repo is public, so `admin.html` is technically reachable by anyone with the URL — the real access boundary is Supabase RLS, not the page being unlinked. Treat it accordingly (don't put anything sensitive directly in the markup).

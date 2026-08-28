@@ -67,7 +67,7 @@ button{font:inherit}
   text-transform:uppercase;margin-top:6px;color:var(--muted)
 }
 .navlinks{display:flex;align-items:center;gap:30px;font-size:13px}
-.navlinks a{position:relative;color:#4d4942}
+.navlinks a{position:relative;color:#4d4942;padding:12px 0;display:inline-block}
 .navlinks a:after{content:"";position:absolute;left:0;right:0;bottom:-8px;height:1px;background:var(--ink);transform:scaleX(0);transition:.2s}
 .navlinks a:hover:after{transform:scaleX(1)}
 .cta{
@@ -283,6 +283,7 @@ section{scroll-margin-top:100px}
   display:flex;gap:28px;flex-wrap:wrap;margin-top:28px;
   padding-top:18px;border-top:1px solid var(--line);max-width:500px
 }
+.event-facts.wide{max-width:none}
 .event-facts div{display:flex;flex-direction:column;gap:4px}
 .event-facts strong{font-family:var(--display);font-size:24px;font-weight:400}
 .event-facts span{font-size:9px;color:var(--muted);letter-spacing:.12em;text-transform:uppercase}
@@ -380,6 +381,12 @@ section{scroll-margin-top:100px}
 }
 .turn-face .page-inner{inset:7%}
 .turn-back{transform:rotateY(180deg)}
+.turn-face:after{
+  content:"";position:absolute;inset:0;pointer-events:none;z-index:5;
+  background:linear-gradient(90deg,rgba(20,15,10,0) 55%,rgba(20,15,10,.22) 100%);
+  opacity:var(--shade,0);transition:opacity .55s cubic-bezier(.2,.8,.2,1)
+}
+.turn-back:after{background:linear-gradient(270deg,rgba(20,15,10,0) 55%,rgba(20,15,10,.22) 100%)}
 .book-arrow{
   width:44px;height:44px;border:1px solid var(--line);border-radius:50%;
   background:rgba(238,233,222,.8);color:var(--ink);cursor:pointer;font-size:20px;
@@ -436,12 +443,14 @@ section{scroll-margin-top:100px}
   .placeholder-sketch span{font-size:15px}
   .page-caption{font-size:15px}
   .page-label{font-size:6px}
-  .book-arrow{width:36px;height:36px;font-size:16px}
+  .book-arrow{width:44px;height:44px;font-size:18px}
   .sketchbook-info{width:100%;display:block;margin-top:18px}
   .sketchbook-info p{margin-top:12px}
   .mobile-book-hint{display:block}
   .view-controls-hint{display:none}
   .loupe{width:110px;height:110px}
+  .view-controls{gap:2px;padding:8px}
+  .view-controls button{width:40px;height:40px}
 }
 
 /* Mobile */
@@ -520,9 +529,6 @@ section{scroll-margin-top:100px}
 .join-list li{padding:12px 0;border-bottom:1px solid var(--line);font-size:13px;color:#5d564c;line-height:1.6;position:relative;padding-left:20px}
 .join-list li:before{content:"";position:absolute;left:0;top:21px;width:8px;height:1px;background:var(--ink)}
 
-.organiser-link{font-size:10px !important;color:var(--muted);opacity:.75}
-.organiser-link:hover{opacity:1}
-
 .sub-section{margin-top:64px;scroll-margin-top:100px}
 .info-card .fact{font-family:var(--display);font-size:19px;font-weight:400;display:block;color:var(--ink);margin-bottom:6px}
 
@@ -544,423 +550,11 @@ section{scroll-margin-top:100px}
   .archive-table th,.archive-table td{padding-right:12px}
 }
 
-#admin{
-  --paper-2:#DDDCD4;
-  --ink-soft:#5A5860;
-  --rule:#C3C1B8;
-  --cyan:#0E9BD6;
-  --red:#E23E38;
-  --orange:#F5721F;
-  --open:#8A6A12;
-  --gold:#B8860B;
-  --teal:#0E5B60;
-  --gut:clamp(18px,4vw,52px);
-  border-top:1px solid var(--ink);
-  font-family:"Newsreader",Georgia,"Times New Roman",serif;
-  font-size:clamp(16px,1.05vw,18px);
-  line-height:1.6;
-  color:var(--ink);
-  display:block;
-}
+:focus-visible{outline:2px solid var(--accent);outline-offset:3px}
 
-#admin *{box-sizing:border-box}
-#admin img{max-width:100%}
-#admin ::selection{background:var(--orange);color:var(--paper)}
-#admin .mono{font-family:"Space Mono",ui-monospace,SFMono-Regular,Menlo,monospace}
-#admin .eyebrow{
-  font-family:"Space Mono",monospace;font-size:11px;letter-spacing:.16em;
-  text-transform:uppercase;color:var(--ink-soft);margin:0 0 14px
-}
-#admin h1, #admin h2, #admin h3, #admin h4{font-family:"Archivo","Helvetica Neue",Arial,sans-serif;margin:0;font-weight:800;letter-spacing:-.02em;line-height:.95}
-#admin h2{font-size:clamp(30px,4.6vw,54px);text-transform:uppercase}
-#admin h3{font-size:clamp(19px,2vw,24px);letter-spacing:-.01em;line-height:1.1}
-#admin h4{font-size:14px;font-weight:600;letter-spacing:.06em;text-transform:uppercase}
-#admin p{margin:0 0 1em}
-#admin a{color:inherit}
-#admin .wrap{max-width:var(--max);margin:0 auto;padding:0 var(--gut)}
-#admin section{padding:clamp(56px,7vw,104px) 0;border-top:1px solid var(--rule)}
-#admin .sec-head{display:flex;align-items:baseline;gap:18px;flex-wrap:wrap;margin-bottom:34px}
-#admin .sec-num{font-family:"Space Mono",monospace;font-size:12px;color:var(--ink-soft);letter-spacing:.1em}
-#admin .lede{max-width:62ch;color:var(--ink-soft);font-size:1.02em}
-#admin nav{position:sticky;top:0;z-index:60;background:rgba(230,229,223,.93);backdrop-filter:blur(8px);border-bottom:1px solid var(--rule)}
-#event, #fiesta, #programme, #how, #register, #faq, #contact{scroll-margin-top:60px}
-#admin .nav-in{max-width:var(--max);margin:0 auto;padding:0 var(--gut);display:flex;align-items:center;gap:14px;height:52px}
-#admin .nav-mark{
-  font-family:"Archivo",sans-serif;font-weight:900;font-size:13px;letter-spacing:-.01em;
-  text-transform:uppercase;white-space:nowrap;display:flex;align-items:center;gap:10px;text-decoration:none
-}
-#admin .nav-logo{height:34px;width:auto;display:block;flex:none}
-#admin .nav-links{display:flex;gap:2px;overflow-x:auto;scrollbar-width:none;margin-left:auto}
-#admin .nav-links::-webkit-scrollbar{display:none}
-#admin .nav-links a{
-  font-family:"Space Mono",monospace;font-size:11px;text-transform:uppercase;letter-spacing:.08em;
-  text-decoration:none;padding:7px 9px;white-space:nowrap;color:var(--ink-soft);border-radius:2px
-}
-#admin .nav-links a:hover, #admin .nav-links a.on{color:var(--ink);background:var(--paper-2)}
-#admin .nav-links a.organiser-link{color:var(--ink-soft);opacity:.7;border-left:1px solid var(--rule);margin-left:6px}
-#admin .nav-links a.organiser-link:hover{opacity:1}
-#admin .nav-toggle{
-  display:none;align-items:center;justify-content:center;
-  width:44px;height:44px;margin-left:auto;flex:none;padding:0;
-  background:transparent;border:1px solid var(--ink);border-radius:2px;cursor:pointer
-}
-#admin .nav-toggle-box{position:relative;width:19px;height:13px;display:block}
-#admin .nav-toggle-bar{position:absolute;left:0;width:100%;height:2px;background:var(--ink);border-radius:1px;transition:transform .18s ease,opacity .18s ease}
-#admin .nav-toggle-bar:nth-child(1){top:0}
-#admin .nav-toggle-bar:nth-child(2){top:5.5px}
-#admin .nav-toggle-bar:nth-child(3){top:11px}
-#admin .nav-toggle[aria-expanded="true"] .nav-toggle-bar:nth-child(1){transform:translateY(5.5px) rotate(45deg)}
-#admin .nav-toggle[aria-expanded="true"] .nav-toggle-bar:nth-child(2){opacity:0}
-#admin .nav-toggle[aria-expanded="true"] .nav-toggle-bar:nth-child(3){transform:translateY(-5.5px) rotate(-45deg)}
-#admin body.nav-locked{overflow:hidden}
-#admin header.hero{padding:clamp(44px,7vw,86px) 0 clamp(38px,5vw,60px);border-top:none}
-#admin .riso{position:relative;display:block}
-#admin .riso h1{
-  font-size:clamp(48px,12.4vw,164px);line-height:.84;text-transform:uppercase;
-  font-weight:900;letter-spacing:-.035em;position:relative;z-index:3
-}
-#admin .riso h1 span{display:block}
-#admin .riso .ghost{position:absolute;inset:0;z-index:1;pointer-events:none;mix-blend-mode:multiply}
-#admin .riso .ghost h1{opacity:.62}
-#admin .riso .g-cy{color:var(--cyan);transform:translate(-5px,4px)}
-#admin .riso .g-rd{color:var(--red);transform:translate(5px,-3px);z-index:2}
-#admin .riso .g-gd{color:var(--gold);transform:translate(2px,6px);z-index:1}
-#admin .hero-sub{margin-top:26px;max-width:60ch;font-size:1.08em}
-#admin .facts{display:flex;flex-wrap:wrap;gap:0;margin-top:34px;border-top:1px solid var(--ink);border-bottom:1px solid var(--ink)}
-#admin .fact{flex:1 1 130px;padding:16px 18px 15px;border-right:1px solid var(--rule)}
-#admin .fact:last-child{border-right:none}
-#admin .fact b{display:block;font-family:"Archivo",sans-serif;font-weight:800;font-size:clamp(18px,2.2vw,26px);line-height:1.05}
-#admin .hero-band{margin:0 0 26px}
-#admin .fact small{display:block;font-family:"Space Mono",monospace;font-size:10px;letter-spacing:.13em;text-transform:uppercase;color:var(--ink-soft);margin-top:8px}
-#admin .status-bar{display:flex;flex-wrap:wrap;gap:10px;margin-top:26px;align-items:center}
-#admin .banderitas{display:flex;height:16px;overflow:hidden;margin:0;padding:0;list-style:none}
-#admin .banderitas li{flex:1 1 0;height:100%;min-width:14px;
-  clip-path:polygon(0 0,100% 0,50% 100%)}
-#admin .banderitas li:nth-child(5n+1){background:var(--red)}
-#admin .banderitas li:nth-child(5n+2){background:var(--gold)}
-#admin .banderitas li:nth-child(5n+3){background:var(--teal)}
-#admin .banderitas li:nth-child(5n+4){background:var(--orange)}
-#admin .banderitas li:nth-child(5n+5){background:var(--cyan)}
-#admin .anniv{
-  display:inline-flex;align-items:center;gap:9px;font-family:"Space Mono",monospace;font-size:11px;
-  letter-spacing:.18em;text-transform:uppercase;color:var(--gold);border:1px solid var(--gold);
-  border-radius:2px;padding:6px 11px;margin-bottom:16px
-}
-#admin .anniv b{font-family:"Archivo",sans-serif;font-weight:900;font-size:13px;letter-spacing:.02em}
-#admin .kicker{
-  font-family:"Archivo",sans-serif;font-weight:900;text-transform:uppercase;letter-spacing:-.01em;
-  font-size:clamp(19px,3vw,32px);line-height:1;margin:0 0 10px;color:var(--ink)
-}
-#admin .kicker span{color:var(--gold)}
-#admin .format-line{font-family:"Space Mono",monospace;font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-soft);margin:18px 0 0}
-#admin .stations{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;margin-top:30px}
-#admin .station{border:1px solid var(--rule);border-top:5px solid var(--gold);border-radius:3px;padding:24px;background:var(--paper)}
-#admin .station:nth-child(2){border-top-color:var(--red)}
-#admin .station:nth-child(3){border-top-color:var(--teal)}
-#admin .station .no{font-family:"Space Mono",monospace;font-size:11px;letter-spacing:.2em;color:var(--ink-soft);display:block;margin-bottom:12px}
-#admin .station h3{text-transform:uppercase;font-size:clamp(20px,2.2vw,27px);margin-bottom:12px}
-#admin .station p{color:var(--ink-soft);margin:0}
-#admin .station .note{font-family:"Space Mono",monospace;font-size:10px;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-soft);margin-top:14px;display:block}
-#admin .rotate-line{margin-top:26px;border-left:4px solid var(--gold);background:var(--paper-2);padding:16px 18px;font-size:1.02em}
-#admin .cta-row{display:flex;flex-wrap:wrap;gap:12px;align-items:center;margin-top:30px}
-#admin a.cta, #admin button.cta{
-  display:inline-flex;align-items:center;gap:10px;font-family:"Space Mono",monospace;font-size:12px;
-  letter-spacing:.12em;text-transform:uppercase;padding:15px 22px;border:1px solid var(--ink);
-  border-radius:2px;text-decoration:none;background:var(--ink);color:var(--paper);cursor:pointer
-}
-#admin a.cta:hover, #admin button.cta:hover{background:var(--red);border-color:var(--red)}
-#admin a.cta.secondary{background:transparent;color:var(--ink)}
-#admin a.cta.secondary:hover{background:var(--ink);color:var(--paper);border-color:var(--ink)}
-#admin button.cta[disabled]{background:var(--paper-2);color:var(--ink-soft);border-color:var(--rule);cursor:default}
-#admin button.cta[disabled]:hover{background:var(--paper-2);color:var(--ink-soft);border-color:var(--rule)}
-#admin .sticky-cta{display:none}
-#admin .tag{
-  display:inline-flex;align-items:center;gap:6px;font-family:"Space Mono",monospace;
-  font-size:10px;letter-spacing:.1em;text-transform:uppercase;padding:4px 8px;border:1px solid currentColor;border-radius:2px
-}
-#admin .tag-open{color:var(--open)}
-#admin .tag-set{color:var(--ink-soft)}
-#admin .tag-flag{color:var(--red)}
-#admin .tag-live{color:var(--cyan)}
-#admin .dot{width:7px;height:7px;border-radius:50%;background:currentColor;display:inline-block}
-#admin .card{background:var(--paper);border:1px solid var(--rule);border-radius:3px;padding:22px}
-#admin .card h4+p{margin-top:10px}
-#admin .grid{display:grid;gap:18px}
-#admin .g3{grid-template-columns:repeat(3,1fr)}
-#admin .g2{grid-template-columns:repeat(2,1fr)}
-#admin .glance-label{margin:26px 0 12px}
-#admin .glance{display:flex;flex-wrap:wrap;gap:8px 6px;align-items:center;font-family:"Space Mono",monospace;font-size:12px;letter-spacing:.03em}
-#admin .glance-step{padding:6px 10px;border:1px solid var(--rule);border-radius:2px;background:var(--paper-2);white-space:nowrap;color:var(--ink)}
-#admin .glance-arrow{color:var(--ink-soft)}
-#admin .prog-list{border-top:1px solid var(--ink);margin-top:34px}
-#admin .prog-item{display:grid;grid-template-columns:150px 1fr;gap:18px;padding:18px 4px;border-bottom:1px solid var(--rule);align-items:start}
-#admin .prog-when{font-family:"Space Mono",monospace;font-size:12px;letter-spacing:.04em;color:var(--ink-soft);padding-top:3px}
-#admin .prog-what h3{margin-bottom:8px}
-#admin .prog-what p{margin:0;color:var(--ink-soft)}
-#admin .prog-item.anchor .prog-when{color:var(--ink)}
-#admin .prog-item.anchor .prog-what h3{border-left:4px solid var(--orange);padding-left:14px}
-#admin .flow{border-top:1px solid var(--ink)}
-#admin .slot{border-bottom:1px solid var(--rule);width:100%;text-align:left;background:none;font:inherit;color:inherit;
-  padding:0;display:block;cursor:pointer}
-#admin .slot-row{display:grid;grid-template-columns:132px 1fr auto;gap:16px;align-items:center;padding:15px 4px}
-#admin .slot-time{font-family:"Space Mono",monospace;font-size:12px;letter-spacing:.02em;color:var(--ink-soft)}
-#admin .slot-name{font-family:"Archivo",sans-serif;font-weight:600;font-size:clamp(16px,1.7vw,20px);letter-spacing:-.01em}
-#admin .slot:hover .slot-name{text-decoration:underline;text-underline-offset:4px}
-#admin .slot[aria-expanded="true"]{background:var(--paper-2)}
-#admin .slot .chev{font-family:"Space Mono",monospace;font-size:14px;color:var(--ink-soft);transition:transform .18s ease}
-#admin .slot[aria-expanded="true"] .chev{transform:rotate(45deg)}
-#admin .slot-body{display:none;padding:0 4px 20px 152px;max-width:70ch;color:var(--ink-soft)}
-#admin .slot[aria-expanded="true"] .slot-body{display:block}
-#admin .slot-body p{margin:0 0 .6em}
-#admin .slot-body p:last-child{margin-bottom:0}
-#admin .is-station .slot-name{padding-left:14px;border-left:4px solid var(--ink)}
-#admin .st1 .slot-name{border-color:var(--cyan)}
-#admin .st2 .slot-name{border-color:var(--red)}
-#admin .st3 .slot-name{border-color:var(--orange)}
-#admin .timer-shell{display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,1fr);gap:clamp(20px,3vw,44px);align-items:start}
-#admin .timer-box{border:1px solid var(--ink);border-radius:3px;padding:clamp(20px,3vw,30px);background:var(--paper-2)}
-#admin .clock{font-family:"Archivo",sans-serif;font-weight:900;font-size:clamp(78px,17vw,150px);line-height:.86;letter-spacing:-.04em;
-  font-variant-numeric:tabular-nums;display:block}
-#admin .phase-name{font-family:"Space Mono",monospace;font-size:12px;letter-spacing:.14em;text-transform:uppercase;display:flex;gap:10px;align-items:center;margin-bottom:12px;flex-wrap:wrap}
-#admin .strip{display:flex;gap:3px;margin:20px 0 8px;height:12px}
-#admin .seg{border:1px solid var(--ink);border-radius:1px;position:relative;overflow:hidden;background:transparent}
-#admin .seg.pose{background:var(--paper)}
-#admin .seg.brk{background:repeating-linear-gradient(45deg,transparent 0 3px,var(--rule) 3px 6px)}
-#admin .seg .fill{position:absolute;inset:0;width:0;background:var(--cyan)}
-#admin .strip-labels{display:flex;justify-content:space-between;font-family:"Space Mono",monospace;font-size:10px;color:var(--ink-soft);letter-spacing:.06em}
-#admin .ctrls{display:flex;flex-wrap:wrap;gap:8px;margin-top:22px}
-#admin .live-head{display:flex;flex-wrap:wrap;gap:10px;margin-bottom:18px}
-#admin .live-head .pick{flex:1 1 180px}
-#admin .live-head label{display:block;font-family:"Space Mono",monospace;font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-soft);margin-bottom:6px}
-#admin .live-head select{width:100%;font:inherit;font-size:15px;padding:10px 12px;border:1px solid var(--ink);border-radius:2px;background:var(--paper);color:var(--ink)}
-#admin .next-action{margin-top:18px;border-top:1px solid var(--rule);padding-top:14px;font-family:"Space Mono",monospace;font-size:12px;letter-spacing:.06em;color:var(--ink-soft)}
-#admin .next-action b{color:var(--ink)}
-#admin button.btn{
-  font-family:"Space Mono",monospace;font-size:11px;letter-spacing:.12em;text-transform:uppercase;
-  padding:11px 16px;border:1px solid var(--ink);background:var(--paper);color:var(--ink);border-radius:2px;cursor:pointer
-}
-#admin button.btn:hover{background:var(--ink);color:var(--paper)}
-#admin button.btn.primary{background:var(--ink);color:var(--paper)}
-#admin button.btn.primary:hover{background:var(--red);border-color:var(--red)}
-#admin button.btn.ghost{border-color:var(--rule);color:var(--ink-soft)}
-#admin button.btn[aria-pressed="true"]{background:var(--ink);color:var(--paper)}
-#admin button.btn:disabled{opacity:.45;cursor:not-allowed}
-#admin button.btn:disabled:hover{background:var(--paper);color:var(--ink)}
-#admin .switch{display:inline-flex;border:1px solid var(--ink);border-radius:2px;overflow:hidden}
-#admin .switch button{border:none;border-radius:0;font-family:"Space Mono",monospace;font-size:11px;letter-spacing:.1em;
-  text-transform:uppercase;padding:10px 14px;background:var(--paper);color:var(--ink-soft);cursor:pointer}
-#admin .switch button[aria-pressed="true"]{background:var(--ink);color:var(--paper)}
-#admin .math{margin-top:24px;border-top:1px solid var(--rule);padding-top:18px}
-#admin .math-row{display:flex;justify-content:space-between;gap:12px;font-family:"Space Mono",monospace;font-size:12px;padding:7px 0;border-bottom:1px dotted var(--rule)}
-#admin .math-row:last-of-type{border-bottom:none}
-#admin .verdict{margin-top:16px;padding:14px 16px;border-left:4px solid var(--orange);background:var(--paper-2);font-size:.98em}
-#admin .tagboard{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
-#admin .gtag{
-  border:1px solid var(--ink);border-radius:3px;padding:18px;cursor:pointer;background:var(--paper);
-  text-align:left;font:inherit;color:inherit;transition:transform .16s ease
-}
-#admin .gtag:hover{transform:translateY(-2px)}
-#admin .gtag[aria-pressed="true"]{background:var(--ink);color:var(--paper)}
-#admin .gtag .swatch{width:100%;height:26px;border:1px solid var(--ink);border-radius:2px;margin-bottom:14px}
-#admin .gtag.cy .swatch{background:var(--cyan)}
-#admin .gtag.rd .swatch{background:var(--red)}
-#admin .gtag.or .swatch{background:var(--orange)}
-#admin .gtag h3{font-size:20px}
-#admin .gtag .who{font-family:"Space Mono",monospace;font-size:10px;letter-spacing:.12em;text-transform:uppercase;opacity:.7;margin-top:6px;display:block}
-#admin .matrix{width:100%;border-collapse:collapse;margin-top:26px}
-#admin .matrix th, #admin .matrix td{border:1px solid var(--rule);padding:13px 14px;text-align:left;font-size:.95em}
-#admin .matrix th{font-family:"Space Mono",monospace;font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-soft);font-weight:400;background:var(--paper-2)}
-#admin .matrix td{font-family:"Archivo",sans-serif;font-weight:600}
-#admin .matrix tr.lit td{background:var(--paper-2)}
-#admin .matrix .cell{display:inline-flex;align-items:center;gap:9px}
-#admin .matrix .sw{width:12px;height:12px;border:1px solid var(--ink);border-radius:2px;flex:none}
-#admin .sw.cy{background:var(--cyan)}
-#admin .sw.rd{background:var(--red)}
-#admin .sw.or{background:var(--orange)}
-#admin .seats{display:flex;flex-wrap:wrap;gap:5px;margin-top:8px}
-#admin .seat{width:15px;height:15px;border:1px solid var(--ink);border-radius:2px}
-#admin .seat.cy{background:var(--cyan)}
-#admin .seat.rd{background:var(--red)}
-#admin .seat.or{background:var(--orange)}
-#admin .seat.dim{opacity:.16}
-#admin .colour-run{display:flex;gap:10px;flex-wrap:wrap;margin-top:16px}
-#admin .colour-run span{flex:1 1 150px;border:1px solid var(--rule);border-radius:3px;padding:14px;background:var(--paper)}
-#admin .colour-run i{display:block;width:100%;height:10px;border:1px solid var(--ink);border-radius:2px;margin-bottom:10px}
-#admin .colour-run i.cy{background:var(--cyan)}
-#admin .colour-run i.rd{background:var(--red)}
-#admin .colour-run i.or{background:var(--orange)}
-#admin .colour-run b{font-family:"Archivo",sans-serif;font-size:15px}
-#admin ul.list{list-style:none;padding:0;margin:0}
-#admin ul.list li{padding:11px 0 11px 22px;border-bottom:1px solid var(--rule);position:relative}
-#admin ul.list li:before{content:"";position:absolute;left:0;top:19px;width:8px;height:1px;background:var(--ink)}
-#admin ul.list li:last-child{border-bottom:none}
-#admin .faq{border-top:1px solid var(--ink);margin-top:10px}
-#admin .faq details{border-bottom:1px solid var(--rule)}
-#admin .faq summary{
-  list-style:none;cursor:pointer;padding:18px 4px;display:flex;justify-content:space-between;gap:16px;align-items:center;
-  font-family:"Archivo",sans-serif;font-weight:600;font-size:clamp(17px,1.6vw,19px)
-}
-#admin .faq summary::-webkit-details-marker{display:none}
-#admin .faq summary:after{content:"+";font-family:"Space Mono",monospace;color:var(--ink-soft);font-size:15px}
-#admin .faq details[open] summary:after{content:"–"}
-#admin .faq details[open] summary{background:var(--paper-2)}
-#admin .faq .answer{padding:0 4px 20px;max-width:66ch;color:var(--ink-soft)}
-#admin .faq .answer p:last-child{margin-bottom:0}
-#admin .btable{width:100%;border-collapse:collapse}
-#admin .btable th, #admin .btable td{border-bottom:1px solid var(--rule);padding:13px 10px;text-align:left}
-#admin .btable th{font-family:"Space Mono",monospace;font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-soft);font-weight:400}
-#admin .btable td.num{text-align:right;font-family:"Space Mono",monospace;font-size:13px;white-space:nowrap}
-#admin .btable tr.total td{border-top:2px solid var(--ink);border-bottom:none;font-family:"Archivo",sans-serif;font-weight:800;font-size:1.05em;padding-top:16px}
-#admin .note-strip{border-left:4px solid var(--red);padding:14px 16px;background:var(--paper-2);margin-top:22px}
-#admin .mono-link{font-family:"Space Mono",monospace;font-size:11px;letter-spacing:.08em;text-transform:uppercase;border-bottom:1px solid var(--rule);text-decoration:none}
-#admin .table-scroll{overflow-x:auto;-webkit-overflow-scrolling:touch}
-#admin .prog-meter{display:flex;align-items:center;gap:16px;margin-bottom:26px;flex-wrap:wrap}
-#admin .prog-bar{flex:1 1 220px;height:10px;border:1px solid var(--ink);border-radius:2px;overflow:hidden;background:var(--paper)}
-#admin .prog-fill{height:100%;width:0;background:var(--cyan);transition:width .25s ease}
-#admin .prog-num{font-family:"Space Mono",monospace;font-size:12px;letter-spacing:.08em;white-space:nowrap}
-#admin .checks{display:grid;grid-template-columns:repeat(2,1fr);gap:0 34px}
-#admin .check{display:flex;gap:13px;align-items:flex-start;padding:13px 0;border-bottom:1px solid var(--rule);cursor:pointer}
-#admin .check input{appearance:none;-webkit-appearance:none;width:19px;height:19px;border:1px solid var(--ink);border-radius:2px;flex:none;margin:2px 0 0;cursor:pointer;background:var(--paper)}
-#admin .check input:checked{background:var(--ink)}
-#admin .check input:checked+span{text-decoration:line-through;color:var(--ink-soft)}
-#admin .check span{font-family:"Archivo",sans-serif;font-weight:500;font-size:.95em;line-height:1.35}
-#admin .save-state{font-family:"Space Mono",monospace;font-size:11px;letter-spacing:.08em;min-height:1.3em;margin-top:12px;color:var(--ink-soft)}
-#admin .save-state.err{color:var(--red)}
-#admin .meet{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.15fr);gap:clamp(20px,4vw,52px);align-items:start}
-#admin .cd{display:flex;gap:10px;margin:20px 0 6px;flex-wrap:wrap}
-#admin .cd div{border:1px solid var(--ink);border-radius:3px;padding:12px 14px;min-width:74px;text-align:center;background:var(--paper-2)}
-#admin .cd b{display:block;font-family:"Archivo",sans-serif;font-weight:900;font-size:26px;line-height:1;font-variant-numeric:tabular-nums}
-#admin .cd small{font-family:"Space Mono",monospace;font-size:9px;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-soft);display:block;margin-top:7px}
-#admin .admin-banner{display:flex;align-items:center;justify-content:space-between;gap:14px;flex-wrap:wrap;padding:16px 20px;border:1px solid var(--ink);border-radius:3px;background:var(--paper-2);margin-bottom:28px}
-#admin .admin-banner span{font-family:"Space Mono",monospace;font-size:12px;color:var(--ink-soft)}
-#admin .admin-tabs{display:flex;flex-wrap:wrap;gap:6px;margin:18px 0 0}
-#admin .admin-tabs a{font-family:"Space Mono",monospace;font-size:11px;text-transform:uppercase;letter-spacing:.08em;text-decoration:none;padding:8px 11px;color:var(--ink-soft);border:1px solid var(--rule);border-radius:2px;display:inline-flex;align-items:center}
-#admin .admin-tabs a:hover{color:var(--ink);background:var(--paper-2);border-color:var(--ink)}
-#admin .admin-tabs-mobile{display:none}
-#admin .admin-group-label{font-family:"Space Mono",monospace;font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-soft);margin:16px 0 8px}
-#admin .admin-group-label:first-child{margin-top:0}
-#admin .session-settings summary{list-style:none;cursor:pointer;font-family:"Archivo",sans-serif;font-weight:600;font-size:14px;text-transform:uppercase;letter-spacing:.04em;padding:4px 0}
-#admin .session-settings summary::-webkit-details-marker{display:none}
-#admin .session-settings summary:before{content:"▸ ";display:inline-block;transition:transform .15s ease}
-#admin .session-settings[open] summary:before{transform:rotate(90deg)}
-#admin .admin-panel{padding-top:clamp(44px,6vw,72px)}
-#admin .admin-alert{border:1px solid var(--red);border-left-width:4px;border-radius:3px;background:var(--paper-2);padding:16px 18px;margin-bottom:24px}
-#admin .admin-alert h4{color:var(--red);margin-bottom:8px}
-#admin .admin-alert p{margin:0 0 12px;color:var(--ink-soft);font-size:.95em}
-#admin .panel-error{border-left:4px solid var(--red);background:var(--paper-2);padding:14px 16px;font-size:.95em}
-#admin .panel-empty{border-left:4px solid var(--rule);background:var(--paper-2);padding:14px 16px;font-size:.95em;color:var(--ink-soft)}
-#admin .panel-empty code{font-family:"Space Mono",monospace;font-size:.9em;background:var(--paper);padding:1px 5px;border:1px solid var(--rule);border-radius:2px}
-#admin .stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:14px}
-#admin .stat{border:1px solid var(--rule);border-radius:3px;padding:16px 18px;background:var(--paper)}
-#admin .stat small{display:block;font-family:"Space Mono",monospace;font-size:10px;letter-spacing:.13em;text-transform:uppercase;color:var(--ink-soft);margin-bottom:10px}
-#admin .stat b{display:block;font-family:"Archivo",sans-serif;font-weight:800;font-size:19px;line-height:1.15}
-#admin .stat em{display:block;font-style:normal;font-size:.9em;color:var(--ink-soft);margin-top:8px}
-#admin .stat.is-open{border-left:4px solid var(--open)}
-#admin .stat.is-flag{border-left:4px solid var(--red)}
-#admin .stat.is-none{border-left:4px solid var(--rule)}
-#admin .assign{font-family:"Space Mono",monospace;font-size:11px;letter-spacing:.06em;color:var(--open);border:1px dashed var(--open);border-radius:2px;padding:2px 7px;display:inline-block}
-#admin .rtable{width:100%;border-collapse:collapse;margin-top:8px}
-#admin .rtable th, #admin .rtable td{border-bottom:1px solid var(--rule);padding:12px 10px;text-align:left;vertical-align:top;font-size:.95em}
-#admin .rtable th{font-family:"Space Mono",monospace;font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-soft);font-weight:400}
-#admin .rtable td:first-child{font-family:"Archivo",sans-serif;font-weight:600}
-#admin .local-note{font-family:"Space Mono",monospace;font-size:11px;letter-spacing:.05em;color:var(--ink-soft);margin-top:14px}
-#admin .field{margin-bottom:16px}
-#admin .field label{display:block;font-family:"Space Mono",monospace;font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-soft);margin-bottom:6px}
-#admin .field input{width:100%;font:inherit;font-size:16px;padding:11px 12px;border:1px solid var(--ink);border-radius:2px;background:var(--paper);color:var(--ink)}
-#admin .field input:focus-visible{outline:2px solid var(--red);outline-offset:2px}
-#admin .form-msg{margin-top:14px;font-family:"Space Mono",monospace;font-size:12px;min-height:1.4em}
-#admin .form-msg.err{color:var(--red)}
-#admin .form-msg.ok{color:var(--ink-soft)}
-#admin footer{border-top:1px solid var(--ink);padding:44px 0 60px;font-family:"Space Mono",monospace;font-size:11px;line-height:1.9;color:var(--ink-soft);letter-spacing:.03em}
-#admin :focus-visible{outline:2px solid var(--red);outline-offset:3px}
-@media (max-width:860px){
-#admin .nav-toggle{display:inline-flex}
-#admin .nav-links{
-    position:fixed;top:52px;left:0;right:0;
-    flex-direction:column;align-items:stretch;gap:0;
-    overflow-x:hidden;overflow-y:auto;max-height:calc(100vh - 52px);
-    background:var(--paper);border-bottom:1px solid var(--ink);
-    opacity:0;visibility:hidden;transform:translateY(-8px);pointer-events:none;
-    transition:opacity .18s ease,transform .18s ease,visibility 0s linear .18s
-  }
-#admin .nav-links.nav-open{
-    opacity:1;visibility:visible;transform:translateY(0);pointer-events:auto;
-    transition:opacity .18s ease,transform .18s ease
-  }
-#admin .nav-links a{
-    display:flex;align-items:center;min-height:44px;
-    padding:14px var(--gut);font-size:16px;
-    border-bottom:1px solid var(--rule);white-space:normal
-  }
-#admin .nav-links a.organiser-link{
-    border-left:none;margin-left:0;margin-top:10px;border-top:1px solid var(--rule);opacity:.7
-  }
-#admin .g3, #admin .g2, #admin .timer-shell, #admin .meet, #admin .checks, #admin .tagboard{grid-template-columns:1fr}
-#admin .slot-row{grid-template-columns:96px 1fr auto;gap:10px}
-#admin .slot-body{padding-left:4px}
-#admin .slot-time{font-size:11px}
-#admin .prog-item{grid-template-columns:1fr;gap:6px}
-#admin .prog-when{padding-top:0}
-#admin .fact{flex:1 1 46%;border-bottom:1px solid var(--rule)}
-#admin .stations{grid-template-columns:1fr}
-#admin .matrix th, #admin .matrix td{padding:10px 8px;font-size:.88em}
-#admin .rtable th, #admin .rtable td{padding:10px 6px;font-size:.9em}
-#admin a.cta, #admin button.cta{width:100%;justify-content:center}
-#admin body{font-size:17px}
-#admin .eyebrow{font-size:12px;letter-spacing:.12em}
-#admin .format-line{font-size:13px;letter-spacing:.1em}
-#admin .fact small{font-size:12px;letter-spacing:.08em}
-#admin .station .no{font-size:12px}
-#admin .station .note{font-size:12px;letter-spacing:.02em;line-height:1.5}
-#admin .prog-when{font-size:13px;letter-spacing:.02em}
-#admin .tag{font-size:12px;padding:5px 9px}
-#admin a.cta, #admin button.cta{font-size:14px;padding:14px 20px}
-#admin header.hero{padding-bottom:26px}
-#admin .hero-sub{margin-top:18px}
-#admin .facts{margin-top:24px}
-#admin .cta-row{margin-top:22px}
-#admin .stations{gap:14px}
-#admin .station{padding:18px}
-#admin body{padding-bottom:78px}
-#admin .sticky-cta{
-    display:block;position:fixed;left:0;right:0;bottom:0;z-index:55;
-    background:var(--paper);border-top:1px solid var(--ink);
-    padding:10px var(--gut) calc(10px + env(safe-area-inset-bottom))
-  }
-#admin .sticky-cta a.cta{width:100%;justify-content:center;min-height:44px}
-#admin body.nav-locked .sticky-cta, #admin .sticky-cta.is-hidden{display:none}
-#admin .prog-when{text-transform:uppercase;letter-spacing:.07em;display:block;margin-bottom:4px}
-#admin .admin-tabs-desktop{display:none}
-#admin .admin-tabs-mobile{display:block}
-#admin .admin-banner span{font-size:14px}
-#admin .admin-tabs a{font-size:13px;padding:11px 13px;min-height:44px}
-#admin .stat small{font-size:12px}
-#admin .stat b{font-size:20px}
-#admin .rtable th, #admin .btable th, #admin .matrix th{font-size:12px}
-#admin .rtable td, #admin .btable td{font-size:15px}
-#admin .assign{font-size:12px}
-#admin .local-note, #admin .save-state, #admin .prog-num{font-size:13px}
-#admin .live-head label, #admin .field label{font-size:12px}
-#admin .live-head select{font-size:16px;padding:12px}
-#admin .next-action, #admin .phase-name, #admin .math-row{font-size:13px}
-#clockState{font-size:12px!important}
-#admin .mono-link{font-size:12px;display:inline-block;padding:4px 0}
-#admin button.btn{font-size:13px;padding:13px 17px;min-height:44px}
-#admin .switch button{font-size:12px;padding:12px 14px}
-#admin .strip-labels{font-size:12px}
-#admin .gtag .who{font-size:11px}
-#admin .admin-group-label{font-size:12px}
-#admin .slot-time{font-size:13px}
-#admin footer{font-size:12px}
-#admin .check{padding:15px 0;gap:14px}
-#admin .check input{width:23px;height:23px}
-#admin .check span{font-size:15px}
-#admin .gtag{padding:16px}
-#admin .table-scroll{margin:0 calc(var(--gut) * -1);padding:0 var(--gut)}
-}
 @media (prefers-reduced-motion:reduce){
-#admin *{transition:none!important;animation:none!important}
-#admin html{scroll-behavior:auto}
+  html{scroll-behavior:auto}
+  *{transition:none!important;animation:none!important}
 }
 </style>
 </head>
@@ -972,8 +566,8 @@ section{scroll-margin-top:100px}
       <span class="brand-text">Kyusi Sunday<br>Sketchers<small>Quezon City</small></span>
     </a>
     <nav class="navlinks" aria-label="Primary">
-      <a href="#sketchbook">Sketchbook</a>
       <a href="#fiestang-pinoy">Fiestang Pinoy</a>
+      <a href="#sketchbook">Sketchbook</a>
       <a href="#archive">The Archive</a>
       <a href="#about">About KSS</a>
     </nav>
@@ -996,12 +590,12 @@ section{scroll-margin-top:100px}
       </p>
       <div class="event-facts">
         <div><strong>4 Oct 2026</strong><span>Sunday</span></div>
-        <div><strong>9:40–12:40</strong><span>Programme</span></div>
+        <div><strong>8:30–12:30</strong><span>Time</span></div>
         <div><strong>24</strong><span>Slots</span></div>
       </div>
       <div class="hero-actions">
         <a class="cta" href="#fiestang-pinoy">See the Anniversary Event →</a>
-        <a class="secondary" href="#register">Registration opening soon</a>
+        <a class="secondary" data-cta="register" href="#register">Registration opening soon</a>
       </div>
     </div>
     <div class="hero-art hero-art-image" aria-label="KSS life drawing sketches from the UKIT session">
@@ -1013,102 +607,6 @@ section{scroll-margin-top:100px}
       <div class="note two">draw · meet · create</div>
       <div class="hero-caption">KSS archive · UKIT · 5 Aug 2026</div>
     </div>
-  </div>
-</section>
-
-<section class="section sketchbook-section" id="sketchbook">
-  <div class="container">
-    <div class="section-head">
-      <div>
-        <div class="label">The KSS archive</div>
-        <h2>The Sketchbook</h2>
-        <p class="sketchbook-tagline">Life drawing, session by session · Quezon City</p>
-      </div>
-      <div class="sketchbook-counter"><span id="pageCurrent">01</span> / <span id="pageTotal">06</span></div>
-    </div>
-
-    <div class="book-wrap" id="bookWrap">
-      <button class="book-arrow book-prev" id="bookPrev" type="button" aria-label="Previous page">←</button>
-
-      <div class="book" id="book" aria-label="Interactive KSS sketchbook">
-        <div class="book-spread">
-          <div class="book-page book-left">
-            <div class="page-inner">
-              <div class="page-label">KYUSI SUNDAY SKETCHERS</div>
-              <div class="page-number" id="leftPageNo">01</div>
-              <div class="placeholder-sketch" id="leftArtwork">
-                <img id="leftArtworkImg" alt="">
-                <span>SKETCH<br>PLACEHOLDER</span>
-                <div class="page-stamp" id="leftStamp"></div>
-              </div>
-              <div class="page-caption" id="leftCaption">KSS archive</div>
-            </div>
-          </div>
-
-          <div class="book-page book-right">
-            <div class="page-inner">
-              <div class="page-label">KYUSI SUNDAY SKETCHERS</div>
-              <div class="page-number" id="rightPageNo">02</div>
-              <div class="placeholder-sketch" id="rightArtwork">
-                <img id="rightArtworkImg" alt="">
-                <span>SKETCH<br>PLACEHOLDER</span>
-                <div class="page-stamp" id="rightStamp"></div>
-              </div>
-              <div class="page-caption" id="rightCaption">Recent session</div>
-            </div>
-          </div>
-
-          <div class="turning-page" id="turningPage" aria-hidden="true">
-            <div class="turn-face turn-front">
-              <div class="page-inner">
-                <div class="page-label">KYUSI SUNDAY SKETCHERS</div>
-                <div class="page-number" id="turnFrontNo">03</div>
-                <div class="placeholder-sketch" id="turnFrontArtwork"><img id="turnFrontArtworkImg" alt=""><span>SKETCH<br>PLACEHOLDER</span><div class="page-stamp" id="turnFrontStamp"></div></div>
-                <div class="page-caption" id="turnFrontCaption">Life drawing</div>
-              </div>
-            </div>
-            <div class="turn-face turn-back">
-              <div class="page-inner">
-                <div class="page-label">KYUSI SUNDAY SKETCHERS</div>
-                <div class="page-number" id="turnBackNo">04</div>
-                <div class="placeholder-sketch" id="turnBackArtwork"><img id="turnBackArtworkImg" alt=""><span>SKETCH<br>PLACEHOLDER</span><div class="page-stamp" id="turnBackStamp"></div></div>
-                <div class="page-caption" id="turnBackCaption">Community</div>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <div class="book-spine" aria-hidden="true"></div>
-        <div class="book-shadow" aria-hidden="true"></div>
-      </div>
-
-      <button class="book-arrow book-next" id="bookNext" type="button" aria-label="Next page">→</button>
-    </div>
-
-    <div class="view-controls" id="viewControls">
-      <button type="button" id="zoomOut" aria-label="Zoom out">−</button>
-      <span id="zoomLevel">100%</span>
-      <button type="button" id="zoomIn" aria-label="Zoom in">+</button>
-      <span class="view-controls-divider" aria-hidden="true"></span>
-      <button type="button" id="loupeToggle" class="loupe-toggle" aria-label="Magnifier" aria-pressed="false">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6.5"></circle><path d="m20 20-4.8-4.8"></path></svg>
-      </button>
-    </div>
-    <p class="view-controls-hint" id="viewControlsHint">Drag the page to turn · drag the glass across it</p>
-
-    <div class="loupe" id="loupe" aria-hidden="true">
-      <div class="loupe-inner" id="loupeInner"><img id="loupeImg" alt=""></div>
-    </div>
-
-    <div class="sketchbook-info">
-      <div>
-        <div class="book-title" id="bookTitle">Pagaspas</div>
-        <div class="book-meta" id="bookMeta">Life Drawing Session · Event archive</div>
-      </div>
-      <p>Drag or swipe the page to explore the archive.</p>
-    </div>
-
-    <div class="mobile-book-hint">Swipe left or right to turn the page</div>
   </div>
 </section>
 
@@ -1126,7 +624,14 @@ section{scroll-margin-top:100px}
           <div class="label">Upcoming · 1st Anniversary</div>
           <h2>Fiestang<br>Pinoy</h2>
           <p class="event-lede">Kyusi Sunday Sketchers turns one. We're marking it the way we started: a room full of people drawing together.</p>
-          <a class="cta" href="#register">Registration opening soon →</a>
+          <div class="event-facts wide">
+            <div><strong>Fiestang Pinoy</strong><span>What</span></div>
+            <div><strong>Sun, 4 Oct 2026 · 8:30–12:30</strong><span>When</span></div>
+            <div><strong>Racket Room Cubao</strong><span>Where</span></div>
+            <div><strong>24 slots</strong><span>Capacity</span></div>
+          </div>
+          <p style="font-size:13px;color:#5d564c;margin-top:16px">Three themed stations, live models, drawing, rotation, and community.</p>
+          <a class="cta" data-cta="register" href="#register">Registration opening soon →</a>
         </div>
       </div>
     </div>
@@ -1139,7 +644,7 @@ section{scroll-margin-top:100px}
         <div class="info-card">
           <h4>When</h4>
           <span class="fact">Sunday, 4 October 2026</span>
-          <p>Doors and check-in from 9:00 AM. The official programme runs 9:40 AM–12:40 PM; the venue closes at 1:00 PM.</p>
+          <p>8:30 AM–12:30 PM. Doors open at 8:30 AM.</p>
         </div>
         <div class="info-card">
           <h4>Where</h4>
@@ -1153,7 +658,7 @@ section{scroll-margin-top:100px}
       <div class="section-head">
         <div><div class="label">Morning at a glance</div><h2>What</h2></div>
       </div>
-      <p class="hero-copy">How the morning runs, in order — three themed stations, live models, and small colour groups rotating through. Start and finish times are being finalised — they'll be announced with the registration form.</p>
+      <p class="hero-copy">How the morning runs, in order — three themed stations, live models, and small colour groups rotating through, all within the confirmed 8:30 AM–12:30 PM window.</p>
       <div class="station-grid">
         <div><b>01</b><strong>Amorsolo-ish</strong><span>Filipino light & everyday warmth</span></div>
         <div><b>02</b><strong>Artistic Nude</strong><span>Form, gesture & movement</span></div>
@@ -1207,9 +712,9 @@ section{scroll-margin-top:100px}
       </div>
       <p class="hero-copy">If yours isn't here, send it our way.</p>
       <div class="faq-public">
-        <details><summary>What time should I arrive?</summary><div class="answer"><p>Check-in opens before the programme starts. The exact times go out with the registration form — aim to be signed in and at your first station before the opening, so you don't miss the briefing.</p></div></details>
-        <details><summary>Can I arrive early?</summary><div class="answer"><p>Yes. You're welcome to arrive before the programme begins — just check in with the registration team when you get there and follow their directions while the space is still being set up.</p></div></details>
-        <details><summary>When does the programme start and end?</summary><div class="answer"><p>It's a morning event on Sunday 4 October. We're finalising the venue hours, so the exact start and finish times will be announced with the registration form and confirmed in your registration email.</p></div></details>
+        <details><summary>What time should I arrive?</summary><div class="answer"><p>Doors and check-in open at 8:30 AM. Aim to be signed in and at your first station before the welcome briefing, so you don't miss it.</p></div></details>
+        <details><summary>Can I arrive early?</summary><div class="answer"><p>Doors open at 8:30 AM — that's the earliest check-in. If you arrive before that, please wait outside while the space is being set up.</p></div></details>
+        <details><summary>When does the programme start and end?</summary><div class="answer"><p>Sunday, 4 October 2026, 8:30 AM–12:30 PM, at Racket Room Cubao.</p></div></details>
         <details><summary>What are the three stations?</summary><div class="answer"><p>Amorsolo-ish, drawing Filipino light and everyday warmth; Artistic Nude, focused on form, gesture and movement; and Encanto, a Filipino-inspired turn into folklore. Your group rotates through all three.</p></div></details>
         <details><summary>How does the group rotation work?</summary><div class="answer"><p>You get a colour tag at check-in and that's your group for the morning. Each group starts at a different station and moves together after each session, so everyone draws all three models. Your group's running order is given at the welcome opening.</p></div></details>
         <details><summary>How long are the sessions?</summary><div class="answer"><p>Each station runs a short warm-up pose and then one longer pose, so you get real time to draw instead of resetting every few minutes. The exact length of the long pose is being finalised, and the station leads keep time on the day.</p></div></details>
@@ -1228,7 +733,7 @@ section{scroll-margin-top:100px}
       </div>
       <p class="hero-copy">The event space is limited to 24 attendees. The form isn't live yet — it will be posted here and announced on our channels the moment it opens. One of the three stations is artistic nude figure drawing; entry and eligibility requirements are published with the registration form, so please read them before you sign up.</p>
       <div class="hero-actions">
-        <a class="cta" href="#" onclick="return false">Registration opening soon →</a>
+        <a class="cta" data-cta="register" href="#register">Registration opening soon →</a>
         <a class="secondary" href="https://www.instagram.com/kyusisundaysketchers/" target="_blank" rel="noopener">Instagram ↗</a>
       </div>
       <ul class="join-list">
@@ -1239,6 +744,102 @@ section{scroll-margin-top:100px}
         <li>Photography rules — including how they apply to the models — are covered in the welcome briefing.</li>
       </ul>
     </div>
+  </div>
+</section>
+
+<section class="section sketchbook-section" id="sketchbook">
+  <div class="container">
+    <div class="section-head">
+      <div>
+        <div class="label">The KSS archive</div>
+        <h2>The Sketchbook</h2>
+        <p class="sketchbook-tagline">Life drawing, session by session · Quezon City</p>
+      </div>
+      <div class="sketchbook-counter"><span id="pageCurrent">01</span> / <span id="pageTotal">06</span></div>
+    </div>
+
+    <div class="book-wrap" id="bookWrap">
+      <button class="book-arrow book-prev" id="bookPrev" type="button" aria-label="Previous page">←</button>
+
+      <div class="book" id="book" aria-label="Interactive KSS sketchbook">
+        <div class="book-spread">
+          <div class="book-page book-left">
+            <div class="page-inner">
+              <div class="page-label">KYUSI SUNDAY SKETCHERS</div>
+              <div class="page-number" id="leftPageNo">01</div>
+              <div class="placeholder-sketch" id="leftArtwork">
+                <img id="leftArtworkImg" alt="" loading="lazy">
+                <span>Sketch<br>coming soon</span>
+                <div class="page-stamp" id="leftStamp"></div>
+              </div>
+              <div class="page-caption" id="leftCaption">KSS archive</div>
+            </div>
+          </div>
+
+          <div class="book-page book-right">
+            <div class="page-inner">
+              <div class="page-label">KYUSI SUNDAY SKETCHERS</div>
+              <div class="page-number" id="rightPageNo">02</div>
+              <div class="placeholder-sketch" id="rightArtwork">
+                <img id="rightArtworkImg" alt="" loading="lazy">
+                <span>Sketch<br>coming soon</span>
+                <div class="page-stamp" id="rightStamp"></div>
+              </div>
+              <div class="page-caption" id="rightCaption">Recent session</div>
+            </div>
+          </div>
+
+          <div class="turning-page" id="turningPage" aria-hidden="true">
+            <div class="turn-face turn-front">
+              <div class="page-inner">
+                <div class="page-label">KYUSI SUNDAY SKETCHERS</div>
+                <div class="page-number" id="turnFrontNo">03</div>
+                <div class="placeholder-sketch" id="turnFrontArtwork"><img id="turnFrontArtworkImg" alt="" loading="lazy"><span>Sketch<br>coming soon</span><div class="page-stamp" id="turnFrontStamp"></div></div>
+                <div class="page-caption" id="turnFrontCaption">Life drawing</div>
+              </div>
+            </div>
+            <div class="turn-face turn-back">
+              <div class="page-inner">
+                <div class="page-label">KYUSI SUNDAY SKETCHERS</div>
+                <div class="page-number" id="turnBackNo">04</div>
+                <div class="placeholder-sketch" id="turnBackArtwork"><img id="turnBackArtworkImg" alt="" loading="lazy"><span>Sketch<br>coming soon</span><div class="page-stamp" id="turnBackStamp"></div></div>
+                <div class="page-caption" id="turnBackCaption">Community</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="book-spine" aria-hidden="true"></div>
+        <div class="book-shadow" aria-hidden="true"></div>
+      </div>
+
+      <button class="book-arrow book-next" id="bookNext" type="button" aria-label="Next page">→</button>
+    </div>
+
+    <div class="view-controls" id="viewControls">
+      <button type="button" id="zoomOut" aria-label="Zoom out">−</button>
+      <span id="zoomLevel">100%</span>
+      <button type="button" id="zoomIn" aria-label="Zoom in">+</button>
+      <span class="view-controls-divider" aria-hidden="true"></span>
+      <button type="button" id="loupeToggle" class="loupe-toggle" aria-label="Magnifier" aria-pressed="false">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6.5"></circle><path d="m20 20-4.8-4.8"></path></svg>
+      </button>
+    </div>
+    <p class="view-controls-hint" id="viewControlsHint">Drag to turn · use the magnifier to inspect closely</p>
+
+    <div class="loupe" id="loupe" aria-hidden="true">
+      <div class="loupe-inner" id="loupeInner"><img id="loupeImg" alt=""></div>
+    </div>
+
+    <div class="sketchbook-info">
+      <div>
+        <div class="book-title" id="bookTitle">Pagaspas</div>
+        <div class="book-meta" id="bookMeta">Life Drawing Session · Event archive</div>
+      </div>
+      <p>Drag or swipe the page to explore the archive.</p>
+    </div>
+
+    <div class="mobile-book-hint">Swipe left or right to turn the page</div>
   </div>
 </section>
 
@@ -1284,7 +885,6 @@ section{scroll-margin-top:100px}
       <div class="hero-actions">
         <a class="cta" href="https://www.instagram.com/kyusisundaysketchers" target="_blank" rel="noopener">Follow on Instagram →</a>
       </div>
-      <a href="#admin" class="organiser-link" style="display:inline-block;margin-top:18px">Organiser sign-in</a>
     </div>
   </div>
 </section>
@@ -1302,226 +902,25 @@ section{scroll-margin-top:100px}
   </div>
 </footer>
 
-<!--
-  Organiser area. No budget figures, model fees, venue logistics, meeting
-  details or open decisions live in this file — they are fetched from
-  Supabase only after a signed-in session passes the is_admin() check on the
-  server (Row Level Security), so an unauthenticated visitor's browser never
-  receives them. See supabase-schema.sql for the tables and policies.
--->
-<section id="admin" class="admin-root">
-  <div class="wrap">
-
-    <div id="adminGate">
-      <div class="sec-head">
-        <span class="sec-num">🔒</span>
-        <h2>Admin Corner</h2>
-      </div>
-      <p class="lede">The boring magic lives here...</p>
-      <form id="loginForm" class="card" style="max-width:420px">
-        <div class="field"><label for="loginEmail">Email</label><input type="email" id="loginEmail" autocomplete="username" required></div>
-        <div class="field"><label for="loginPassword">Password</label><input type="password" id="loginPassword" autocomplete="current-password" required></div>
-        <button class="btn primary" type="submit">Sign in</button>
-        <p class="form-msg" id="loginMsg" role="status" aria-live="polite"></p>
-      </form>
-      <form id="invitePasswordForm" class="card" style="max-width:420px" hidden>
-        <h3>Set your password</h3>
-        <p style="color:var(--ink-soft);margin-top:12px">Choose a password for your organiser account, then you'll be taken to the private dashboard.</p>
-        <div class="field" style="margin-top:18px"><label for="invitePassword">New password</label><input type="password" id="invitePassword" autocomplete="new-password" minlength="8" required></div>
-        <div class="field"><label for="invitePasswordConfirm">Confirm password</label><input type="password" id="invitePasswordConfirm" autocomplete="new-password" minlength="8" required></div>
-        <button class="btn primary" type="submit">Set password</button>
-        <p class="form-msg" id="invitePasswordMsg" role="status" aria-live="polite"></p>
-      </form>
-    </div>
-
-    <div id="adminArea" hidden>
-      <div class="admin-banner">
-        <span>Signed in as <strong id="adminEmail"></strong></span>
-        <button class="btn ghost" id="logoutBtn" type="button">Log out</button>
-      </div>
-
-      <div id="adminAlert" hidden></div>
-
-      <div class="admin-tabs admin-tabs-desktop">
-        <a href="#admin-dashboard">Dashboard</a>
-        <a href="#admin-runofshow">Run of show</a>
-        <a href="#admin-ingress">Ingress</a>
-        <a href="#admin-early">Early arrivals</a>
-        <a href="#admin-groups">Groups</a>
-        <a href="#admin-live">Live control</a>
-        <a href="#admin-roles">Roles</a>
-        <a href="#admin-models">Models</a>
-        <a href="#admin-venue">Venue</a>
-        <a href="#admin-registration-details">Registration</a>
-        <a href="#admin-budget">Budget</a>
-        <a href="#admin-open">Open decisions</a>
-        <a href="#admin-contingencies">Contingencies</a>
-        <a href="#admin-egress">Egress</a>
-        <a href="#admin-next">Next meeting</a>
-      </div>
-
-      <div class="admin-tabs-mobile">
-        <p class="admin-group-label">Today</p>
-        <div class="admin-tabs">
-          <a href="#admin-dashboard">Dashboard</a>
-          <a href="#admin-runofshow">Run of show</a>
-          <a href="#admin-ingress">Ingress</a>
-          <a href="#admin-early">Early arrivals</a>
-          <a href="#admin-groups">Groups</a>
-          <a href="#admin-live">Live control</a>
-          <a href="#admin-open">Open decisions</a>
-          <a href="#admin-egress">Egress</a>
-        </div>
-        <p class="admin-group-label">Planning</p>
-        <div class="admin-tabs">
-          <a href="#admin-roles">Roles</a>
-          <a href="#admin-models">Models</a>
-          <a href="#admin-venue">Venue</a>
-          <a href="#admin-registration-details">Registration</a>
-          <a href="#admin-budget">Budget</a>
-          <a href="#admin-contingencies">Contingencies</a>
-          <a href="#admin-next">Next meeting</a>
-        </div>
-      </div>
-
-      <section id="admin-dashboard" class="admin-panel">
-        <div class="sec-head"><span class="sec-num">01</span><h2>Dashboard</h2></div>
-        <div id="admin-dashboard-body" class="admin-body"></div>
-      </section>
-
-      <section id="admin-runofshow" class="admin-panel">
-        <div class="sec-head"><span class="sec-num">02</span><h2>Run of show</h2><span class="tag tag-flag"><span class="dot"></span>Venue window unconfirmed</span></div>
-        <div class="note-strip" style="margin-top:0;margin-bottom:24px"><strong>Open decision — schedule is unpublished by agreement.</strong> The venue rental is being extended to around five hours, with a tentative 8:45–9:00 AM start plus ingress before and egress after. None of this is on the public page: it now shows the programme structure only, with no clock times. Confirm final venue and rental hours, start and end times, proper-pose duration, rotation schedule, break length and challenge mechanics before any schedule goes back on the site.</div>
-        <div id="admin-runofshow-body" class="admin-body"></div>
-      </section>
-
-      <section id="admin-ingress" class="admin-panel">
-        <div class="sec-head"><span class="sec-num">03</span><h2>Ingress &amp; setup</h2></div>
-        <div id="admin-ingress-body" class="admin-body"></div>
-      </section>
-
-      <section id="admin-early" class="admin-panel">
-        <div class="sec-head"><span class="sec-num">04</span><h2>Early arrivals</h2></div>
-        <div id="admin-early-body" class="admin-body"></div>
-      </section>
-
-      <section id="admin-groups" class="admin-panel">
-        <div class="sec-head"><span class="sec-num">05</span><h2>Groups &amp; rotation</h2></div>
-        <div id="admin-groups-body" class="admin-body"></div>
-      </section>
-
-      <section id="admin-live" class="admin-panel">
-        <div class="sec-head"><span class="sec-num">06</span><h2>Live event control</h2></div>
-        <p class="lede">Station timer for the day. Set the station and group you're running, then keep this screen open — the countdown is driven by the clock, so it stays correct if the phone sleeps or the tab is backgrounded.</p>
-
-        <div class="live-head">
-          <div class="pick"><label for="liveStation">Current station</label>
-            <select id="liveStation">
-              <option value="1">Station 1</option>
-              <option value="2">Station 2</option>
-              <option value="3">Station 3</option>
-            </select>
-          </div>
-          <div class="pick"><label for="liveGroup">Group at this station</label>
-            <select id="liveGroup">
-              <option value="">Not set</option>
-              <option value="Cyan">Cyan</option>
-              <option value="Red">Red</option>
-              <option value="Orange">Orange</option>
-            </select>
-          </div>
-        </div>
-
-        <div class="timer-shell">
-          <div class="timer-box">
-            <div class="phase-name">
-              <span class="dot" id="phaseDot" style="color:var(--cyan)"></span>
-              <span id="phaseName">Pose 1 · 5 minutes</span>
-              <span class="tag tag-live" id="liveLabel">Station 1</span>
-              <span class="mono" id="clockState" style="font-size:10px;letter-spacing:.1em;color:var(--ink-soft)">Ready</span>
-            </div>
-            <span class="clock" id="clock" role="timer" aria-live="off">05:00</span>
-            <div class="strip" id="strip"></div>
-            <div class="strip-labels"><span>Station start</span><span id="totalLabel">25 min total</span></div>
-            <div class="ctrls">
-              <button class="btn primary" id="startBtn">Start</button>
-              <button class="btn" id="nextBtn">Skip ahead</button>
-              <button class="btn ghost" id="resetBtn">Reset</button>
-              <button class="btn ghost" id="soundBtn" aria-pressed="true">Sound on</button>
-            </div>
-            <div class="next-action" id="nextAction"></div>
-          </div>
-
-          <details class="session-settings" open>
-            <summary>Session settings</summary>
-            <div class="field" style="margin-top:16px">
-              <label for="warmupMins">Warm-up, minutes</label>
-              <input type="number" id="warmupMins" min="1" max="60" inputmode="numeric" value="3">
-            </div>
-            <div class="field">
-              <label for="poseMins">Proper pose, minutes</label>
-              <input type="number" id="poseMins" min="1" max="180" inputmode="numeric" placeholder="Not decided yet — enter to rehearse">
-            </div>
-            <div class="field">
-              <label for="slotMins">Station slot, minutes</label>
-              <input type="number" id="slotMins" min="1" max="180" inputmode="numeric" placeholder="Enter the agreed slot length">
-            </div>
-            <div class="math" id="mathBox"></div>
-            <div class="verdict" id="verdict"></div>
-          </details>
-        </div>
-      </section>
-
-      <section id="admin-roles" class="admin-panel">
-        <div class="sec-head"><span class="sec-num">07</span><h2>Event roles</h2></div>
-        <div id="admin-roles-body" class="admin-body"></div>
-      </section>
-
-      <section id="admin-models" class="admin-panel">
-        <div class="sec-head"><span class="sec-num">08</span><h2>Models</h2></div>
-        <div id="admin-models-body" class="admin-body"></div>
-      </section>
-
-      <section id="admin-venue" class="admin-panel">
-        <div class="sec-head"><span class="sec-num">09</span><h2>Venue &amp; requirements</h2></div>
-        <div id="admin-venue-body" class="admin-body"></div>
-      </section>
-
-      <section id="admin-registration-details" class="admin-panel">
-        <div class="sec-head"><span class="sec-num">10</span><h2>Registration</h2></div>
-        <div id="admin-registration-details-body" class="admin-body"></div>
-      </section>
-
-      <section id="admin-budget" class="admin-panel">
-        <div class="sec-head"><span class="sec-num">11</span><h2>Budget</h2></div>
-        <div id="admin-budget-body" class="admin-body"></div>
-      </section>
-
-      <section id="admin-open" class="admin-panel">
-        <div class="sec-head"><span class="sec-num">12</span><h2>Open decisions</h2></div>
-        <div id="admin-open-body" class="admin-body"></div>
-      </section>
-
-      <section id="admin-contingencies" class="admin-panel">
-        <div class="sec-head"><span class="sec-num">13</span><h2>Contingencies</h2></div>
-        <div id="admin-contingencies-body" class="admin-body"></div>
-      </section>
-
-      <section id="admin-egress" class="admin-panel">
-        <div class="sec-head"><span class="sec-num">14</span><h2>Egress &amp; handover</h2></div>
-        <div id="admin-egress-body" class="admin-body"></div>
-      </section>
-
-      <section id="admin-next" class="admin-panel">
-        <div class="sec-head"><span class="sec-num">15</span><h2>Next meeting</h2></div>
-        <div id="admin-next-body" class="admin-body"></div>
-      </section>
-    </div>
-
-  </div>
-</section>
 
 <script>
+/* ---------- registration CTA config ----------
+   Single place to wire up the real registration link once it exists.
+   Set REGISTRATION_URL and every [data-cta="register"] element (hero,
+   Fiestang Pinoy, Registration section, mobile) updates from here — no
+   need to hunt through the markup. Leave null to keep the
+   "Registration opening soon" placeholder pointing at #register. */
+const REGISTRATION_URL = null; // e.g. "https://forms.gle/xxxxxxx"
+const REGISTRATION_LABEL = "Register Now →";
+if (REGISTRATION_URL) {
+  document.querySelectorAll('[data-cta="register"]').forEach(el => {
+    el.href = REGISTRATION_URL;
+    el.target = '_blank';
+    el.rel = 'noopener';
+    el.textContent = REGISTRATION_LABEL;
+  });
+}
+
 const header=document.getElementById('header');
 addEventListener('scroll',()=>header.classList.toggle('scrolled',scrollY>8),{passive:true});
 
@@ -1649,14 +1048,16 @@ function finishFlip(direction){
   setTurningContent(direction);
   turning.style.transition='transform .55s cubic-bezier(.2,.8,.2,1)';
   turning.style.transform=direction==='next'?'rotateY(-180deg)':'rotateY(180deg)';
+  turning.style.setProperty('--shade','1');
 
   setTimeout(()=>{
     index += direction==='next'?2:-2;
     index=Math.max(0,Math.min(index,pages.length-2));
     turning.style.transition='none';
     turning.style.transform='rotateY(0deg)';
+    turning.style.setProperty('--shade','0');
     updateStaticPages();
-    requestAnimationFrame(()=>{animating=false});
+    animating=false;
   },570);
 }
 
@@ -1666,6 +1067,7 @@ function dragFlip(progress,direction){
   turning.style.transition='none';
   const angle=direction==='next' ? -180*progress : 180*progress;
   turning.style.transform=`rotateY(${angle}deg)`;
+  turning.style.setProperty('--shade',String(progress));
 }
 
 function finishDrag(progress,direction){
@@ -1674,6 +1076,7 @@ function finishDrag(progress,direction){
   else{
     turning.style.transition='transform .35s ease-out';
     turning.style.transform='rotateY(0deg)';
+    turning.style.setProperty('--shade','0');
   }
 }
 
@@ -1706,6 +1109,7 @@ book.addEventListener('pointerup',e=>{
   }else{
     turning.style.transition='transform .25s ease-out';
     turning.style.transform='rotateY(0deg)';
+    turning.style.setProperty('--shade','0');
   }
   dragProgress=0;
 });
@@ -1714,6 +1118,7 @@ book.addEventListener('pointercancel',()=>{
   pointerDown=false;
   turning.style.transition='transform .25s ease-out';
   turning.style.transform='rotateY(0deg)';
+  turning.style.setProperty('--shade','0');
   dragProgress=0;
 });
 
@@ -1790,1035 +1195,5 @@ book.addEventListener('pointercancel',()=>{if(loupeOn)hideLoupe()});
 updateStaticPages();
 </script>
 
-<!--
-  Organiser area. This file contains no event planning content: no budget
-  figures, model notes, venue instructions, registration planning, run of
-  show, checklists, roles or open decisions. Every one of those is stored in
-  Supabase and delivered only to a signed-in session that passes is_admin()
-  under Row Level Security. Assume this file is public — it is written to be
-  safe when it is.
--->
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
-<script>
-/* ---------- organiser area ---------- */
-(function(){
-  "use strict";
-
-  // Publishable (anon) key. It is designed to be sent to browsers and is not a
-  // secret: Row Level Security is the boundary that actually protects data.
-  // Never put a service_role key in this file.
-  var SUPABASE_URL = "https://hicvmfejhvjfecbjwbtq.supabase.co";
-  var SUPABASE_ANON_KEY = "sb_publishable_RpsnXXy4SVpROSmLi_hDVg_dIcOGw_7";
-
-  var configured = SUPABASE_URL.indexOf("YOUR_") !== 0 && SUPABASE_ANON_KEY.indexOf("YOUR_") !== 0;
-  var isInviteLink = /(?:^|[&#])type=invite(?:&|$)/.test(location.hash);
-  var client = (configured && window.supabase) ? window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY) : null;
-
-  var MONTHS = ["January","February","March","April","May","June","July","August","September","October","November","December"];
-  var BODY_KEYS = ["dashboard","runofshow","ingress","early","groups","roles","models","venue","registration-details","budget","open","contingencies","egress","next"];
-
-  var gate = document.getElementById("adminGate");
-  var area = document.getElementById("adminArea");
-  var alertBox = document.getElementById("adminAlert");
-  var loginForm = document.getElementById("loginForm");
-  var loginMsg = document.getElementById("loginMsg");
-  var invitePasswordForm = document.getElementById("invitePasswordForm");
-  var invitePasswordMsg = document.getElementById("invitePasswordMsg");
-  var adminEmailEl = document.getElementById("adminEmail");
-  var logoutBtn = document.getElementById("logoutBtn");
-  var adminNavBtn = document.getElementById("adminNavBtn");
-
-  /* ================= helpers ================= */
-
-  function esc(s){
-    return String(s == null ? "" : s).replace(/[&<>"']/g, function(c){
-      return {"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;","'":"&#39;"}[c];
-    });
-  }
-  function money(n){ return n == null ? "TBC" : "₱" + Number(n).toLocaleString("en-US"); }
-  function ul(arr){ return '<ul class="list" style="margin-top:12px">' + (arr||[]).map(function(t){ return "<li>"+esc(t)+"</li>"; }).join("") + "</ul>"; }
-  function body(key){ return document.getElementById("admin-"+key+"-body"); }
-  function assign(label){ return '<span class="assign">'+esc(label)+"</span>"; }
-  function arr(v){ return Object.prototype.toString.call(v) === "[object Array]" ? v : []; }
-
-  function safeRender(key, fn){
-    var el = body(key);
-    if (!el) return;
-    try { fn(el); }
-    catch (err){
-      if (window.console) console.error("Render failed for " + key, err);
-      el.innerHTML = '<div class="panel-error"><strong>This section couldn\u2019t be displayed.</strong> Your session is still active — the rest of the dashboard is unaffected. Use Retry at the top of the page, or reload.</div>';
-    }
-  }
-
-  /* Every panel below renders whatever the database holds. Nothing about the
-     event is written into this file, so a missing row shows an empty state
-     rather than a hard-coded fallback. */
-  function emptyPanel(el, sectionKey){
-    el.innerHTML = '<div class="panel-empty"><strong>Not set up.</strong> ' +
-      'Nothing is stored for this section yet. Add an <code>admin_content</code> row with section_key ' +
-      '<code>' + esc(sectionKey) + '</code> and it will appear here.</div>';
-  }
-
-  function renderWithPayload(key, sectionKey, contentMap, fn){
-    safeRender(key, function(el){
-      var payload = contentMap[sectionKey];
-      if (!payload) { emptyPanel(el, sectionKey); return; }
-      fn(el, payload);
-    });
-  }
-
-  /* ================= operations panels (all content from Supabase) ================= */
-
-  function renderRunOfShow(el, p){
-    el.innerHTML =
-      (p.lede ? '<p class="lede">'+esc(p.lede)+"</p>" : "") +
-      '<div class="flow" id="rosFlow"></div>' +
-      (p.note ? '<div class="note-strip">'+esc(p.note)+"</div>" : "");
-    var flow = document.getElementById("rosFlow");
-    arr(p.slots).forEach(function(s){
-      var accent = /^(st1|st2|st3)$/.test(s.accent || "") ? s.accent : "";
-      var btn = document.createElement("button");
-      btn.className = "slot " + (accent ? "is-station " + accent : "");
-      btn.type = "button";
-      btn.setAttribute("aria-expanded","false");
-      btn.innerHTML =
-        '<div class="slot-row"><span class="slot-time mono">'+esc(s.time)+"</span>" +
-        '<span class="slot-name">'+esc(s.name) +
-          (s.flag ? ' <span class="tag tag-flag" style="vertical-align:2px"><span class="dot"></span>'+esc(s.flag)+"</span>" : "") +
-        "</span><span class=\"chev\">+</span></div>" +
-        '<div class="slot-body">' + arr(s.body).map(function(t){ return "<p>"+esc(t)+"</p>"; }).join("") + "</div>";
-      btn.addEventListener("click", function(){
-        btn.setAttribute("aria-expanded", btn.getAttribute("aria-expanded") === "true" ? "false" : "true");
-      });
-      flow.appendChild(btn);
-    });
-  }
-
-  /* day-of checklist: labels come from the database, ticks are local and say so */
-  function checklistPanel(el, p, idPrefix){
-    var items = arr(p.items);
-    el.innerHTML =
-      (p.intro ? '<p class="lede">'+esc(p.intro)+"</p>" : "") +
-      '<div class="prog-meter"><div class="prog-bar"><div class="prog-fill" id="'+idPrefix+'Fill"></div></div>' +
-      '<span class="prog-num" id="'+idPrefix+'Num"></span>' +
-      '<button class="btn ghost" type="button" id="'+idPrefix+'Clear">Clear all</button></div>' +
-      '<div class="checks" id="'+idPrefix+'Checks"></div>' +
-      '<p class="local-note">Day-of checklist. Ticks are not saved to the database and reset when the page reloads.</p>';
-
-    var checksEl = document.getElementById(idPrefix+"Checks");
-    items.forEach(function(label){
-      var lab = document.createElement("label");
-      lab.className = "check";
-      lab.innerHTML = '<input type="checkbox"><span>'+esc(label)+"</span>";
-      checksEl.appendChild(lab);
-    });
-    function score(){
-      var boxes = checksEl.querySelectorAll("input"), done = 0;
-      boxes.forEach(function(b){ if (b.checked) done++; });
-      document.getElementById(idPrefix+"Fill").style.width = (boxes.length ? (done/boxes.length*100) : 0) + "%";
-      document.getElementById(idPrefix+"Num").textContent = done + " of " + boxes.length + " done";
-    }
-    checksEl.addEventListener("change", score);
-    document.getElementById(idPrefix+"Clear").addEventListener("click", function(){
-      checksEl.querySelectorAll("input").forEach(function(b){ b.checked = false; });
-      score();
-    });
-    score();
-  }
-
-  function renderEarly(el, p){
-    el.innerHTML =
-      (p.intro ? '<p class="lede">'+esc(p.intro)+"</p>" : "") +
-      '<div class="grid g2" style="margin-top:26px">' +
-        '<div class="card"><h4>'+esc(p.steps_title || "Procedure")+"</h4>"+ul(arr(p.steps))+"</div>" +
-        '<div class="card"><h4>Owners</h4>' +
-          (p.owners_note ? '<p style="color:var(--ink-soft);margin-top:12px">'+esc(p.owners_note)+"</p>" : "") +
-          '<p style="margin:0 0 10px"><strong>Early arrival area:</strong> '+
-            (p.area ? esc(p.area) : assign("Assign location"))+"</p>" +
-          '<p style="margin:0"><strong>Early arrival owner:</strong> '+
-            (p.owner ? esc(p.owner) : assign("Assign person"))+"</p>" +
-        "</div>" +
-      "</div>";
-  }
-
-  function renderRoles(el, p){
-    el.innerHTML =
-      (p.intro ? '<p class="lede">'+esc(p.intro)+"</p>" : "") +
-      '<div class="table-scroll"><table class="rtable"><thead><tr><th>Role</th><th>Owner</th><th>Responsibility</th></tr></thead><tbody>' +
-      arr(p.rows).map(function(r){
-        return "<tr><td>"+esc(r.role)+"</td><td>"+(r.owner ? esc(r.owner) : assign("Assign Name"))+"</td><td>"+esc(r.responsibility)+"</td></tr>";
-      }).join("") +
-      "</tbody></table></div>";
-  }
-
-  function renderContingencies(el, p){
-    el.innerHTML =
-      (p.intro ? '<p class="lede">'+esc(p.intro)+"</p>" : "") +
-      '<div class="table-scroll"><table class="rtable"><thead><tr><th>If this happens</th><th>Current status</th><th>Owner</th></tr></thead><tbody>' +
-      arr(p.rows).map(function(r){
-        return "<tr><td>"+esc(r.when)+"</td><td>"+esc(r.status)+"</td><td>"+(r.owner ? esc(r.owner) : assign("Assign Name"))+"</td></tr>";
-      }).join("") +
-      "</tbody></table></div>";
-  }
-
-  function renderGroups(el, p){
-    var groups = arr(p.groups);
-    var active = groups.length ? (groups[0].colour || "cy") : "cy";
-
-    el.innerHTML =
-      (p.lede ? '<p class="lede">'+esc(p.lede)+"</p>" : "") +
-      '<div class="tagboard" id="gTagboard">' +
-        groups.map(function(g, i){
-          var c = /^(cy|rd|or)$/.test(g.colour || "") ? g.colour : "cy";
-          return '<button class="gtag '+c+'" type="button" data-g="'+c+'" aria-pressed="'+(i===0?"true":"false")+'">' +
-                 '<span class="swatch"></span><h3>'+esc(g.name)+"</h3>" +
-                 '<span class="who">'+esc(g.seats_label || "")+"</span></button>";
-        }).join("") +
-      "</div>" +
-      '<div class="table-scroll"><table class="matrix">' +
-        (p.caption ? '<caption class="eyebrow" style="text-align:left;margin:26px 0 10px">'+esc(p.caption)+"</caption>" : "") +
-        '<thead><tr><th>Group</th><th>First</th><th>Second</th><th>Third</th></tr></thead>' +
-        '<tbody id="matrixBody"></tbody></table></div>' +
-      '<div class="grid g2" style="margin-top:34px">' +
-        '<div class="card"><h4>Seats in the room</h4>' +
-          (p.seats_note ? '<p style="color:var(--ink-soft);margin:10px 0 14px">'+esc(p.seats_note)+"</p>" : "") +
-          '<div class="seats" id="seatMap"></div></div>' +
-        '<div class="card"><h4>'+esc(p.tags_title || "Colour tags")+"</h4>"+ul(arr(p.tags_note))+"</div>" +
-      "</div>" +
-      (p.open_note ? '<div class="note-strip">'+esc(p.open_note)+"</div>" : "");
-
-    function draw(){
-      var tbody = document.getElementById("matrixBody");
-      tbody.innerHTML = "";
-      groups.forEach(function(g){
-        var c = /^(cy|rd|or)$/.test(g.colour || "") ? g.colour : "cy";
-        var tr = document.createElement("tr");
-        if (c === active) tr.className = "lit";
-        tr.innerHTML = '<td><span class="cell"><span class="sw '+c+'"></span>'+esc(g.name)+"</span></td>" +
-                       arr(g.stations).map(function(s){ return "<td>"+esc(s)+"</td>"; }).join("");
-        tbody.appendChild(tr);
-      });
-      var map = document.getElementById("seatMap");
-      map.innerHTML = "";
-      groups.forEach(function(g){
-        var c = /^(cy|rd|or)$/.test(g.colour || "") ? g.colour : "cy";
-        var n = Number(g.seats) > 0 ? Number(g.seats) : 0;
-        for (var i=0;i<n;i++){
-          var d = document.createElement("span");
-          d.className = "seat " + c + (c === active ? "" : " dim");
-          d.title = g.name + " · seat " + (i+1);
-          map.appendChild(d);
-        }
-      });
-    }
-    var tags = el.querySelectorAll(".gtag");
-    tags.forEach(function(t){
-      t.addEventListener("click", function(){
-        active = t.getAttribute("data-g");
-        tags.forEach(function(o){ o.setAttribute("aria-pressed", o === t ? "true" : "false"); });
-        draw();
-      });
-    });
-    draw();
-  }
-
-  /* ================= live event control (pose timer) ================= */
-
-  var Timer = (function(){
-    var warmupMin = 3, poseMin = 0;
-    var phases = [], idx = 0, left = 0, endAt = 0;
-    var running = false, finished = false, ticker = null;
-    var sound = true, actx = null, wake = null;
-
-    var clockEl = document.getElementById("clock");
-    var phaseNameEl = document.getElementById("phaseName");
-    var phaseDotEl = document.getElementById("phaseDot");
-    var startBtn = document.getElementById("startBtn");
-    var nextBtn = document.getElementById("nextBtn");
-    var resetBtn = document.getElementById("resetBtn");
-    var soundBtn = document.getElementById("soundBtn");
-    var stripEl = document.getElementById("strip");
-    var totalLabel = document.getElementById("totalLabel");
-    var nextActionEl = document.getElementById("nextAction");
-    var liveLabel = document.getElementById("liveLabel");
-    var stationSel = document.getElementById("liveStation");
-    var groupSel = document.getElementById("liveGroup");
-    var slotInput = document.getElementById("slotMins");
-    var warmupInput = document.getElementById("warmupMins");
-    var poseInput = document.getElementById("poseMins");
-    var clockStateEl = document.getElementById("clockState");
-    if (!clockEl || !startBtn) return null;
-
-    function build(){
-      phases = [{n:"Warm-up", sec:Math.max(1, warmupMin)*60, pose:true}];
-      if (poseMin > 0) phases.push({n:"Proper pose", sec:poseMin*60, pose:true});
-    }
-    function totalSec(){ return phases.reduce(function(a,p){ return a + p.sec; }, 0); }
-    function fmt(s){
-      var m = Math.floor(s/60), r = s % 60;
-      return (m<10?"0":"") + m + ":" + (r<10?"0":"") + r;
-    }
-
-    function drawStrip(){
-      stripEl.innerHTML = "";
-      phases.forEach(function(p){
-        var d = document.createElement("div");
-        d.className = "seg " + (p.pose ? "pose" : "brk");
-        d.style.flex = p.sec + " 0 0";
-        d.title = p.n + " · " + Math.round(p.sec/60) + " min";
-        d.innerHTML = '<div class="fill"></div>';
-        stripEl.appendChild(d);
-      });
-      totalLabel.textContent = Math.round(totalSec()/60) + " min total";
-      paintStrip();
-    }
-    function paintStrip(){
-      var segs = stripEl.querySelectorAll(".seg");
-      for (var i=0;i<segs.length;i++){
-        var f = segs[i].querySelector(".fill");
-        if (i < idx || finished){ f.style.width = "100%"; f.style.background = phases[i].pose ? "var(--cyan)" : "var(--orange)"; }
-        else if (i === idx){
-          f.style.width = ((phases[i].sec - left) / phases[i].sec * 100) + "%";
-          f.style.background = phases[i].pose ? "var(--cyan)" : "var(--orange)";
-        } else { f.style.width = "0%"; }
-      }
-    }
-
-    /* audio: created and resumed from a user gesture, then reused */
-    function ensureAudio(){
-      try {
-        var C = window.AudioContext || window.webkitAudioContext;
-        if (!C) return;
-        if (!actx) actx = new C();
-        if (actx.state === "suspended" && actx.resume) actx.resume();
-      } catch (e){ actx = null; }
-    }
-    function beep(){
-      if (!sound || !actx) return;
-      try {
-        if (actx.state === "suspended" && actx.resume) actx.resume();
-        var o = actx.createOscillator(), g = actx.createGain();
-        o.type = "square";
-        o.frequency.value = 660;
-        g.gain.setValueAtTime(.09, actx.currentTime);
-        g.gain.exponentialRampToValueAtTime(.0001, actx.currentTime + .45);
-        o.connect(g); g.connect(actx.destination);
-        o.start();
-        o.stop(actx.currentTime + .45);
-      } catch (e){ /* audio unavailable — the timer keeps running */ }
-    }
-
-    /* wake lock: optional, never required */
-    function wakeRequest(){
-      try {
-        if (!navigator.wakeLock || wake) return;
-        navigator.wakeLock.request("screen").then(function(lock){
-          wake = lock;
-          lock.addEventListener("release", function(){ wake = null; });
-        }).catch(function(){ wake = null; });
-      } catch (e){ wake = null; }
-    }
-    function wakeRelease(){
-      try { if (wake && wake.release) wake.release(); } catch (e){}
-      wake = null;
-    }
-
-    function nextActionText(){
-      var station = stationSel ? "Station " + stationSel.value : "";
-      var group = groupSel && groupSel.value ? groupSel.value : "";
-      if (finished) return "<b>Station complete.</b> Move " + (group ? esc(group) : "this group") + " on and reset before the next group sits down.";
-      if (idx >= phases.length - 1) return "<b>Last phase.</b> After the proper pose, hand over and rotate the group out of " + esc(station) + ".";
-      return "<b>Next up:</b> " + esc(phases[idx+1].n) + " · " + Math.round(phases[idx+1].sec/60) + " min";
-    }
-
-    function render(){
-      var p = phases[idx];
-      clockEl.textContent = fmt(left);
-      phaseNameEl.textContent = finished
-        ? "Sequence complete"
-        : p.n + " · " + Math.round(p.sec/60) + " minute" + (p.sec > 60 ? "s" : "");
-      phaseDotEl.style.color = finished ? "var(--ink-soft)" : (p.pose ? "var(--cyan)" : "var(--orange)");
-      if (liveLabel && stationSel){
-        liveLabel.textContent = "Station " + stationSel.value + (groupSel && groupSel.value ? " · " + groupSel.value : "");
-      }
-      if (nextActionEl) nextActionEl.innerHTML = nextActionText();
-      if (clockStateEl){
-        clockStateEl.textContent = finished ? "Complete"
-          : running ? "Clock active"
-          : (idx === 0 && left === phases[0].sec ? "Ready" : "Paused");
-      }
-      paintStrip();
-      startBtn.textContent = finished ? "Start again" : (running ? "Pause" : (idx === 0 && left === phases[0].sec ? "Start" : "Resume"));
-    }
-
-    /* the countdown is derived from an absolute end timestamp, so missed
-       interval callbacks, backgrounded tabs and sleeping phones cannot
-       change the result — only wall-clock time does. */
-    function sync(){
-      if (!running) return;
-      var now = Date.now(), advanced = false;
-      while (now >= endAt){
-        if (idx < phases.length - 1){
-          idx++;
-          endAt += phases[idx].sec * 1000;
-          advanced = true;
-        } else {
-          finish();
-          return;
-        }
-      }
-      left = Math.max(0, Math.round((endAt - now) / 1000));
-      if (advanced) beep();
-    }
-
-    function startTicker(){
-      if (ticker) clearInterval(ticker);
-      ticker = setInterval(function(){ sync(); render(); }, 250);
-    }
-    function stopTicker(){
-      if (ticker){ clearInterval(ticker); ticker = null; }
-    }
-
-    function finish(){
-      running = false; finished = true; left = 0;
-      idx = phases.length - 1;
-      stopTicker(); wakeRelease(); beep(); render();
-    }
-
-    function pause(){
-      if (!running) return;
-      left = Math.max(0, Math.round((endAt - Date.now()) / 1000));
-      running = false;
-      stopTicker(); wakeRelease(); render();
-    }
-
-    function reset(){
-      running = false; finished = false; idx = 0;
-      build();
-      left = phases[0].sec;
-      stopTicker(); wakeRelease(); drawStrip(); render();
-    }
-
-    function start(){
-      if (finished){ reset(); }          // completed sequence restarts from the top
-      if (running){ pause(); return; }
-      ensureAudio(); wakeRequest();
-      endAt = Date.now() + left * 1000;
-      running = true;
-      startTicker();
-      render();
-    }
-
-    function skip(){
-      if (finished){ reset(); return; }
-      if (idx < phases.length - 1){
-        idx++;
-        left = phases[idx].sec;
-        if (running) endAt = Date.now() + left * 1000;
-        render();
-      } else {
-        finish();
-      }
-    }
-
-    /* the slot length is typed in by the organiser running the timer; no event
-       planning value is stored in this file */
-    function mathView(){
-      var tot = Math.round(totalSec()/60);
-      var rows = phases.map(function(p){
-        return '<div class="math-row"><span>'+p.n+"</span><span>"+Math.round(p.sec/60)+" min</span></div>";
-      }).join("");
-      rows += '<div class="math-row" style="border-top:1px solid var(--ink);margin-top:6px;padding-top:12px"><span><strong>Pose block</strong></span><span><strong>'+tot+" min</strong></span></div>";
-
-      var slot = slotInput ? parseInt(slotInput.value, 10) : NaN;
-      var v = document.getElementById("verdict");
-      if (isNaN(slot) || slot <= 0){
-        document.getElementById("mathBox").innerHTML = rows;
-        v.innerHTML = poseMin > 0
-          ? "<strong>Session block: "+tot+" minutes.</strong> Enter the agreed station slot length above to see how much slack the sequence leaves."
-          : "<strong>Proper-pose length not decided.</strong> The timer will run the warm-up only until a length is entered above. Enter one to rehearse or to run the day.";
-        return;
-      }
-      var slack = slot - tot;
-      rows += '<div class="math-row"><span>Station slot</span><span>'+slot+" min</span></div>";
-      rows += '<div class="math-row"><span>Slack in the slot</span><span>'+slack+" min</span></div>";
-      document.getElementById("mathBox").innerHTML = rows;
-      v.innerHTML = slack > 0
-        ? "<strong>"+slack+" minutes of slack.</strong> Room to settle the group, reset the model and still hand over on time."
-        : (slack === 0
-          ? "<strong>The sequence fills the slot exactly.</strong> No slack — any late start pushes into the transition."
-          : "<strong>Over by "+Math.abs(slack)+" minutes.</strong> This sequence does not fit the slot as entered.");
-    }
-
-    function applyLengths(){
-      var w = parseInt(warmupInput ? warmupInput.value : "", 10);
-      var q = parseInt(poseInput ? poseInput.value : "", 10);
-      warmupMin = (isNaN(w) || w <= 0) ? 3 : w;
-      poseMin = (isNaN(q) || q <= 0) ? 0 : q;
-      reset();
-      mathView();
-    }
-
-    startBtn.addEventListener("click", start);
-    nextBtn.addEventListener("click", skip);
-    resetBtn.addEventListener("click", reset);
-    soundBtn.addEventListener("click", function(){
-      sound = !sound;
-      soundBtn.setAttribute("aria-pressed", sound ? "true" : "false");
-      soundBtn.textContent = sound ? "Sound on" : "Sound off";
-      if (sound) ensureAudio();
-    });
-    if (warmupInput) warmupInput.addEventListener("input", applyLengths);
-    if (warmupInput) warmupInput.addEventListener("change", applyLengths);
-    if (poseInput) poseInput.addEventListener("input", applyLengths);
-    if (poseInput) poseInput.addEventListener("change", applyLengths);
-    if (slotInput) slotInput.addEventListener("input", mathView);
-    if (stationSel) stationSel.addEventListener("change", render);
-    if (groupSel) groupSel.addEventListener("change", render);
-
-    /* coming back from a locked screen or a background tab: re-derive from the clock */
-    document.addEventListener("visibilitychange", function(){
-      if (document.hidden){
-        if (!running) wakeRelease();
-        return;
-      }
-      if (running){ sync(); render(); wakeRequest(); }
-    });
-    window.addEventListener("pagehide", function(){ wakeRelease(); });
-
-    /* on a phone, start with the timer visible and the settings tucked
-       away; this is purely which panel opens first, not timer behaviour */
-    var settingsPanel = document.querySelector(".session-settings");
-    if (settingsPanel && window.innerWidth <= 860) settingsPanel.removeAttribute("open");
-
-    build(); drawStrip(); reset(); mathView();
-
-    return {
-      reset: reset,
-      stop: function(){ pause(); reset(); if (slotInput) slotInput.value = ""; if (poseInput) poseInput.value = ""; poseMin = 0; build(); drawStrip(); reset(); mathView(); },
-      /* an agreed slot length is event planning data, so it arrives from the
-         database after sign-in rather than living in this file */
-      applySlot: function(mins){
-        if (!slotInput) return;
-        var n = Number(mins);
-        if (n > 0 && !slotInput.value) { slotInput.value = n; mathView(); }
-      }
-    };
-  })();
-
-  /* ================= Supabase content renderers ================= */
-
-  function renderModels(el, m){
-    var items = arr(m.items).map(function(it){
-      return "<li>"+esc(it.text)+(it.open ? ' <span class="tag tag-open">Open</span>' : "")+"</li>";
-    }).join("");
-    el.innerHTML =
-      (m.eyebrow ? '<span class="tag tag-open" style="margin-bottom:14px;display:inline-flex"><span class="dot"></span>'+esc(m.eyebrow)+"</span>" : "") +
-      '<div class="card" style="margin-top:14px">' +
-        (m.title ? "<h3>"+esc(m.title)+"</h3>" : "") +
-        (m.rate_note ? '<p style="color:var(--ink-soft);margin-top:12px">'+esc(m.rate_note)+"</p>" : "") +
-        '<ul class="list">'+items+"</ul>" +
-        (m.note ? '<p style="margin-top:16px;color:var(--ink-soft);font-size:.95em">'+esc(m.note)+"</p>" : "") +
-      "</div>";
-  }
-
-  function renderVenue(el, v){
-    el.innerHTML =
-      '<div class="grid g3">' +
-        '<div class="card"><h4>Layout zones</h4>'+ul(arr(v.layout_zones))+"</div>" +
-        '<div class="card"><h4>Bring on the day</h4>'+ul(arr(v.bring_on_day))+"</div>" +
-        '<div class="card"><h4>Spending</h4>' +
-          (v.spend_note ? '<p style="color:var(--ink-soft);margin-top:12px">'+esc(v.spend_note)+"</p>" : "") +
-          (v.spend_tag ? '<p style="margin:0"><span class="tag tag-open"><span class="dot"></span>'+esc(v.spend_tag)+"</span></p>" : "") +
-        "</div>" +
-      "</div>" +
-      '<div class="grid g2" style="margin-top:22px">' +
-        '<div class="card"><h4>LATAG</h4><p style="color:var(--ink-soft);margin-top:12px">'+esc(v.latag_note)+"</p></div>" +
-        '<div class="card"><h4>CLAYGO</h4><p style="color:var(--ink-soft);margin-top:12px">'+esc(v.claygo_note)+"</p></div>" +
-      "</div>";
-  }
-
-  function renderRegistrationDetails(el, r){
-    el.innerHTML =
-      (r.status_tag ? '<span class="tag tag-flag" style="margin-bottom:14px;display:inline-flex"><span class="dot"></span>'+esc(r.status_tag)+"</span>" : "") +
-      (r.blocker_lede ? '<p class="lede" style="margin-top:14px">'+esc(r.blocker_lede)+"</p>" : "") +
-      '<div class="grid g3" style="margin-top:8px">' +
-        '<div class="card"><h4>Decide</h4>'+ul(arr(r.decide))+"</div>" +
-        '<div class="card"><h4>Write</h4>'+ul(arr(r.write))+"</div>" +
-        '<div class="card"><h4>Update</h4>'+ul(arr(r.update))+"</div>" +
-      "</div>" +
-      (r.order_of_work ? '<div class="note-strip"><strong>Order of work.</strong> '+esc(r.order_of_work)+"</div>" : "");
-  }
-
-  function renderNextMeeting(el, m){
-    var hour12 = ((Number(m.hour) + 11) % 12) + 1;
-    var ampm = Number(m.hour) >= 12 ? "PM" : "AM";
-    var minute = Number(m.minute) || 0;
-    var timeStr = hour12 + ":" + (minute < 10 ? "0" : "") + minute + " " + ampm;
-    var dateStr = m.day + " " + MONTHS[Number(m.month)-1].slice(0,3);
-
-    el.innerHTML =
-      '<div class="meet">' +
-        "<div>" +
-          '<h2 style="font-size:clamp(34px,5vw,58px)">'+esc(dateStr)+"<br>"+esc(timeStr)+"</h2>" +
-          '<div class="cd" id="adminCountdown" aria-live="off">' +
-            '<div><b id="adminCdD">—</b><small>Days</small></div>' +
-            '<div><b id="adminCdH">—</b><small>Hours</small></div>' +
-            '<div><b id="adminCdM">—</b><small>Mins</small></div>' +
-          "</div>" +
-          '<p id="adminCdNote" class="local-note" hidden>This meeting time has passed. Update the next_meeting row in admin_content.</p>' +
-          (m.blurb ? '<p style="color:var(--ink-soft);margin-top:14px">'+esc(m.blurb)+"</p>" : "") +
-        "</div>" +
-        "<div>" +
-          '<h4 style="margin-bottom:16px">Bring to the meeting</h4>' +
-          '<ul class="list">' + arr(m.bring).map(function(b){ return "<li><strong>"+esc(b.label)+"</strong> "+esc(b.text)+"</li>"; }).join("") + "</ul>" +
-        "</div>" +
-      "</div>";
-
-    function tick(){
-      var now = new Date();
-      var target = new Date(now.getFullYear(), Number(m.month)-1, Number(m.day), Number(m.hour), minute, 0);
-      var ms = target - now;
-      var d = document.getElementById("adminCdD"), h = document.getElementById("adminCdH"), mi = document.getElementById("adminCdM");
-      var note = document.getElementById("adminCdNote");
-      if (!d) return;
-      if (ms < 0){
-        d.textContent = "0"; h.textContent = "0"; mi.textContent = "0";
-        if (note) note.hidden = false;
-        return;
-      }
-      if (note) note.hidden = true;
-      d.textContent = Math.floor(ms/86400000);
-      h.textContent = Math.floor(ms%86400000/3600000);
-      mi.textContent = Math.floor(ms%3600000/60000);
-    }
-    tick();
-    window.__adminMeetingInterval = setInterval(tick, 30000);
-  }
-
-  function renderBudget(el, items, note, sheetUrl){
-    var altRow = null;
-    items.forEach(function(it){ if (it.alt_amount != null) altRow = it; });
-
-    var costed = items.filter(function(it){ return it.working_amount != null; }).length;
-    var quoted = items.filter(function(it){ return it.quoted_amount != null; }).length;
-
-    function computeRows(useAlt){
-      var total = 0, tbc = false;
-      var rows = items.map(function(it){
-        var w = (altRow && it.id === altRow.id && useAlt) ? it.alt_amount : it.working_amount;
-        if (w == null) tbc = true; else total += Number(w);
-        return "<tr><td>"+esc(it.category)+'</td><td class="num">'+money(w)+'</td><td class="num">'+money(it.quoted_amount)+"</td></tr>";
-      }).join("");
-      return { rows: rows, total: money(total) + (tbc ? " + TBC" : "") };
-    }
-
-    var switchHtml = altRow ?
-      '<div style="margin:0 0 22px"><span class="eyebrow" style="display:block">'+esc(altRow.category)+' allocation</span>' +
-      '<div class="switch" role="group" aria-label="'+esc(altRow.category)+' allocation">' +
-      '<button type="button" id="budgetOptA" aria-pressed="true">'+money(altRow.working_amount)+"</button>" +
-      '<button type="button" id="budgetOptB" aria-pressed="false">'+money(altRow.alt_amount)+"</button>" +
-      "</div></div>" : "";
-
-    el.innerHTML =
-      '<p class="lede">'+costed+" of "+items.length+" categories have a working figure. "+
-        quoted+" ha"+(quoted===1?"s":"ve")+" a quotation against "+(quoted===1?"it":"them")+".</p>" +
-      switchHtml +
-      '<div class="table-scroll"><table class="btable"><thead><tr><th>Category</th><th style="text-align:right">Working</th><th style="text-align:right">Quoted</th></tr></thead>' +
-      '<tbody id="budgetTbody"></tbody></table></div>' +
-      (note ? '<div class="note-strip">'+esc(note)+"</div>" : "") +
-      (sheetUrl ? '<p style="margin-top:16px"><a class="mono-link" href="'+esc(sheetUrl)+'" target="_blank" rel="noopener">Open budget control sheet ↗</a></p>' : "");
-
-    var tbody = document.getElementById("budgetTbody");
-    function paint(useAlt){
-      var r = computeRows(useAlt);
-      tbody.innerHTML = r.rows + '<tr class="total"><td>Total</td><td class="num">'+r.total+'</td><td class="num"></td></tr>';
-      if (altRow){
-        document.getElementById("budgetOptA").setAttribute("aria-pressed", useAlt ? "false" : "true");
-        document.getElementById("budgetOptB").setAttribute("aria-pressed", useAlt ? "true" : "false");
-      }
-    }
-    paint(false);
-    if (altRow){
-      document.getElementById("budgetOptA").addEventListener("click", function(){ paint(false); });
-      document.getElementById("budgetOptB").addEventListener("click", function(){ paint(true); });
-    }
-  }
-
-  function renderOpenItems(el, items){
-    el.innerHTML =
-      '<p class="lede">Tick items as they close. Changes are saved to the database and shared with every organiser.</p>' +
-      '<div class="prog-meter"><div class="prog-bar"><div class="prog-fill" id="adminProgFill"></div></div>' +
-      '<span class="prog-num" id="adminProgNum"></span>' +
-      '<button class="btn ghost" type="button" id="adminClearBtn">Clear all</button></div>' +
-      '<div class="checks" id="adminChecks"></div>' +
-      '<p class="save-state" id="adminSaveState" role="status" aria-live="polite"></p>';
-
-    var checksEl = document.getElementById("adminChecks");
-    var saveEl = document.getElementById("adminSaveState");
-    var clearBtn = document.getElementById("adminClearBtn");
-
-    items.forEach(function(it){
-      var lab = document.createElement("label");
-      lab.className = "check";
-      lab.innerHTML = '<input type="checkbox" '+(it.done ? "checked" : "")+' data-id="'+esc(it.id)+'"><span>'+esc(it.label)+"</span>";
-      checksEl.appendChild(lab);
-    });
-
-    function setSave(msg, isErr){
-      saveEl.textContent = msg || "";
-      saveEl.className = "save-state" + (isErr ? " err" : "");
-    }
-    function score(){
-      var boxes = checksEl.querySelectorAll("input"), done = 0;
-      boxes.forEach(function(b){ if (b.checked) done++; });
-      document.getElementById("adminProgFill").style.width = (boxes.length ? (done/boxes.length*100) : 0) + "%";
-      document.getElementById("adminProgNum").textContent = done + " of " + boxes.length + " closed";
-      var stat = document.getElementById("dashOpen");
-      if (stat) stat.textContent = done + " of " + boxes.length + " closed";
-    }
-    score();
-
-    checksEl.addEventListener("change", async function(e){
-      var box = e.target;
-      if (!box || box.tagName !== "INPUT") return;
-      var wanted = box.checked;
-      score();                                  // optimistic
-      setSave("Saving…", false);
-      box.disabled = true;
-      try {
-        if (!client) throw new Error("no client");
-        var res = await client.from("open_items").update({ done: wanted }).eq("id", box.getAttribute("data-id"));
-        if (res.error) throw res.error;
-        setSave("Saved.", false);
-      } catch (err){
-        box.checked = !wanted;                  // revert
-        score();
-        setSave("Couldn’t save that change, so it has been undone. Check your connection and try again.", true);
-      } finally {
-        box.disabled = false;
-      }
-    });
-
-    clearBtn.addEventListener("click", async function(){
-      var boxes = Array.prototype.slice.call(checksEl.querySelectorAll("input"));
-      var previous = boxes.map(function(b){ return b.checked; });
-      if (previous.indexOf(true) === -1){ setSave("Nothing to clear.", false); return; }
-      boxes.forEach(function(b){ b.checked = false; });
-      score();
-      setSave("Saving…", false);
-      clearBtn.disabled = true;
-      try {
-        if (!client) throw new Error("no client");
-        var ids = items.map(function(it){ return it.id; });
-        var res = await client.from("open_items").update({ done: false }).in("id", ids);
-        if (res.error) throw res.error;
-        setSave("All items reopened.", false);
-      } catch (err){
-        boxes.forEach(function(b, i){ b.checked = previous[i]; });   // revert
-        score();
-        setSave("Couldn’t clear the checklist, so nothing was changed. Check your connection and try again.", true);
-      } finally {
-        clearBtn.disabled = false;
-      }
-    });
-  }
-
-  /* Dashboard tiles are computed from the data, or take their wording from a
-     `status` field inside each stored payload. No event status is written here. */
-  function renderDashboard(el, data){
-    function tile(label, value, note, cls, id){
-      return '<div class="stat '+(cls||"is-none")+'"><small>'+esc(label)+"</small><b"+(id?' id="'+id+'"':"")+">"+
-             esc(value)+"</b><em>"+esc(note)+"</em></div>";
-    }
-    function fromPayload(label, payload, sectionKey){
-      return payload
-        ? tile(label, payload.status || "In the database", payload.status_note || "See the section below.", payload.status_flag ? "is-flag" : "is-open")
-        : tile(label, "Not set up", "No " + sectionKey + " content stored yet.", "is-none");
-    }
-
-    var tiles = [];
-    var content = (data && data.content) || {};
-
-    if (data && data.open){
-      var done = data.open.filter(function(i){ return i.done; }).length;
-      tiles.push('<div class="stat '+(done === data.open.length ? "" : "is-open")+'"><small>Open decisions</small>' +
-                 '<b id="dashOpen">'+done+" of "+data.open.length+" closed</b><em>Shared checklist, saved to the database.</em></div>");
-    } else {
-      tiles.push(tile("Open decisions", "Not loaded", "Data unavailable right now.", "is-none"));
-    }
-
-    if (data && data.budget){
-      var costed = data.budget.filter(function(i){ return i.working_amount != null; }).length;
-      var quoted = data.budget.filter(function(i){ return i.quoted_amount != null; }).length;
-      tiles.push(tile("Budget", costed + " of " + data.budget.length + " costed",
-                 quoted + " quotation" + (quoted === 1 ? "" : "s") + " on file.", quoted === 0 ? "is-flag" : "is-open"));
-    } else {
-      tiles.push(tile("Budget", "Not loaded", "Data unavailable right now.", "is-none"));
-    }
-
-    tiles.push(fromPayload("Registration", content.registration_details, "registration"));
-    tiles.push(fromPayload("Models", content.models, "models"));
-    tiles.push(fromPayload("Venue", content.venue, "venue"));
-    tiles.push(fromPayload("Run of show", content.run_of_show, "run of show"));
-    tiles.push(tile("Venue window", "Under revision",
-      "≈5 hrs proposed, 8:45–9:00 start tentative. No times published on the public page.", "is-flag"));
-    tiles.push(fromPayload("Groups & rotation", content.groups_ops, "groups"));
-    tiles.push(fromPayload("Event roles", content.roles, "roles"));
-    tiles.push(fromPayload("Early arrivals", content.early_arrivals, "early arrival"));
-    tiles.push(fromPayload("Contingencies", content.contingencies, "contingency"));
-
-    el.innerHTML =
-      '<p class="lede">Readiness at a glance. Section statuses come from the database — a tile reading “Not set up” means nothing has been stored for that section yet. The venue-window tile is a standing note held in this page, not stored data.</p>' +
-      '<div class="stats" style="margin-top:26px">' + tiles.join("") + "</div>";
-  }
-
-  /* ================= gate / area state ================= */
-
-  function clearAdminArea(){
-    BODY_KEYS.forEach(function(k){
-      var el = body(k);
-      if (el) el.innerHTML = "";
-    });
-    if (window.__adminMeetingInterval){ clearInterval(window.__adminMeetingInterval); window.__adminMeetingInterval = null; }
-    if (Timer) Timer.stop();
-    hideAlert();
-  }
-
-  function showGate(msg, isErr){
-    area.hidden = true;
-    clearAdminArea();
-    gate.hidden = false;
-    if (invitePasswordForm) invitePasswordForm.hidden = true;
-    loginForm.hidden = false;
-    if (loginMsg){
-      loginMsg.textContent = msg || "";
-      loginMsg.className = "form-msg " + (isErr ? "err" : "ok");
-    }
-  }
-
-  function showArea(email){
-    gate.hidden = true;
-    area.hidden = false;
-    adminEmailEl.textContent = email || "";
-  }
-
-  function hideAlert(){
-    if (!alertBox) return;
-    alertBox.hidden = true;
-    alertBox.innerHTML = "";
-  }
-
-  function showAlert(title, message, onRetry){
-    if (!alertBox) return;
-    alertBox.hidden = false;
-    alertBox.className = "admin-alert";
-    alertBox.innerHTML = "<h4>"+esc(title)+"</h4><p>"+esc(message)+"</p>" +
-      (onRetry ? '<button class="btn" type="button" id="adminRetryBtn">Retry</button>' : "");
-    if (onRetry){
-      document.getElementById("adminRetryBtn").addEventListener("click", function(){
-        hideAlert();
-        onRetry();
-      });
-    }
-  }
-
-  /* authorization failure: end the session and go back to the gate */
-  async function failAuth(msg){
-    if (client){ try { await client.auth.signOut(); } catch(e){} }
-    showGate(msg, true);
-  }
-
-  /* network / database / render failure: keep the session, offer a retry */
-  function failData(msg, retryFn){
-    showAlert("Couldn’t load admin data.", msg, retryFn);
-  }
-
-  function showInvitePasswordSetup(){
-    if (!invitePasswordForm) return;
-    loginForm.hidden = true;
-    invitePasswordForm.hidden = false;
-    invitePasswordMsg.textContent = "";
-    invitePasswordMsg.className = "form-msg";
-  }
-
-  /* ================= load pipeline ================= */
-
-  async function loadDbPanels(){
-    var results;
-    try {
-      results = await Promise.all([
-        client.from("budget_items").select("*").order("sort_order"),
-        client.from("open_items").select("*").order("sort_order"),
-        client.from("admin_content").select("*")
-      ]);
-    } catch (err){
-      if (window.console) console.error(err);
-      safeRender("dashboard", function(el){ renderDashboard(el, null); });
-      failData("The database didn’t respond. You are still signed in — the timer above works without it.", loadDbPanels);
-      return;
-    }
-
-    var budgetRes = results[0], openRes = results[1], contentRes = results[2];
-    if (budgetRes.error || openRes.error || contentRes.error){
-      if (window.console) console.error(budgetRes.error || openRes.error || contentRes.error);
-      safeRender("dashboard", function(el){ renderDashboard(el, null); });
-      failData("The request was rejected or the connection dropped. You are still signed in — try again.", loadDbPanels);
-      return;
-    }
-
-    var contentMap = {};
-    (contentRes.data || []).forEach(function(r){ contentMap[r.section_key] = r.payload; });
-    var data = { budget: budgetRes.data || [], open: openRes.data || [], content: contentMap };
-
-    safeRender("dashboard", function(el){ renderDashboard(el, data); });
-    safeRender("budget", function(el){ renderBudget(el, data.budget, contentMap.budget_note ? contentMap.budget_note.text : null, contentMap.budget_note ? contentMap.budget_note.sheet_url : null); });
-    safeRender("open", function(el){ renderOpenItems(el, data.open); });
-
-    renderWithPayload("models", "models", contentMap, renderModels);
-    renderWithPayload("venue", "venue", contentMap, renderVenue);
-    renderWithPayload("registration-details", "registration_details", contentMap, renderRegistrationDetails);
-    renderWithPayload("next", "next_meeting", contentMap, renderNextMeeting);
-    renderWithPayload("runofshow", "run_of_show", contentMap, renderRunOfShow);
-    renderWithPayload("groups", "groups_ops", contentMap, renderGroups);
-    renderWithPayload("roles", "roles", contentMap, renderRoles);
-    renderWithPayload("early", "early_arrivals", contentMap, renderEarly);
-    renderWithPayload("contingencies", "contingencies", contentMap, renderContingencies);
-    renderWithPayload("ingress", "ingress", contentMap, function(el, p){ checklistPanel(el, p, "ingress"); });
-    renderWithPayload("egress", "egress", contentMap, function(el, p){ checklistPanel(el, p, "egress"); });
-
-    if (Timer && contentMap.run_of_show) Timer.applySlot(contentMap.run_of_show.station_slot_minutes);
-  }
-
-  async function loadAdminData(){
-    if (!client){ showGate("Admin isn’t configured yet — the Supabase URL and key are still placeholders.", true); return; }
-
-    var isAdminRes;
-    try {
-      isAdminRes = await client.rpc("is_admin");
-    } catch (err){
-      if (window.console) console.error(err);
-      showGate("Couldn’t reach the database to check your access. Try again in a moment.", true);
-      return;
-    }
-    if (isAdminRes.error){
-      if (window.console) console.error(isAdminRes.error);
-      showGate("Couldn’t verify your access right now. Try signing in again in a moment.", true);
-      return;
-    }
-    if (isAdminRes.data !== true){
-      await failAuth("This account isn’t authorized for organiser access.");
-      return;
-    }
-
-    var email = "";
-    try {
-      var sessionRes = await client.auth.getSession();
-      email = (sessionRes.data && sessionRes.data.session) ? sessionRes.data.session.user.email : "";
-    } catch (e){}
-
-    showArea(email);
-    await loadDbPanels();
-  }
-
-  /* ================= auth ================= */
-
-  loginForm.addEventListener("submit", async function(e){
-    e.preventDefault();
-    if (!client){
-      loginMsg.textContent = "Admin isn’t configured yet — the Supabase URL and key are still placeholders.";
-      loginMsg.className = "form-msg err";
-      return;
-    }
-    var email = document.getElementById("loginEmail").value.trim();
-    var password = document.getElementById("loginPassword").value;
-    loginMsg.textContent = "Signing in…";
-    loginMsg.className = "form-msg ok";
-    var res;
-    try {
-      res = await client.auth.signInWithPassword({ email: email, password: password });
-    } catch (err){
-      loginMsg.textContent = "Couldn’t reach the sign-in service. Check your connection and try again.";
-      loginMsg.className = "form-msg err";
-      return;
-    }
-    if (res.error){
-      loginMsg.textContent = res.error.message || "Sign-in failed.";
-      loginMsg.className = "form-msg err";
-      return;
-    }
-    await loadAdminData();
-  });
-
-  if (invitePasswordForm){
-    invitePasswordForm.addEventListener("submit", async function(e){
-      e.preventDefault();
-      if (!client){
-        invitePasswordMsg.textContent = "Admin isn’t configured yet.";
-        invitePasswordMsg.className = "form-msg err";
-        return;
-      }
-      var password = document.getElementById("invitePassword").value;
-      var confirmation = document.getElementById("invitePasswordConfirm").value;
-      if (password !== confirmation){
-        invitePasswordMsg.textContent = "Passwords do not match.";
-        invitePasswordMsg.className = "form-msg err";
-        return;
-      }
-      invitePasswordMsg.textContent = "Saving password…";
-      invitePasswordMsg.className = "form-msg ok";
-      var res;
-      try {
-        res = await client.auth.updateUser({ password: password });
-      } catch (err){
-        invitePasswordMsg.textContent = "Couldn’t reach the service. Try again in a moment.";
-        invitePasswordMsg.className = "form-msg err";
-        return;
-      }
-      if (res.error){
-        invitePasswordMsg.textContent = res.error.message || "Couldn’t set your password.";
-        invitePasswordMsg.className = "form-msg err";
-        return;
-      }
-      history.replaceState(null, "", location.pathname + location.search + "#admin");
-      await loadAdminData();
-    });
-  }
-
-  if (logoutBtn){
-    logoutBtn.addEventListener("click", async function(){
-      if (client){ try { await client.auth.signOut(); } catch(e){} }
-      showGate("Signed out.", false);
-    });
-  }
-
-  if (adminNavBtn){
-    adminNavBtn.addEventListener("click", function(e){
-      e.preventDefault();
-      document.getElementById("admin").scrollIntoView({ behavior: "smooth" });
-    });
-  }
-
-  (async function init(){
-    if (!client) return;   // gate stays visible; a sign-in attempt explains why
-    try {
-      var sessionRes = await client.auth.getSession();
-      if (isInviteLink && sessionRes.data && sessionRes.data.session){
-        showInvitePasswordSetup();
-        return;
-      }
-      if (sessionRes.data && sessionRes.data.session){
-        await loadAdminData();
-      }
-    } catch (e){
-      if (window.console) console.error(e);
-    }
-    if (location.hash.indexOf("#admin") === 0){
-      document.getElementById("admin").scrollIntoView();
-    }
-  })();
-})();
-</script>
 </body>
 </html>
