@@ -89,8 +89,10 @@ button{font:inherit}
   line-height:.91;margin:18px 0 24px;letter-spacing:-.025em;
 }
 .hero h1 em{display:block}
+.hero-tagline{font-family:var(--display);font-size:22px;font-style:italic;color:var(--accent);margin:0 0 14px}
 .hero-copy{max-width:430px;font-size:16px;line-height:1.65;color:#555047}
 .hero-actions{display:flex;gap:12px;margin-top:30px;flex-wrap:wrap}
+.sticky-cta{display:none}
 .secondary{
   display:inline-flex;align-items:center;justify-content:center;padding:11px 17px;
   border:1px solid var(--line);border-radius:999px;font-size:13px;
@@ -470,7 +472,18 @@ section{scroll-margin-top:100px}
   .hero{min-height:auto;padding:48px 0 54px}
   .hero-grid{grid-template-columns:1fr;gap:34px}
   .hero h1{font-size:clamp(54px,15vw,78px);margin-top:15px}
+  .hero-tagline{font-size:18px}
   .hero-copy{font-size:15px}
+  body{padding-bottom:78px}
+  .sticky-cta{
+    display:flex;position:fixed;left:0;right:0;bottom:0;z-index:55;
+    background:rgba(238,233,222,.97);backdrop-filter:blur(8px);
+    border-top:1px solid var(--line);
+    padding:10px 16px calc(10px + env(safe-area-inset-bottom));
+    transform:translateY(100%);transition:transform .25s ease;
+  }
+  .sticky-cta.is-visible{transform:translateY(0)}
+  .sticky-cta a.cta{width:100%;justify-content:center;min-height:44px}
   .hero-art{min-height:410px;transform:none}
   .hero-art:hover{transform:none}
   .section{padding:64px 0}
@@ -571,7 +584,7 @@ section{scroll-margin-top:100px}
       <a href="#archive">The Archive</a>
       <a href="#about">About KSS</a>
     </nav>
-    <a class="cta" href="#register">Join Us <span>→</span></a>
+    <a class="cta" data-cta="register" href="#register">Join Us <span>→</span></a>
     <button class="menu" id="menu" aria-label="Open menu" aria-expanded="false">☰</button>
   </div>
 </header>
@@ -581,8 +594,9 @@ section{scroll-margin-top:100px}
   <div class="container hero-grid">
     <div>
       <div class="eyebrow">Kyusi Sunday Sketchers · 1st Anniversary</div>
-      <div class="anniv-badge"><strong>01</strong> Fiestang Pinoy</div>
-      <h1>One year of<br>drawing<br><em>together.</em></h1>
+      <div class="anniv-badge"><strong>01</strong> First Anniversary</div>
+      <h1>Fiestang<br><em>Pinoy.</em></h1>
+      <p class="hero-tagline">One year of drawing together.</p>
       <p class="hero-copy">
         A Filipino-inspired anniversary celebration of live sketching,
         community, and art — three themed stations, live models, and a room
@@ -591,11 +605,12 @@ section{scroll-margin-top:100px}
       <div class="event-facts">
         <div><strong>4 Oct 2026</strong><span>Sunday</span></div>
         <div><strong>8:30–12:30</strong><span>Time</span></div>
+        <div><strong>Racket Room Cubao</strong><span>Venue</span></div>
         <div><strong>24</strong><span>Slots</span></div>
       </div>
       <div class="hero-actions">
-        <a class="cta" href="#fiestang-pinoy">See the Anniversary Event →</a>
-        <a class="secondary" data-cta="register" href="#register">Registration opening soon</a>
+        <a class="cta" data-cta="register" href="#register">Registration opening soon →</a>
+        <a class="secondary" href="#fiestang-pinoy">See full event details →</a>
       </div>
     </div>
     <div class="hero-art hero-art-image" aria-label="KSS life drawing sketches from the UKIT session">
@@ -902,6 +917,10 @@ section{scroll-margin-top:100px}
   </div>
 </footer>
 
+<div class="sticky-cta" id="stickyCta">
+  <a class="cta" data-cta="register" href="#register">Registration opening soon →</a>
+</div>
+
 
 <script>
 /* ---------- registration CTA config ----------
@@ -923,6 +942,19 @@ if (REGISTRATION_URL) {
 
 const header=document.getElementById('header');
 addEventListener('scroll',()=>header.classList.toggle('scrolled',scrollY>8),{passive:true});
+
+/* persistent mobile registration CTA — hidden while the hero (which has its
+   own CTA) or the actual Registration block are in view */
+(function(){
+  const stickyCta=document.getElementById('stickyCta');
+  const heroEl=document.querySelector('.hero');
+  const registerEl=document.getElementById('register');
+  if(!stickyCta||!heroEl||!registerEl||!('IntersectionObserver' in window))return;
+  let heroVisible=true, registerVisible=false;
+  function sync(){stickyCta.classList.toggle('is-visible', !heroVisible && !registerVisible)}
+  new IntersectionObserver(es=>{heroVisible=es[0].isIntersecting;sync()},{threshold:0}).observe(heroEl);
+  new IntersectionObserver(es=>{registerVisible=es[0].isIntersecting;sync()},{threshold:0}).observe(registerEl);
+})();
 
 const menu=document.getElementById('menu');
 const nav=document.querySelector('.navlinks');
