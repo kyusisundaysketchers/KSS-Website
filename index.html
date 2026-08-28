@@ -523,10 +523,25 @@ section{scroll-margin-top:100px}
 .organiser-link{font-size:10px !important;color:var(--muted);opacity:.75}
 .organiser-link:hover{opacity:1}
 
+.sub-section{margin-top:64px;scroll-margin-top:100px}
+.info-card .fact{font-family:var(--display);font-size:19px;font-weight:400;display:block;color:var(--ink);margin-bottom:6px}
+
+.table-scroll-wrap{overflow-x:auto;-webkit-overflow-scrolling:touch;margin-top:20px}
+.archive-table{width:100%;border-collapse:collapse;font-size:13px}
+.archive-table th{text-align:left;font-family:var(--sans);font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);font-weight:500;padding:0 16px 12px 0;border-bottom:1px solid var(--ink);white-space:nowrap}
+.archive-table td{padding:16px 16px 16px 0;border-bottom:1px solid var(--line);color:#5d564c;white-space:nowrap}
+.archive-table td:first-child{font-family:var(--display);font-size:19px;color:var(--ink);white-space:normal}
+.archive-table td:first-child a{color:inherit;border-bottom:1px solid var(--line);text-decoration:none}
+.archive-table td:first-child a:hover{border-color:var(--ink)}
+.archive-table tr:last-child td{border-bottom:none}
+
 @media(max-width:800px){
   .card-grid{grid-template-columns:1fr}
   .timeline-row{grid-template-columns:1fr;gap:6px}
   .timeline-when{padding-top:0}
+  .sub-section{margin-top:48px}
+  .archive-table{font-size:12px}
+  .archive-table th,.archive-table td{padding-right:12px}
 }
 
 #admin{
@@ -958,14 +973,11 @@ section{scroll-margin-top:100px}
     </a>
     <nav class="navlinks" aria-label="Primary">
       <a href="#sketchbook">Sketchbook</a>
-      <a href="#events">Event</a>
-      <a href="#programme">Programme</a>
-      <a href="#faq">FAQ</a>
-      <a href="#sessions">Sessions</a>
-      <a href="#about">About</a>
-      <a href="#admin" class="organiser-link">Organisers</a>
+      <a href="#fiestang-pinoy">Fiestang Pinoy</a>
+      <a href="#archive">The Archive</a>
+      <a href="#about">About KSS</a>
     </nav>
-    <a class="cta" href="#join">Join Us <span>→</span></a>
+    <a class="cta" href="#register">Join Us <span>→</span></a>
     <button class="menu" id="menu" aria-label="Open menu" aria-expanded="false">☰</button>
   </div>
 </header>
@@ -988,8 +1000,8 @@ section{scroll-margin-top:100px}
         <div><strong>24</strong><span>Slots</span></div>
       </div>
       <div class="hero-actions">
-        <a class="cta" href="#event">See the Anniversary Event →</a>
-        <a class="secondary" href="#join">Registration opening soon</a>
+        <a class="cta" href="#fiestang-pinoy">See the Anniversary Event →</a>
+        <a class="secondary" href="#register">Registration opening soon</a>
       </div>
     </div>
     <div class="hero-art hero-art-image" aria-label="KSS life drawing sketches from the UKIT session">
@@ -1100,7 +1112,7 @@ section{scroll-margin-top:100px}
   </div>
 </section>
 
-<section class="section" id="events">
+<section class="section" id="fiestang-pinoy">
   <div class="container">
     <div class="event">
       <div class="event-grid">
@@ -1114,114 +1126,142 @@ section{scroll-margin-top:100px}
           <div class="label">Upcoming · 1st Anniversary</div>
           <h2>Fiestang<br>Pinoy</h2>
           <p class="event-lede">Kyusi Sunday Sketchers turns one. We're marking it the way we started: a room full of people drawing together.</p>
-          <div class="event-details">
-            <span>◷ Sunday, 4 October 2026</span>
-            <span>⌖ Racket Room Cubao</span>
-            <span>◎ 24 slots</span>
-          </div>
-          <div class="event-location">94 10th Ave, Cubao, Quezon City</div>
-          <p>Three themed stations, live models, and small colour groups rotating through the morning. Doors and check-in from 9:00 AM. The official programme runs 9:40 AM–12:40 PM; the venue closes at 1:00 PM.</p>
-
-          <div class="station-grid">
-            <div><b>01</b><strong>Amorsolo-ish</strong><span>Filipino light & everyday warmth</span></div>
-            <div><b>02</b><strong>Artistic Nude</strong><span>Form, gesture & movement</span></div>
-            <div><b>03</b><strong>Encanto</strong><span>Filipino-inspired folklore</span></div>
-          </div>
-
-          <a class="cta" href="#join">Registration opening soon →</a>
+          <a class="cta" href="#register">Registration opening soon →</a>
         </div>
       </div>
     </div>
+
+    <div class="sub-section">
+      <div class="section-head">
+        <div><div class="label">Fiestang Pinoy</div><h2>When &amp; Where</h2></div>
+      </div>
+      <div class="card-grid two">
+        <div class="info-card">
+          <h4>When</h4>
+          <span class="fact">Sunday, 4 October 2026</span>
+          <p>Doors and check-in from 9:00 AM. The official programme runs 9:40 AM–12:40 PM; the venue closes at 1:00 PM.</p>
+        </div>
+        <div class="info-card">
+          <h4>Where</h4>
+          <span class="fact">Racket Room Cubao</span>
+          <p>94 10th Ave, Cubao, Quezon City · 24 slots<br><a class="viewall" href="https://www.google.com/maps/search/?api=1&amp;query=Racket+Room+Cubao%2C+94+10th+Ave%2C+Cubao%2C+Quezon+City" target="_blank" rel="noopener">Open in Maps ↗</a></p>
+        </div>
+      </div>
+    </div>
+
+    <div class="sub-section">
+      <div class="section-head">
+        <div><div class="label">Morning at a glance</div><h2>What</h2></div>
+      </div>
+      <p class="hero-copy">How the morning runs, in order — three themed stations, live models, and small colour groups rotating through. Start and finish times are being finalised — they'll be announced with the registration form.</p>
+      <div class="station-grid">
+        <div><b>01</b><strong>Amorsolo-ish</strong><span>Filipino light & everyday warmth</span></div>
+        <div><b>02</b><strong>Artistic Nude</strong><span>Form, gesture & movement</span></div>
+        <div><b>03</b><strong>Encanto</strong><span>Filipino-inspired folklore</span></div>
+      </div>
+      <div class="glance-track">
+        <span class="step">Check-in</span><span class="arrow">→</span>
+        <span class="step">Welcome</span><span class="arrow">→</span>
+        <span class="step">Station 1</span><span class="arrow">→</span>
+        <span class="step">Rotate</span><span class="arrow">→</span>
+        <span class="step">Station 2</span><span class="arrow">→</span>
+        <span class="step">Break</span><span class="arrow">→</span>
+        <span class="step">Rotate</span><span class="arrow">→</span>
+        <span class="step">Station 3</span><span class="arrow">→</span>
+        <span class="step">Celebration</span><span class="arrow">→</span>
+        <span class="step">Closing</span>
+      </div>
+      <div class="timeline">
+        <div class="timeline-row is-key"><div class="timeline-when">Check-in</div><div class="timeline-what"><h3>Arrive and sign in</h3><p>Attendance, your name tag, and the colour tag that sets your group for the morning.</p></div></div>
+        <div class="timeline-row is-key"><div class="timeline-when">Welcome</div><div class="timeline-what"><h3>Short opening</h3><p>Kept brief on purpose. House rules, the station map, how the rotation works, clean-as-you-go, and the rules around photographing the models.</p></div></div>
+        <div class="timeline-row"><div class="timeline-when">Station one</div><div class="timeline-what"><h3>Sketching begins</h3><p>Your group takes its first themed station. A short warm-up pose, then one longer pose with real time to render it.</p></div></div>
+        <div class="timeline-row"><div class="timeline-when">Move</div><div class="timeline-what"><h3>Rotate</h3><p>Finish your drawing, pack up, and move to the next station as a group.</p></div></div>
+        <div class="timeline-row"><div class="timeline-when">Station two</div><div class="timeline-what"><h3>Second theme, second model</h3><p>Same shape to the session: warm up, then settle into the longer pose.</p></div></div>
+        <div class="timeline-row is-key"><div class="timeline-when">Break</div><div class="timeline-what"><h3>Food and a proper rest</h3><p>A real break for artists and models both, in the middle of the morning — snacks, and time to sit around and talk to each other. It's an anniversary, not a workshop.</p></div></div>
+        <div class="timeline-row"><div class="timeline-when">Move</div><div class="timeline-what"><h3>Rotate</h3><p>Pack up from the break and move to your last station as a group.</p></div></div>
+        <div class="timeline-row"><div class="timeline-when">Station three</div><div class="timeline-what"><h3>Third theme, third model</h3><p>Your last model of the morning, and your last long pose.</p></div></div>
+        <div class="timeline-row is-key"><div class="timeline-when">Celebration</div><div class="timeline-what"><h3>Anniversary activity</h3><p>A challenge to close out the drawing, with the mechanics announced on the day.</p></div></div>
+        <div class="timeline-row is-key"><div class="timeline-when">Closing</div><div class="timeline-what"><h3>Photos and goodbyes</h3><p>Group photos, photos with the models, and a look at everyone's work before we pack down together.</p></div></div>
+      </div>
+    </div>
+
+    <div class="sub-section">
+      <div class="section-head">
+        <div><div class="label">Three stations · live models · rotating groups</div><h2>What to Expect</h2></div>
+      </div>
+      <p class="hero-copy">Everyone draws every model, and nobody has to fight for a spot.</p>
+      <div class="card-grid">
+        <div class="info-card"><h4>Three stations</h4><p>Amorsolo-ish, Artistic Nude and Encanto. Each has its own model and set-up, and all three run at the same time, so the room is always drawing.</p></div>
+        <div class="info-card"><h4>Three groups</h4><p>Eight people each. You're given a colour tag at check-in, and you stay with that group all morning.</p></div>
+        <div class="info-card"><h4>You rotate</h4><p>After each session your group moves together to its next station. Over the morning every group draws every model.</p></div>
+      </div>
+      <div class="card-grid two">
+        <div class="info-card"><h4>Inside a station</h4><p>A short warm-up pose, then one longer pose with proper time to render it — fewer timer resets, more drawing. A station lead keeps time, so you can keep your eyes on the model.</p></div>
+        <div class="info-card"><h4>Clean as you go</h4><p>Every station has a bin bag. Clear your own space between sessions and before you leave, so the next group sits down to a clean station.</p></div>
+      </div>
+    </div>
+
+    <div class="sub-section" id="faq">
+      <div class="section-head">
+        <div><div class="label">Questions we get asked most</div><h2>FAQ</h2></div>
+      </div>
+      <p class="hero-copy">If yours isn't here, send it our way.</p>
+      <div class="faq-public">
+        <details><summary>What time should I arrive?</summary><div class="answer"><p>Check-in opens before the programme starts. The exact times go out with the registration form — aim to be signed in and at your first station before the opening, so you don't miss the briefing.</p></div></details>
+        <details><summary>Can I arrive early?</summary><div class="answer"><p>Yes. You're welcome to arrive before the programme begins — just check in with the registration team when you get there and follow their directions while the space is still being set up.</p></div></details>
+        <details><summary>When does the programme start and end?</summary><div class="answer"><p>It's a morning event on Sunday 4 October. We're finalising the venue hours, so the exact start and finish times will be announced with the registration form and confirmed in your registration email.</p></div></details>
+        <details><summary>What are the three stations?</summary><div class="answer"><p>Amorsolo-ish, drawing Filipino light and everyday warmth; Artistic Nude, focused on form, gesture and movement; and Encanto, a Filipino-inspired turn into folklore. Your group rotates through all three.</p></div></details>
+        <details><summary>How does the group rotation work?</summary><div class="answer"><p>You get a colour tag at check-in and that's your group for the morning. Each group starts at a different station and moves together after each session, so everyone draws all three models. Your group's running order is given at the welcome opening.</p></div></details>
+        <details><summary>How long are the sessions?</summary><div class="answer"><p>Each station runs a short warm-up pose and then one longer pose, so you get real time to draw instead of resetting every few minutes. The exact length of the long pose is being finalised, and the station leads keep time on the day.</p></div></details>
+        <details><summary>How many people can join?</summary><div class="answer"><p>24 slots, split into three groups of eight.</p></div></details>
+        <details><summary>What should I bring?</summary><div class="answer"><p>Your own sketching kit — sketchbook or paper, and whatever you like to draw with. Anything else you need to bring goes out with the registration confirmation.</p></div></details>
+        <details><summary>What if I arrive late?</summary><div class="answer"><p>Find the registration team when you arrive and they'll check you in and point you to your group.</p></div></details>
+        <details><summary>Is there parking?</summary><div class="answer"><p>There's no parking at the event space. Street parking around 10th Ave is the only option, so give yourself extra time — or come by transport and save the hunt.</p></div></details>
+        <details><summary>What should I expect at the venue?</summary><div class="answer"><p>Three station areas with a model at each, plus a shared space for the break and the closing activity. Snacks are served during the break. We run clean-as-you-go throughout, so please clear your own space between sessions.</p></div></details>
+        <details><summary>How do I contact the organisers?</summary><div class="answer"><p>Message us on the social channels linked below and one of the organisers will get back to you.</p></div></details>
+      </div>
+    </div>
+
+    <div class="sub-section" id="register">
+      <div class="section-head">
+        <div><div class="label">Come draw with us</div><h2>Registration</h2></div>
+      </div>
+      <p class="hero-copy">The event space is limited to 24 attendees. The form isn't live yet — it will be posted here and announced on our channels the moment it opens. One of the three stations is artistic nude figure drawing; entry and eligibility requirements are published with the registration form, so please read them before you sign up.</p>
+      <div class="hero-actions">
+        <a class="cta" href="#" onclick="return false">Registration opening soon →</a>
+        <a class="secondary" href="https://www.instagram.com/kyusisundaysketchers/" target="_blank" rel="noopener">Instagram ↗</a>
+      </div>
+      <ul class="join-list">
+        <li>24 slots in total, eight per colour group.</li>
+        <li>Sign-up is per person, and your place includes all three themed stations, the break and the closing activity.</li>
+        <li>There's no parking at the venue — street parking only, so allow extra time.</li>
+        <li>Attendance details and entry requirements are sent with your confirmation.</li>
+        <li>Photography rules — including how they apply to the models — are covered in the welcome briefing.</li>
+      </ul>
+    </div>
   </div>
 </section>
 
-<section class="section" id="programme">
+<section class="section" id="archive">
   <div class="container">
     <div class="section-head">
-      <div><div class="label">Morning at a glance</div><h2>Programme</h2></div>
-    </div>
-    <p class="hero-copy">How the morning runs, in order. Start and finish times are being finalised — they'll be announced with the registration form, and the detailed session timing is explained at the welcome briefing.</p>
-    <div class="glance-track">
-      <span class="step">Check-in</span><span class="arrow">→</span>
-      <span class="step">Welcome</span><span class="arrow">→</span>
-      <span class="step">Station 1</span><span class="arrow">→</span>
-      <span class="step">Rotate</span><span class="arrow">→</span>
-      <span class="step">Station 2</span><span class="arrow">→</span>
-      <span class="step">Break</span><span class="arrow">→</span>
-      <span class="step">Rotate</span><span class="arrow">→</span>
-      <span class="step">Station 3</span><span class="arrow">→</span>
-      <span class="step">Celebration</span><span class="arrow">→</span>
-      <span class="step">Closing</span>
-    </div>
-    <div class="timeline">
-      <div class="timeline-row is-key"><div class="timeline-when">Check-in</div><div class="timeline-what"><h3>Arrive and sign in</h3><p>Attendance, your name tag, and the colour tag that sets your group for the morning.</p></div></div>
-      <div class="timeline-row is-key"><div class="timeline-when">Welcome</div><div class="timeline-what"><h3>Short opening</h3><p>Kept brief on purpose. House rules, the station map, how the rotation works, clean-as-you-go, and the rules around photographing the models.</p></div></div>
-      <div class="timeline-row"><div class="timeline-when">Station one</div><div class="timeline-what"><h3>Sketching begins</h3><p>Your group takes its first themed station. A short warm-up pose, then one longer pose with real time to render it.</p></div></div>
-      <div class="timeline-row"><div class="timeline-when">Move</div><div class="timeline-what"><h3>Rotate</h3><p>Finish your drawing, pack up, and move to the next station as a group.</p></div></div>
-      <div class="timeline-row"><div class="timeline-when">Station two</div><div class="timeline-what"><h3>Second theme, second model</h3><p>Same shape to the session: warm up, then settle into the longer pose.</p></div></div>
-      <div class="timeline-row is-key"><div class="timeline-when">Break</div><div class="timeline-what"><h3>Food and a proper rest</h3><p>A real break for artists and models both, in the middle of the morning — snacks, and time to sit around and talk to each other. It's an anniversary, not a workshop.</p></div></div>
-      <div class="timeline-row"><div class="timeline-when">Move</div><div class="timeline-what"><h3>Rotate</h3><p>Pack up from the break and move to your last station as a group.</p></div></div>
-      <div class="timeline-row"><div class="timeline-when">Station three</div><div class="timeline-what"><h3>Third theme, third model</h3><p>Your last model of the morning, and your last long pose.</p></div></div>
-      <div class="timeline-row is-key"><div class="timeline-when">Celebration</div><div class="timeline-what"><h3>Anniversary activity</h3><p>A challenge to close out the drawing, with the mechanics announced on the day.</p></div></div>
-      <div class="timeline-row is-key"><div class="timeline-when">Closing</div><div class="timeline-what"><h3>Photos and goodbyes</h3><p>Group photos, photos with the models, and a look at everyone's work before we pack down together.</p></div></div>
-    </div>
-  </div>
-</section>
-
-<section class="section" id="how">
-  <div class="container">
-    <div class="section-head">
-      <div><div class="label">Three stations · live models · rotating groups</div><h2>How It Works</h2></div>
-    </div>
-    <p class="hero-copy">Everyone draws every model, and nobody has to fight for a spot.</p>
-    <div class="card-grid">
-      <div class="info-card"><h4>Three stations</h4><p>Amorsolo-ish, Artistic Nude and Encanto. Each has its own model and set-up, and all three run at the same time, so the room is always drawing.</p></div>
-      <div class="info-card"><h4>Three groups</h4><p>Eight people each. You're given a colour tag at check-in, and you stay with that group all morning.</p></div>
-      <div class="info-card"><h4>You rotate</h4><p>After each session your group moves together to its next station. Over the morning every group draws every model.</p></div>
-    </div>
-    <div class="card-grid two">
-      <div class="info-card"><h4>Inside a station</h4><p>A short warm-up pose, then one longer pose with proper time to render it — fewer timer resets, more drawing. A station lead keeps time, so you can keep your eyes on the model.</p></div>
-      <div class="info-card"><h4>Clean as you go</h4><p>Every station has a bin bag. Clear your own space between sessions and before you leave, so the next group sits down to a clean station.</p></div>
-    </div>
-  </div>
-</section>
-
-<section class="section" id="faq">
-  <div class="container">
-    <div class="section-head">
-      <div><div class="label">Questions we get asked most</div><h2>FAQ</h2></div>
-    </div>
-    <p class="hero-copy">If yours isn't here, send it our way.</p>
-    <div class="faq-public">
-      <details><summary>What time should I arrive?</summary><div class="answer"><p>Check-in opens before the programme starts. The exact times go out with the registration form — aim to be signed in and at your first station before the opening, so you don't miss the briefing.</p></div></details>
-      <details><summary>Can I arrive early?</summary><div class="answer"><p>Yes. You're welcome to arrive before the programme begins — just check in with the registration team when you get there and follow their directions while the space is still being set up.</p></div></details>
-      <details><summary>When does the programme start and end?</summary><div class="answer"><p>It's a morning event on Sunday 4 October. We're finalising the venue hours, so the exact start and finish times will be announced with the registration form and confirmed in your registration email.</p></div></details>
-      <details><summary>What are the three stations?</summary><div class="answer"><p>Amorsolo-ish, drawing Filipino light and everyday warmth; Artistic Nude, focused on form, gesture and movement; and Encanto, a Filipino-inspired turn into folklore. Your group rotates through all three.</p></div></details>
-      <details><summary>How does the group rotation work?</summary><div class="answer"><p>You get a colour tag at check-in and that's your group for the morning. Each group starts at a different station and moves together after each session, so everyone draws all three models. Your group's running order is given at the welcome opening.</p></div></details>
-      <details><summary>How long are the sessions?</summary><div class="answer"><p>Each station runs a short warm-up pose and then one longer pose, so you get real time to draw instead of resetting every few minutes. The exact length of the long pose is being finalised, and the station leads keep time on the day.</p></div></details>
-      <details><summary>How many people can join?</summary><div class="answer"><p>24 slots, split into three groups of eight.</p></div></details>
-      <details><summary>What should I bring?</summary><div class="answer"><p>Your own sketching kit — sketchbook or paper, and whatever you like to draw with. Anything else you need to bring goes out with the registration confirmation.</p></div></details>
-      <details><summary>What if I arrive late?</summary><div class="answer"><p>Find the registration team when you arrive and they'll check you in and point you to your group.</p></div></details>
-      <details><summary>Is there parking?</summary><div class="answer"><p>There's no parking at the event space. Street parking around 10th Ave is the only option, so give yourself extra time — or come by transport and save the hunt.</p></div></details>
-      <details><summary>What should I expect at the venue?</summary><div class="answer"><p>Three station areas with a model at each, plus a shared space for the break and the closing activity. Snacks are served during the break. We run clean-as-you-go throughout, so please clear your own space between sessions.</p></div></details>
-      <details><summary>How do I contact the organisers?</summary><div class="answer"><p>Message us on the social channels linked below and one of the organisers will get back to you.</p></div></details>
-    </div>
-  </div>
-</section>
-
-<section class="section" id="sessions">
-  <div class="container">
-    <div class="section-head">
-      <div><div class="label">The archive</div><h2>Recent Sessions</h2></div>
+      <div><div class="label">Previous sessions</div><h2>The Archive</h2></div>
       <a class="viewall" href="https://www.instagram.com/kyusisundaysketchers/" target="_blank" rel="noopener">View all ↗</a>
     </div>
-    <div class="session-list">
-      <a class="session" href="https://www.instagram.com/kyusisundaysketchers/" target="_blank" rel="noopener"><span class="session-no">01</span><span><div class="session-name">Pagaspas</div><div class="session-type">Outdoor Life Drawing Session · 16 Aug 2026</div></span><span class="session-arrow">↗</span></a>
-      <a class="session" href="https://www.instagram.com/kyusisundaysketchers/" target="_blank" rel="noopener"><span class="session-no">02</span><span><div class="session-name">UKIT</div><div class="session-type">Life Drawing Session · with Pablo Galleries · 5 Aug 2026</div></span><span class="session-arrow">↗</span></a>
-      <a class="session" href="https://www.instagram.com/kyusisundaysketchers/" target="_blank" rel="noopener"><span class="session-no">03</span><span><div class="session-name">Pagsibol</div><div class="session-type">Figure Drawing Workshop · with Joji Vidal · 15 Feb 2026</div></span><span class="session-arrow">↗</span></a>
-      <a class="session" href="https://www.instagram.com/kyusisundaysketchers/" target="_blank" rel="noopener"><span class="session-no">04</span><span><div class="session-name">Serene</div><div class="session-type">Outdoor Sketching Session · 14 Dec 2025</div></span><span class="session-arrow">↗</span></a>
-      <a class="session" href="https://www.instagram.com/kyusisundaysketchers/" target="_blank" rel="noopener"><span class="session-no">05</span><span><div class="session-name">Pair of Kings</div><div class="session-type">Life Drawing Session · 27 Apr 2025</div></span><span class="session-arrow">↗</span></a>
-      <a class="session" href="https://www.instagram.com/kyusisundaysketchers/" target="_blank" rel="noopener"><span class="session-no">06</span><span><div class="session-name">Silingan</div><div class="session-type">KSS's First Life Drawing Session · 16 Mar 2025</div></span><span class="session-arrow">↗</span></a>
+    <div class="table-scroll-wrap">
+      <table class="archive-table">
+        <thead>
+          <tr><th>Session</th><th>Event Type</th><th>Collaborator</th><th>Date</th></tr>
+        </thead>
+        <tbody>
+          <tr><td><a href="https://www.instagram.com/kyusisundaysketchers/" target="_blank" rel="noopener">Pagaspas ↗</a></td><td>Outdoor Life Drawing Session</td><td>—</td><td>16 Aug 2026</td></tr>
+          <tr><td><a href="https://www.instagram.com/kyusisundaysketchers/" target="_blank" rel="noopener">UKIT ↗</a></td><td>Life Drawing Session</td><td>Pablo Galleries</td><td>5 Aug 2026</td></tr>
+          <tr><td><a href="https://www.instagram.com/kyusisundaysketchers/" target="_blank" rel="noopener">Pagsibol ↗</a></td><td>Figure Drawing Workshop</td><td>Joji Vidal</td><td>15 Feb 2026</td></tr>
+          <tr><td><a href="https://www.instagram.com/kyusisundaysketchers/" target="_blank" rel="noopener">Serene ↗</a></td><td>Outdoor Sketching Session</td><td>—</td><td>14 Dec 2025</td></tr>
+          <tr><td><a href="https://www.instagram.com/kyusisundaysketchers/" target="_blank" rel="noopener">Pair of Kings ↗</a></td><td>Life Drawing Session</td><td>—</td><td>27 Apr 2025</td></tr>
+          <tr><td><a href="https://www.instagram.com/kyusisundaysketchers/" target="_blank" rel="noopener">Silingan ↗</a></td><td>Life Drawing Session</td><td>KSS</td><td>16 Mar 2025</td></tr>
+        </tbody>
+      </table>
     </div>
   </div>
 </section>
@@ -1237,40 +1277,14 @@ section{scroll-margin-top:100px}
       <p>
         Kyusi Sunday Sketchers is a non-profit built by artists for artists,
         creating space, support, and opportunities for the creative community.
+        We're a drawing group in Quezon City, one year old this October.
+        Announcements, the registration link and model reveals all go out on
+        our channels first.
       </p>
-      <a class="cta" href="#join">Learn More →</a>
-    </div>
-  </div>
-</section>
-
-<section class="section" id="join">
-  <div class="container">
-    <div class="section-head">
-      <div><div class="label">Come draw with us</div><h2>Join KSS</h2></div>
-    </div>
-    <p class="hero-copy">The event space is limited to 24 attendees. The form isn't live yet — it will be posted here and announced on our channels the moment it opens. One of the three stations is artistic nude figure drawing; entry and eligibility requirements are published with the registration form, so please read them before you sign up.</p>
-    <div class="hero-actions">
-      <a class="cta" href="#" onclick="return false">Registration opening soon →</a>
-      <a class="secondary" href="https://www.instagram.com/kyusisundaysketchers/" target="_blank" rel="noopener">Instagram ↗</a>
-    </div>
-    <ul class="join-list">
-      <li>24 slots in total, eight per colour group.</li>
-      <li>Sign-up is per person, and your place includes all three themed stations, the break and the closing activity.</li>
-      <li>There's no parking at the venue — street parking only, so allow extra time.</li>
-      <li>Attendance details and entry requirements are sent with your confirmation.</li>
-      <li>Photography rules — including how they apply to the models — are covered in the welcome briefing.</li>
-    </ul>
-  </div>
-</section>
-
-<section class="section" id="contact">
-  <div class="container">
-    <div class="section-head">
-      <div><div class="label">Get in touch</div><h2>Contact</h2></div>
-    </div>
-    <p class="hero-copy">Kyusi Sunday Sketchers is a non-profit built by artists for artists, creating space, support and opportunities for the creative community. We're a drawing group in Quezon City, one year old this October. Announcements, the registration link and model reveals all go out on our channels first.</p>
-    <div class="hero-actions">
-      <a class="cta" href="https://www.instagram.com/kyusisundaysketchers" target="_blank" rel="noopener">Follow on Instagram →</a>
+      <div class="hero-actions">
+        <a class="cta" href="https://www.instagram.com/kyusisundaysketchers" target="_blank" rel="noopener">Follow on Instagram →</a>
+      </div>
+      <a href="#admin" class="organiser-link" style="display:inline-block;margin-top:18px">Organiser sign-in</a>
     </div>
   </div>
 </section>
@@ -1281,9 +1295,8 @@ section{scroll-margin-top:100px}
     <div><div class="footer-brand">Kyusi Sunday Sketchers</div><small>Quezon City</small></div>
     <div class="footer-links">
       <a href="https://www.instagram.com/kyusisundaysketchers/" target="_blank" rel="noopener">Instagram</a>
-      <a href="#join">Join Us</a>
-      <a href="#about">About</a>
-      <a href="#admin" class="organiser-link">Organiser sign-in</a>
+      <a href="#fiestang-pinoy">Fiestang Pinoy</a>
+      <a href="#about">About KSS</a>
     </div>
     <div class="footer-note">Sketching, connecting, creating.</div>
   </div>
