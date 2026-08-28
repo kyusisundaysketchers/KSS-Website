@@ -21,6 +21,6 @@ Registration is not yet open. The CTA config (`REGISTRATION_URL` near the top of
 
 ## Organiser area
 
-The admin panel (login-gated, budget/run-of-show/groups/live event-day timer/etc.) lives in **`admin.html`**, a separate, unlinked page — it is intentionally not reachable from the public site's navigation or footer, and carries a `noindex` meta tag. It renders no planning data itself: everything is fetched from Supabase only after a signed-in session passes `is_admin()` under Row Level Security. See `supabase-schema.sql` and `migrations/` for the backend.
+There is currently no organiser/admin interface deployed on this site. It previously lived in a separate `admin.html` (unlinked from the public nav, `noindex`), but that's been removed for now so the public repo and deployed Pages site are 100% public-facing — being unlinked isn't real access control on a public repo, and it doesn't need to exist here while it's unused.
 
-Note this repo is public, so `admin.html` is technically reachable by anyone with the URL — the real access boundary is Supabase RLS, not the page being unlinked. Treat it accordingly (don't put anything sensitive directly in the markup).
+`supabase-schema.sql` and `migrations/` remain as the backend reference (tables + `is_admin()` Row Level Security policies) for whenever the organiser interface is reintroduced — most likely as a separate, privately-deployed app rather than a page in this public repo.
