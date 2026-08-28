@@ -19,3 +19,12 @@ Programme: 9:40 AM–12:40 PM
 Capacity: 24 places
 
 The event artwork, sketches, and documentation photos remain placeholders.
+
+## Organiser area
+
+The page also carries the organiser admin panel (login-gated, `#admin`) that used
+to live in the separate `Sunday-Sketch` repo: budget, run-of-show, groups,
+live event-day timer, and other planning content. It renders no planning data
+itself — everything is fetched from Supabase only after a signed-in session
+passes `is_admin()` under Row Level Security. See `supabase-schema.sql` and
+`migrations/` for the backend.
