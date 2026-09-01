@@ -1,5 +1,5 @@
 -- ---------------------------------------------------------------------
--- Kyusi Sunday Sketchers — 1st Anniversary · Fiestang Pinoy
+-- Kyusi Sunday Sketchers — Vol. 8 · Alamat, Katha, at Likha (1st Anniversary)
 -- Admin schema + seed data
 --
 -- Run this in the Supabase SQL editor (Project → SQL Editor → New query).
@@ -181,7 +181,7 @@ insert into admin_content (section_key, payload) values
   "status_note": "Blocked on the age rule and the waiver.",
   "status_flag": true,
   "blocker_lede": "This one gates everything else. Registration cannot open until the age rule and the waiver are agreed, because one of the three stations is artistic nude figure drawing.",
-  "decide": ["Minimum age","PG-13 restriction, or 18+","Guardian consent, if minors are allowed","Whether the age rule applies to the whole event or only to the Artistic Nude station"],
+  "decide": ["Minimum age","PG-13 restriction, or 18+","Guardian consent, if minors are allowed","Whether the age rule applies to the whole event or only to the station with artistic nude figure drawing"],
   "write": ["Waiver wording","Consent line on the form","House rules on photos"],
   "update": ["Google Form fields","Age question, required","Confirmation email copy"],
   "order_of_work": "Agree the age rule, then update the form, then open registration. Do not promote the link before the form is correct. The public page already tells attendees that entry and eligibility requirements are published with the form, so the policy has to exist before registration opens."
@@ -342,9 +342,9 @@ insert into admin_content (section_key, payload) values
     {"role":"Host / Facilitator","responsibility":"Runs the 9:40 briefing and speaks to the room between sessions."},
     {"role":"Registration / Welcome","responsibility":"Check-in, colour tags, name tags, attendance sheet, late arrivals."},
     {"role":"Floor / Flow Lead","responsibility":"Moves groups between stations and keeps transitions tight."},
-    {"role":"Station Lead · Amorsolo-ish","responsibility":"Runs the pose sequence and the timer at their station."},
-    {"role":"Station Lead · Artistic Nude","responsibility":"Runs the pose sequence and the timer at their station."},
-    {"role":"Station Lead · Encanto","responsibility":"Runs the pose sequence and the timer at their station."},
+    {"role":"Station Lead · Tala","responsibility":"Runs the pose sequence and the timer at their station."},
+    {"role":"Station Lead · Sitan","responsibility":"Runs the pose sequence and the timer at their station."},
+    {"role":"Station Lead · Bathala","responsibility":"Runs the pose sequence and the timer at their station."},
     {"role":"Timekeeper","responsibility":"Owns the master programme clock against 9:40, 12:40 and 1:00."},
     {"role":"Model Liaison","responsibility":"Single point of contact for the models: call times, breaks, comfort, fees."},
     {"role":"Venue Liaison","responsibility":"Venue contact, access, house rules, inspection and handover."},
@@ -392,7 +392,7 @@ insert into admin_content (section_key, payload) values
     "Walkthrough of the full space completed",
     "Room condition checked and any damage photographed",
     "Furniture arranged to the agreed layout",
-    "Amorsolo-ish, Artistic Nude and Encanto stations set and materials laid out",
+    "Tala, Sitan and Bathala stations set and materials laid out",
     "Model areas prepared and privacy checked with each model",
     "Registration desk live: attendance sheet, colour tags, name tags",
     "Group assignment process rehearsed with the registration team",
