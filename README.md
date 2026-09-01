@@ -1,6 +1,6 @@
 # Kyusi Sunday Sketchers — Website
 
-Public site for the KSS 1st Anniversary — Fiestang Pinoy, with an interactive Sketchbook.
+Public site for KSS Vol. 8 — Alamat, Katha, at Likha (the KSS 1st Anniversary), with an interactive Sketchbook.
 
 ## Sketchbook interaction
 
@@ -11,11 +11,16 @@ Public site for the KSS 1st Anniversary — Fiestang Pinoy, with an interactive 
 
 ## Confirmed event details
 
-Fiestang Pinoy — KSS 1st Anniversary
+KSS Vol. 8 — Alamat, Katha, at Likha (KSS 1st Anniversary)
 Sunday, 4 October 2026 · 8:30 AM–12:30 PM (doors open at 8:30 AM)
 Racket Room Cubao
 94 10th Ave, Cubao, Quezon City
 Capacity: 24 slots
+Registration: ₱1,000 per person
+Three rotating stations: Tala, Sitan, Bathala
+
+Food is not included. Coffee is still under discussion and is deliberately not
+advertised anywhere on the site until it is confirmed.
 
 Registration is not yet open. The CTA config (`REGISTRATION_URL` near the top of the public `<script>` in `index.html`) is the single place to wire up the real registration link once it exists — every `[data-cta="register"]` element updates from it.
 
