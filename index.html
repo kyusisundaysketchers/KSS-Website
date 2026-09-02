@@ -98,6 +98,9 @@ button{font:inherit}
   transition:opacity .18s ease,transform .18s ease,visibility .18s
 }
 .navgroup.is-open .navpanel{opacity:1;visibility:visible;pointer-events:auto;transform:none}
+/* invisible bridge across the gap between the item and its panel, so moving
+   the pointer down to the panel does not leave .navgroup and close it */
+.navpanel:before{content:"";position:absolute;left:0;right:0;top:-10px;height:10px}
 .navpanel a{display:block;padding:11px 16px;font-size:13px;color:#4d4942;white-space:nowrap}
 .navpanel a:after{content:none}
 .navpanel a+a{border-top:1px solid rgba(33,31,27,.09)}
@@ -555,6 +558,7 @@ section{scroll-margin-top:100px}
   .navpanel a{
     padding:11px 2px;font-size:15px;color:#5a544a;white-space:normal
   }
+  .navpanel:before{content:none}
   .navpanel a+a{border-top:0}
   .navpanel a:hover{background:none}
   .navpanel a:last-child{padding-bottom:22px}
