@@ -12,17 +12,16 @@ Public site for KSS Vol. 8 — Alamat, Katha, at Likha (the KSS 1st Anniversary)
 ## Confirmed event details
 
 KSS Vol. 8 — Alamat, Katha, at Likha (KSS 1st Anniversary)
-Sunday, 4 October 2026 · 8:30 AM–12:30 PM (doors open at 8:30 AM)
-Racket Room Cubao
+Sunday, 4 October 2026 · 9:00 AM–1:00 PM (attendees asked to arrive early or on time)
+Racket Room Collective, Cubao
 94 10th Ave, Cubao, Quezon City
 Capacity: 24 slots
 Registration: ₱1,000 per person
-Three rotating stations: Tala, Sitan, Bathala
+Three rotating stations: A Lakapati (God of Agriculture), B Sitan (God of Death, nude, 18+), C Bathala (The Supreme God)
 
-Food is not included. Coffee is still under discussion and is deliberately not
-advertised anywhere on the site until it is confirmed.
+Light snacks and drinking water are provided; attendees may bring their own food.
 
-Registration is not yet open. The CTA config (`REGISTRATION_URL` near the top of the public `<script>` in `index.html`) is the single place to wire up the real registration link once it exists — every `[data-cta="register"]` element updates from it.
+Registration: limited slots; CTAs read "Limited slots only" and point to #register (enquiries via Instagram). After the event, switch the Registration section to "registration closed — thank you for joining us". The CTA config (`REGISTRATION_URL` near the top of the public `<script>` in `index.html`) is the single place to wire up the real registration link once it exists — every `[data-cta="register"]` element updates from it.
 
 ## Organiser area
 
