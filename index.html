@@ -10,6 +10,7 @@
 <meta property="og:title" content="Kyusi Sunday Sketchers · KSS Vol. 8 · Alamat, Likha at Katha">
 <meta property="og:description" content="KSS Vol. 8 — Alamat, Likha at Katha. A themed live drawing session for our first anniversary: three stations drawn from Philippine myth — Lakapati, Sitan and Bathala — live models, 9 AM–1 PM on 4 October 2026.">
 <meta property="og:locale" content="en_PH">
+<meta property="og:image" content="https://kyusisundaysketchers.github.io/KSS-Website/assets/vol8/poster.jpg">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Kyusi Sunday Sketchers · KSS Vol. 8 · Alamat, Likha at Katha">
 <meta name="twitter:description" content="KSS Vol. 8 — Alamat, Likha at Katha. A themed live drawing session for our first anniversary: three stations drawn from Philippine myth — Lakapati, Sitan and Bathala — live models, 9 AM–1 PM on 4 October 2026 at Racket Room Collective, Cubao.">
@@ -270,6 +271,18 @@ section{scroll-margin-top:100px}
   background:linear-gradient(180deg,transparent 55%,rgba(34,48,47,.28));
   pointer-events:none;
 }
+.event-photo-poster{aspect-ratio:3/4;background:#ded1ae}
+.event-photo-poster img{filter:none}
+.event-photo-poster:after{display:none}
+.event-photo-poster a{display:block;width:100%;height:100%}
+.map-row{display:grid;grid-template-columns:minmax(0,440px) minmax(0,1fr);gap:28px;align-items:center;margin:28px 0}
+.map-row .station-grid{grid-template-columns:1fr;margin:0}
+.map-row .station-grid div{min-height:auto}
+.event-map{margin:0}
+@media(max-width:800px){.map-row{grid-template-columns:1fr}}
+.event-map a{display:block}
+.event-map img{display:block;width:100%;height:auto;border:1px solid rgba(34,48,47,.14);box-shadow:0 18px 30px rgba(50,40,30,.1)}
+.event-map figcaption{margin-top:10px;font-size:10px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
 .event-photo-caption{
   position:absolute;
   z-index:2;
@@ -768,11 +781,12 @@ section{scroll-margin-top:100px}
   <div class="container">
     <div class="event">
       <div class="event-grid">
-        <div class="event-photo event-photo-image" aria-label="Kyusi Sunday Sketchers community group photo">
-          <img src="assets/community/ukit-group.jpg"
-               alt="Kyusi Sunday Sketchers members gathered with their drawings after a sketching session"
-               loading="lazy">
-          <div class="event-photo-caption">KSS community · same people, new pages</div>
+        <div class="event-photo event-photo-image event-photo-poster">
+          <a href="assets/vol8/poster.jpg" target="_blank" rel="noopener">
+            <img src="assets/vol8/poster.jpg"
+                 alt="KSS Vol. 08 poster: Alamat, Likha, at Katha, a themed life drawing session inspired by Filipino mythology. Oct 4, 2026, 9 AM to 1 PM at Racket Room, Cubao QC. 1,000 PHP door charge."
+                 width="1200" height="1600" loading="lazy">
+          </a>
         </div>
         <div>
           <div class="label">Upcoming · KSS Vol. 8 · 1st Anniversary · Themed Live Drawing Session</div>
@@ -814,10 +828,20 @@ section{scroll-margin-top:100px}
         <div><div class="label">Morning at a glance</div><h2>What</h2></div>
       </div>
       <p class="hero-copy">How the morning runs, in order — three stations, live models, and small colour groups rotating through, all within the 9:00 AM–1:00 PM window.</p>
-      <div class="station-grid">
-        <div class="st-lakapati"><b>A</b><strong>Lakapati</strong><span>God of Agriculture — costumed model</span></div>
-        <div class="st-sitan"><b>B</b><strong>Sitan</strong><span>God of Death — costumed model, nude figure drawing (18+ only)</span></div>
-        <div class="st-bathala"><b>C</b><strong>Bathala</strong><span>The Supreme God — costumed model</span></div>
+      <div class="map-row">
+        <figure class="event-map">
+          <a href="assets/vol8/event-map.jpg" target="_blank" rel="noopener">
+            <img src="assets/vol8/event-map.jpg"
+                 alt="Event map of Racket Room Collective, Cubao. A: Lakapati, God of Agriculture (costumed model, male). B: Sitan, God of Death (costumed model, nude, male). C: Bathala, the Supreme God (costumed model, male)."
+                 width="1080" height="1350" loading="lazy">
+          </a>
+          <figcaption>Event map · Racket Room Collective · tap to enlarge</figcaption>
+        </figure>
+        <div class="station-grid">
+          <div class="st-lakapati"><b>A</b><strong>Lakapati</strong><span>God of Agriculture — costumed model</span></div>
+          <div class="st-sitan"><b>B</b><strong>Sitan</strong><span>God of Death — costumed model, nude figure drawing (18+ only)</span></div>
+          <div class="st-bathala"><b>C</b><strong>Bathala</strong><span>The Supreme God — costumed model</span></div>
+        </div>
       </div>
       <div class="glance-track">
         <span class="step">Check-in</span><span class="arrow">→</span>
