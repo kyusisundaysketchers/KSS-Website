@@ -1091,7 +1091,7 @@ section{scroll-margin-top:100px}
           <canvas id="qrTreeCanvas" aria-hidden="true"></canvas>
         </button>
         <p class="label qrtree-cue" id="qrTreeCue" aria-hidden="true">Tap the tree</p>
-        <a class="qrtree-sr" href="https://kyusisketchers.art/">kyusisketchers.art</a>
+        <a class="qrtree-sr" href="https://www.instagram.com/kyusisundaysketchers/">Kyusi Sunday Sketchers on Instagram</a>
       </div>
     </div>
   </div>
@@ -1487,26 +1487,27 @@ updateStaticPages();
 
 /* ---------- Tree → QR ----------
    A pixel-art tree on a 41x41 block grid that morphs into a real QR code for
-   https://kyusisketchers.art/. Everything is generated in the browser: the QR
-   is encoded here (version 4, error correction H, 33x33 modules) rather than
+   the KSS Instagram page. Everything is generated in the browser: the QR
+   is encoded here (version 4, error correction M, 33x33 modules) rather than
    shipped as an image, and the tree and the QR share the same grid so the
    blocks can fly between the two states instead of cross-fading.
    No libraries, one canvas, and the loop is idle whenever nothing is moving. */
 (function(){
-  const QR_URL = "https://kyusisketchers.art/";
+  const QR_URL = "https://www.instagram.com/kyusisundaysketchers/";
   const stage  = document.getElementById('qrTree');
   const canvas = document.getElementById('qrTreeCanvas');
   const cue    = document.getElementById('qrTreeCue');
   if(!stage || !canvas || !canvas.getContext) return;
   const ctx = canvas.getContext('2d');
 
-  /* ============ QR encoder — byte mode, version 4, EC level H (33x33) ============
-     Version 4-H holds 34 bytes; the URL is 27, and level H tolerates ~30% damage,
-     which is what keeps the code readable at small on-screen sizes. */
+  /* ============ QR encoder — byte mode, version 4, EC level M (33x33) ============
+     Version 4-M holds 62 bytes; the Instagram URL is 47, too long for level H
+     (34 bytes) at this size. M still tolerates ~15% damage, plenty for a clean
+     on-screen code, and keeps the 33x33 grid the tree is drawn on. */
   function buildQR(text){
     const VERSION=4, SIZE=17+4*VERSION;                      // 33
-    const EC_PER_BLOCK=16, BLOCKS=4, DATA_PER_BLOCK=9;       // 4-H block structure
-    const TOTAL_DATA=BLOCKS*DATA_PER_BLOCK;                  // 36 data codewords
+    const EC_PER_BLOCK=18, BLOCKS=2, DATA_PER_BLOCK=32;      // 4-M block structure
+    const TOTAL_DATA=BLOCKS*DATA_PER_BLOCK;                  // 64 data codewords
 
     /* GF(256), primitive polynomial 0x11d */
     const EXP=new Uint8Array(512), LOG=new Uint8Array(256);
@@ -1535,7 +1536,7 @@ updateStaticPages();
 
     /* bitstream: mode + character count + payload + terminator + pad codewords */
     const bytes=Array.from(new TextEncoder().encode(text));
-    if(bytes.length>34) throw new Error('payload too long for version 4-H');
+    if(bytes.length>62) throw new Error('payload too long for version 4-M');
     const bits=[];
     const put=(v,len)=>{ for(let i=len-1;i>=0;i--) bits.push((v>>i)&1); };
     put(0b0100,4);            // byte mode
@@ -1624,7 +1625,7 @@ updateStaticPages();
       (r,c)=>((((r+c)%2)+((r*c)%3))%2)===0
     ];
     function formatBits(mask){
-      const data=(0b10<<3)|mask;                           // 0b10 = EC level H
+      const data=(0b00<<3)|mask;                           // 0b00 = EC level M
       let v=data<<10;
       for(let i=4;i>=0;i--) if((v>>(i+10))&1) v^=0x537<<i; // BCH(15,5)
       return ((data<<10)|v)^0x5412;
@@ -1897,9 +1898,9 @@ updateStaticPages();
     const showQR = targetP>0.5;
     stage.setAttribute('aria-pressed', showQR?'true':'false');
     stage.setAttribute('aria-label', showQR
-      ? 'QR code for kyusisketchers.art — tap to return to the tree'
+      ? 'QR code for the KSS Instagram page — tap to return to the tree'
       : 'Interactive QR code — tap to reveal');
-    if(cue) cue.textContent = showQR ? 'Scan · kyusisketchers.art' : 'Tap the tree';
+    if(cue) cue.textContent = showQR ? 'Scan · @kyusisundaysketchers' : 'Tap the tree';
     lastTs=0; schedule();
   }
 
