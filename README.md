@@ -28,3 +28,15 @@ Registration: limited slots; CTAs read "Limited slots only" and point to #regist
 There is currently no organiser/admin interface deployed on this site. It previously lived in a separate `admin.html` (unlinked from the public nav, `noindex`), but that's been removed for now so the public repo and deployed Pages site are 100% public-facing — being unlinked isn't real access control on a public repo, and it doesn't need to exist here while it's unused.
 
 `supabase-schema.sql` and `migrations/` remain as the backend reference (tables + `is_admin()` Row Level Security policies) for whenever the organiser interface is reintroduced — most likely as a separate, privately-deployed app rather than a page in this public repo.
+
+## Event-day check-in (`check-in/`)
+
+`check-in/index.html` is the organisers' door check-in for Vol. 8. It is not linked from the site and is marked `noindex`. It needs no backend:
+
+- At the door, open `/check-in/` and choose the attendee CSV (`handle, alt_handle, display_name, email, phone, party_key`). The file is read in the browser only. Emails and phone numbers are dropped on load and never stored or shown.
+- Search by name, handle or alt handle (a leading `@` is ignored). Select one or more people and check them in. Party members (same `party_key`) are pre-selected together.
+- Colour is auto-balanced: a colour the whole party fits in, then the smallest group, then Cyan → Red → Orange. 8 seats per colour; a 9th is allowed with a warning. Check-ins after the event start are tagged late ("Wait in LATAG").
+- Move, Undo and Add walk-in are on the page. Settings has the times, seats per colour, and colour names (marked not confirmed).
+- State is saved in that device's browser, so use **one device** for check-in. Use "Download results (CSV)" at the end, then "Clear all data on this device".
+
+Never commit the attendee CSV or the results export: `*.csv` is in `.gitignore`.
