@@ -1,0 +1,689 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="robots" content="noindex,nofollow">
+<meta name="theme-color" content="#eee5cd">
+<link rel="icon" type="image/png" href="../assets/kss-logo.png">
+<title>KSS Check-in</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Instrument+Serif&display=swap" rel="stylesheet">
+<style>
+/* Organiser check-in for the event door. Runs entirely in this browser:
+   the attendee CSV is loaded from the device, only name/handle/party are
+   kept, and check-in state lives in this device's localStorage. No
+   attendee data is stored in this repo. */
+:root{
+  --paper:#eee5cd;
+  --paper-2:#e5d9b8;
+  --card:#f7f1e1;
+  --ink:#22302f;
+  --muted:#6e7264;
+  --line:rgba(34,48,47,.16);
+  --accent:#d1512a;
+  --warn-bg:#fbe3c8;
+  --warn-ink:#7a3a06;
+  --display:"Instrument Serif", Georgia, serif;
+  --sans:"DM Sans", Arial, sans-serif;
+}
+*{box-sizing:border-box}
+html,body{margin:0}
+body{background:var(--paper);color:var(--ink);font-family:var(--sans);-webkit-font-smoothing:antialiased;padding-bottom:300px}
+button,input,select{font:inherit;color:inherit}
+button{cursor:pointer}
+.wrap{width:min(860px,calc(100% - 32px));margin:0 auto}
+[hidden]{display:none!important}
+
+/* Top bar */
+.top{position:sticky;top:0;z-index:10;background:rgba(238,229,205,.94);backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
+.top .wrap{padding:12px 0 10px}
+.top-row{display:flex;align-items:center;gap:12px;flex-wrap:wrap}
+.brand{display:flex;align-items:center;gap:10px;margin-right:auto}
+.brand img{width:36px;height:36px}
+.brand h1{font-family:var(--display);font-weight:400;font-size:26px;margin:0;line-height:1}
+.brand small{display:block;font-size:12px;color:var(--muted);letter-spacing:.04em}
+.counts{display:flex;gap:6px;flex-wrap:wrap}
+.count{display:inline-flex;align-items:center;gap:6px;padding:5px 10px;border-radius:999px;background:var(--card);border:1px solid var(--line);font-size:14px;font-weight:600}
+.count .dot{width:10px;height:10px;border-radius:50%}
+.count.over{background:var(--warn-bg);color:var(--warn-ink);border-color:#e7b07a}
+.meta{display:flex;gap:14px;flex-wrap:wrap;margin-top:8px;font-size:13px;color:var(--muted)}
+.meta strong{color:var(--ink)}
+.linkbtn{background:none;border:0;padding:0;text-decoration:underline;color:var(--ink);font-size:13px}
+
+/* Panels */
+.panel{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:16px;margin-top:16px}
+.panel h2{font-family:var(--display);font-weight:400;font-size:24px;margin:0 0 8px}
+.panel p{margin:0 0 10px;line-height:1.5}
+.note{font-size:13px;color:var(--muted)}
+.tag-unconfirmed{display:inline-block;font-size:11px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;background:var(--warn-bg);color:var(--warn-ink);border-radius:4px;padding:2px 6px;vertical-align:middle}
+.field{display:grid;gap:4px;margin-bottom:12px}
+.field label{font-size:13px;font-weight:600}
+.field input,.field select{padding:10px 12px;border:1px solid var(--line);border-radius:8px;background:#fff;min-height:44px}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+@media (max-width:560px){.grid2,.grid3{grid-template-columns:1fr}}
+
+.btn{min-height:44px;padding:10px 18px;border-radius:10px;border:1px solid var(--ink);background:transparent;font-weight:600}
+.btn.primary{background:var(--ink);color:#fff}
+.btn.danger{border-color:var(--accent);color:var(--accent)}
+.btn:disabled{opacity:.4;cursor:not-allowed}
+.btn-row{display:flex;gap:10px;flex-wrap:wrap}
+
+/* Search */
+.search{margin-top:16px;position:relative}
+.search input{width:100%;font-size:26px;padding:16px 18px;border-radius:14px;border:2px solid var(--ink);background:#fff;min-height:64px}
+.search input::placeholder{color:#9a9a8c}
+.toolbar{display:flex;justify-content:space-between;align-items:center;gap:10px;margin:12px 0 6px;flex-wrap:wrap}
+.toolbar .note{margin:0}
+
+/* Results */
+.list{list-style:none;margin:0;padding:0;display:grid;gap:8px}
+.row{display:flex;align-items:center;gap:12px;background:#fff;border:2px solid transparent;border-radius:12px;padding:12px 14px}
+.row.selectable{cursor:pointer}
+.row.selected{border-color:var(--ink);background:#fffdf6}
+.row .tick{width:26px;height:26px;border-radius:7px;border:2px solid var(--ink);flex:none;display:grid;place-items:center;font-weight:700}
+.row.selected .tick{background:var(--ink);color:#fff}
+.row .tick.placeholder{border-color:transparent}
+.who{flex:1;min-width:0}
+.who .name{font-size:20px;font-weight:600}
+.who .handle{font-size:14px;color:var(--muted);overflow-wrap:anywhere}
+.who .hint{font-size:13px;color:var(--warn-ink);margin-top:2px}
+.status{display:flex;align-items:center;gap:6px;flex-wrap:wrap;justify-content:flex-end}
+.chip{display:inline-block;padding:4px 10px;border-radius:999px;font-size:13px;font-weight:700}
+.chip.none{background:var(--paper-2);color:var(--muted)}
+.chip.late{background:var(--warn-bg);color:var(--warn-ink)}
+.chip.walkin{background:transparent;border:1px solid var(--line);color:var(--muted)}
+.row-actions{display:flex;gap:6px}
+.row-actions button,.row-actions select{min-height:36px;padding:4px 10px;border-radius:8px;border:1px solid var(--line);background:var(--card);font-size:13px}
+.empty{padding:18px;text-align:center;color:var(--muted)}
+
+/* Result card */
+.result{margin-top:16px;border-radius:16px;padding:22px;color:#fff}
+.result .label{font-size:14px;letter-spacing:.1em;text-transform:uppercase;opacity:.9}
+.result .colour{font-family:var(--display);font-size:64px;line-height:1;margin:6px 0 10px}
+.result .names{font-size:22px;font-weight:600}
+.result .alert{margin-top:12px;background:rgba(255,255,255,.92);color:var(--ink);border-radius:10px;padding:10px 12px;font-weight:600}
+.result .alert.warn{background:var(--warn-bg);color:var(--warn-ink)}
+
+/* Sticky action bar */
+.actionbar{position:fixed;left:0;right:0;bottom:0;z-index:10;background:var(--paper);border-top:1px solid var(--line);box-shadow:0 -6px 18px rgba(34,48,47,.08);padding:12px 0 calc(12px + env(safe-area-inset-bottom))}
+.actionbar .wrap{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+.actionbar .sel{flex:1 1 200px;font-size:15px;font-weight:600;min-width:0;overflow-wrap:anywhere}
+.actionbar .btn.primary{font-size:20px;padding:12px 26px;min-height:56px}
+.stations-label{flex-basis:100%;font-size:12px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);margin-bottom:-4px}
+.stations{flex-basis:100%;display:grid;grid-template-columns:auto repeat(3,1fr);gap:6px}
+.pick{display:flex;align-items:center;gap:8px;text-align:left;min-height:52px;padding:6px 10px;border-radius:10px;border:2px solid var(--line);background:#fff;line-height:1.15}
+.pick b{display:block;font-size:15px}
+.pick small{display:block;font-size:12px;color:var(--muted)}
+.pick .dot{width:12px;height:12px;border-radius:50%;background:var(--c);flex:none}
+.pick.on{border-color:var(--ink);background:#fffdf6;box-shadow:inset 0 0 0 1px var(--ink)}
+.pick.full small{color:var(--warn-ink);font-weight:700}
+.result .start{font-size:20px;font-weight:700;margin:-2px 0 10px}
+@media (max-width:560px){
+  .stations{grid-template-columns:1fr 1fr}
+  .actionbar .sel{flex-basis:100%}
+  .actionbar .btn.primary{flex:1}
+}
+
+.msg{margin-top:12px;padding:10px 12px;border-radius:10px;background:var(--warn-bg);color:var(--warn-ink);font-weight:600}
+dialog{border:1px solid var(--line);border-radius:14px;background:var(--card);color:var(--ink);padding:20px;width:min(440px,calc(100% - 32px))}
+dialog::backdrop{background:rgba(34,48,47,.4)}
+dialog h2{font-family:var(--display);font-weight:400;font-size:26px;margin:0 0 12px}
+</style>
+</head>
+<body>
+
+<header class="top">
+  <div class="wrap">
+    <div class="top-row">
+      <div class="brand">
+        <img src="../assets/kss-logo.png" alt="">
+        <div><h1>Check-in</h1><small>KSS Vol. 08 · Organisers only</small></div>
+      </div>
+      <div class="counts" id="counts" aria-live="polite"></div>
+    </div>
+    <div class="meta">
+      <span id="total"></span>
+      <span id="times"></span>
+      <button class="linkbtn" id="toggle-settings" type="button" aria-expanded="false" aria-controls="settings">Settings</button>
+    </div>
+  </div>
+</header>
+
+<main class="wrap">
+
+  <!-- Settings -->
+  <section class="panel" id="settings" hidden>
+    <h2>Settings</h2>
+    <p class="note">Times are Asia/Manila. Clear the event start to switch off late tagging.</p>
+    <div class="grid2">
+      <div class="field"><label for="set-opens">Registration opens</label><input type="datetime-local" id="set-opens"></div>
+      <div class="field"><label for="set-start">Event starts (late after this)</label><input type="datetime-local" id="set-start"></div>
+    </div>
+    <div class="field" style="max-width:200px"><label for="set-cap">Seats per colour</label><input type="number" id="set-cap" min="1" max="99"></div>
+    <p><strong>Colour names</strong> <span class="tag-unconfirmed">Not confirmed</span></p>
+    <div class="grid3" id="set-colours"></div>
+    <div class="btn-row" style="margin-top:6px">
+      <button class="btn" id="export" type="button">Download results (CSV)</button>
+      <button class="btn" id="reload-list" type="button">Load a new attendee list</button>
+      <button class="btn danger" id="clear-device" type="button">Clear all data on this device</button>
+    </div>
+    <p class="note" style="margin-top:10px">Results export has names, handles, colours and times only. No emails or phone numbers.</p>
+  </section>
+
+  <!-- Setup: no attendee list yet -->
+  <section class="panel" id="setup" hidden>
+    <h2>Load the attendee list</h2>
+    <p>Choose the attendee CSV on this device. Columns used: <code>handle</code>, <code>alt_handle</code>, <code>display_name</code>, <code>party_key</code>.</p>
+    <p class="note">The file is read in this browser only. Emails and phone numbers are dropped on load and never stored. Check-ins are saved on this device, so use one device at the door.</p>
+    <input type="file" id="csv" accept=".csv,text/csv">
+    <div class="msg" id="setup-msg" hidden></div>
+  </section>
+
+  <!-- Check-in -->
+  <section id="desk" hidden>
+    <div class="search">
+      <label for="q" class="note" style="display:block;margin-bottom:6px">Type your name or Instagram handle</label>
+      <input id="q" type="search" autocomplete="off" autocapitalize="off" spellcheck="false" placeholder="Name or @handle">
+    </div>
+
+    <div id="result" hidden></div>
+    <div class="msg" id="desk-msg" hidden></div>
+
+    <div class="toolbar">
+      <p class="note" id="list-note"></p>
+      <button class="btn" id="walkin-open" type="button">Add walk-in</button>
+    </div>
+    <ul class="list" id="list"></ul>
+  </section>
+</main>
+
+<div class="actionbar" id="actionbar" hidden>
+  <div class="wrap">
+    <div class="stations-label">Starting station</div>
+    <div class="stations" id="stations" role="group" aria-label="Starting station"></div>
+    <div class="sel" id="sel-text"></div>
+    <button class="btn" id="sel-clear" type="button">Clear</button>
+    <button class="btn primary" id="checkin" type="button">Check in</button>
+  </div>
+</div>
+
+<dialog id="walkin">
+  <form method="dialog" id="walkin-form">
+    <h2>Add walk-in</h2>
+    <div class="field"><label for="w-name">Name (required)</label><input id="w-name" required autocomplete="off"></div>
+    <div class="field"><label for="w-handle">Instagram handle (optional)</label><input id="w-handle" autocomplete="off" autocapitalize="off" spellcheck="false"></div>
+    <div class="field"><label for="w-station">Starting station</label><select id="w-station"></select></div>
+    <div class="btn-row">
+      <button class="btn primary" value="ok" type="submit">Add and check in</button>
+      <button class="btn" value="cancel" type="button" id="walkin-cancel">Cancel</button>
+    </div>
+  </form>
+</dialog>
+
+<script>
+(function(){
+  'use strict';
+
+  var STORE_KEY = 'kss-checkin-v1';
+  var TZ = 'Asia/Manila';
+  var TZ_OFFSET = '+08:00';
+
+  // Defaults are only used the first time this device loads a list; the
+  // organisers can change every one of them in Settings.
+  var DEFAULT_SETTINGS = {
+    capacity: 8,
+    opens: '2026-10-04T08:30:00+08:00',
+    start: '2026-10-04T09:00:00+08:00',
+    colours: [
+      // Starting station per colour, matching the badges on the event map.
+      {key:'cyan',   label:'Cyan',   bg:'#13879a', fg:'#ffffff', station:'A', stationName:'Lakapati'},
+      {key:'red',    label:'Red',    bg:'#c0352b', fg:'#ffffff', station:'B', stationName:'Sitan'},
+      {key:'orange', label:'Orange', bg:'#b9560c', fg:'#ffffff', station:'C', stationName:'Bathala'}
+    ]
+  };
+
+  var state = load();
+  var selected = new Set();
+  var pref = '';   // chosen starting station (colour key); '' = auto-balance
+  var lastResult = null;
+
+  // ---------- storage ----------
+  function blank(){ return {attendees:[], settings:JSON.parse(JSON.stringify(DEFAULT_SETTINGS))}; }
+  function load(){
+    try {
+      var raw = localStorage.getItem(STORE_KEY);
+      if (raw){
+        var s = JSON.parse(raw);
+        if (s && Array.isArray(s.attendees) && s.settings){
+          // Fill in fields added after this device first saved its list.
+          s.settings.colours.forEach(function(c){
+            var d = DEFAULT_SETTINGS.colours.filter(function(x){ return x.key === c.key; })[0];
+            if (d && !c.station){ c.station = d.station; c.stationName = d.stationName; }
+          });
+          return s;
+        }
+      }
+    } catch(e){}
+    return blank();
+  }
+  function save(){
+    try { localStorage.setItem(STORE_KEY, JSON.stringify(state)); }
+    catch(e){ showMsg('desk-msg', 'Could not save on this device. Check-ins will be lost if the page is closed. Download results from Settings.'); }
+  }
+  // Keep two tabs on the same device in step.
+  window.addEventListener('storage', function(e){
+    if (e.key === STORE_KEY){ state = load(); render(); }
+  });
+
+  // ---------- helpers ----------
+  function $(id){ return document.getElementById(id); }
+  function esc(s){ return String(s == null ? '' : s).replace(/[&<>"']/g, function(c){ return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]; }); }
+  function norm(s){ return String(s || '').trim().toLowerCase().replace(/^@+/, ''); }
+  function uid(){ return 'a' + Date.now().toString(36) + Math.random().toString(36).slice(2, 8); }
+  function colourOf(key){ return state.settings.colours.filter(function(c){ return c.key === key; })[0]; }
+  function checkedIn(){ return state.attendees.filter(function(a){ return a.colour; }); }
+  function countFor(key){ return state.attendees.filter(function(a){ return a.colour === key; }).length; }
+  function showMsg(id, text){ var el = $(id); el.textContent = text; el.hidden = !text; }
+
+  function fmtTime(iso){
+    if (!iso) return '';
+    return new Intl.DateTimeFormat('en-PH', {timeZone:TZ, hour:'numeric', minute:'2-digit'}).format(new Date(iso));
+  }
+  // ISO (any offset) -> "YYYY-MM-DDTHH:MM" in Manila, for datetime-local inputs.
+  function toManilaInput(iso){
+    if (!iso) return '';
+    var p = {};
+    new Intl.DateTimeFormat('en-CA', {timeZone:TZ, year:'numeric', month:'2-digit', day:'2-digit', hour:'2-digit', minute:'2-digit', hourCycle:'h23'})
+      .formatToParts(new Date(iso)).forEach(function(x){ p[x.type] = x.value; });
+    return p.year + '-' + p.month + '-' + p.day + 'T' + p.hour + ':' + p.minute;
+  }
+  // datetime-local value is read as Manila time regardless of the device's zone.
+  function fromManilaInput(v){ return v ? v + ':00' + TZ_OFFSET : ''; }
+
+  // ---------- CSV ----------
+  function parseCSV(text){
+    text = text.replace(/^﻿/, '');
+    var rows = [], row = [], f = '', q = false;
+    for (var i = 0; i < text.length; i++){
+      var c = text[i];
+      if (q){
+        if (c === '"'){ if (text[i+1] === '"'){ f += '"'; i++; } else q = false; }
+        else f += c;
+      } else if (c === '"') q = true;
+      else if (c === ','){ row.push(f); f = ''; }
+      else if (c === '\n' || c === '\r'){
+        if (c === '\r' && text[i+1] === '\n') i++;
+        row.push(f); rows.push(row); row = []; f = '';
+      } else f += c;
+    }
+    if (f !== '' || row.length){ row.push(f); rows.push(row); }
+    return rows.filter(function(r){ return r.some(function(x){ return x.trim() !== ''; }); });
+  }
+
+  // Only these columns are ever read; email and phone are dropped here.
+  function rosterFromCSV(text){
+    var rows = parseCSV(text);
+    if (rows.length < 2) throw new Error('The file has no attendee rows.');
+    var head = rows[0].map(norm);
+    var col = function(n){ return head.indexOf(n); };
+    var iH = col('handle'), iA = col('alt_handle'), iN = col('display_name'), iP = col('party_key');
+    if (iH < 0 && iN < 0) throw new Error('The file needs a "handle" or "display_name" column.');
+    var get = function(r, i){ return i < 0 ? '' : String(r[i] || '').trim(); };
+    return rows.slice(1).map(function(r){
+      var handle = get(r, iH).replace(/^@+/, '');
+      var name = get(r, iN) || handle;
+      return {id:uid(), handle:handle, alt:get(r, iA).replace(/^@+/, ''), name:name,
+              party:get(r, iP), colour:null, at:null, late:false, walkIn:false};
+    }).filter(function(a){ return a.name; });
+  }
+
+  function importList(text){
+    var fresh = rosterFromCSV(text);
+    // Keep check-ins already made on this device when a list is reloaded.
+    var prev = {};
+    state.attendees.forEach(function(a){ if (a.handle) prev[norm(a.handle)] = a; });
+    var seen = {};
+    fresh.forEach(function(a){
+      var old = a.handle && prev[norm(a.handle)];
+      if (old){ a.id = old.id; a.colour = old.colour; a.at = old.at; a.late = old.late; seen[old.id] = 1; }
+    });
+    var kept = state.attendees.filter(function(a){ return !seen[a.id] && (a.walkIn || a.colour); });
+    state.attendees = fresh.concat(kept);
+    save();
+    return fresh.length;
+  }
+
+  // ---------- assignment ----------
+  // Prefer a colour where the whole party fits; then fewest people; then the
+  // fixed order of the colour list.
+  function pickColour(k){
+    var cap = state.settings.capacity;
+    var opts = state.settings.colours.map(function(c, i){ return {key:c.key, n:countFor(c.key), ord:i}; });
+    opts.sort(function(a, b){
+      var fa = a.n + k <= cap, fb = b.n + k <= cap;
+      if (fa !== fb) return fa ? -1 : 1;
+      if (a.n !== b.n) return a.n - b.n;
+      return a.ord - b.ord;
+    });
+    return opts[0].key;
+  }
+
+  function isLateNow(){
+    var s = state.settings.start;
+    return !!s && Date.now() > new Date(s).getTime();
+  }
+
+  // `choice` is a colour key when the attendee picked a starting station;
+  // empty means auto-balance. A chosen station is honoured even when full.
+  function checkIn(ids, choice){
+    var people = ids.map(function(id){ return state.attendees.filter(function(a){ return a.id === id; })[0]; })
+                    .filter(Boolean);
+    if (!people.length) return;
+    if (people.some(function(a){ return a.colour; })){
+      showMsg('desk-msg', 'Someone in this selection is already checked in. Refresh the list and try again.');
+      return;
+    }
+    var key = (choice && colourOf(choice)) ? choice : pickColour(people.length);
+    var now = new Date().toISOString();
+    var late = isLateNow();
+    people.forEach(function(a){ a.colour = key; a.at = now; a.late = late; });
+    save();
+    var n = countFor(key);
+    lastResult = {colour:key, names:people.map(function(a){ return a.name; }), late:late,
+                  count:n, overflow:n > state.settings.capacity, chosen:!!choice};
+    selected.clear();
+    pref = '';
+    $('q').value = '';
+    showMsg('desk-msg', '');
+    render();
+    $('result').scrollIntoView({behavior:'smooth', block:'nearest'});
+  }
+
+  // ---------- rendering ----------
+  function renderTop(){
+    var cap = state.settings.capacity;
+    $('counts').innerHTML = state.settings.colours.map(function(c){
+      var n = countFor(c.key), over = n > cap;
+      return '<span class="count' + (over ? ' over' : '') + '"><span class="dot" style="background:' + esc(c.bg) + '"></span>' +
+             esc(c.label) + ' · ' + esc(c.station) + ' ' + n + '/' + cap + (over ? ' ⚠' : '') + '</span>';
+    }).join('');
+    var total = state.attendees.length;
+    $('total').innerHTML = '<strong>' + checkedIn().length + '</strong> of ' + total + ' checked in';
+    var t = [];
+    if (state.settings.opens) t.push('Registration opens ' + fmtTime(state.settings.opens));
+    t.push(state.settings.start ? 'Event starts ' + fmtTime(state.settings.start) : 'Late tagging off');
+    $('times').textContent = t.join(' · ');
+  }
+
+  function renderSettings(){
+    $('set-opens').value = toManilaInput(state.settings.opens);
+    $('set-start').value = toManilaInput(state.settings.start);
+    $('set-cap').value = state.settings.capacity;
+    $('set-colours').innerHTML = state.settings.colours.map(function(c, i){
+      return '<div class="field"><label for="col-' + i + '"><span class="count" style="padding:0;border:0;background:none"><span class="dot" style="background:' + esc(c.bg) + '"></span>Colour ' + (i + 1) + '</span></label>' +
+             '<input id="col-' + i + '" data-colour="' + i + '" value="' + esc(c.label) + '"></div>';
+    }).join('');
+  }
+
+  function matches(a, q){
+    if (!q) return true;
+    return norm(a.name).indexOf(q) >= 0 || norm(a.handle).indexOf(q) >= 0 || norm(a.alt).indexOf(q) >= 0;
+  }
+
+  function partyHint(a){
+    if (!a.party || a.colour) return '';
+    return state.attendees.filter(function(o){ return o.id !== a.id && o.party === a.party && o.colour; })
+      .map(function(o){ return 'Party member ' + o.name + ' is in ' + colourOf(o.colour).label + '.'; }).join(' ');
+  }
+
+  function renderList(){
+    var q = norm($('q').value);
+    var list = state.attendees.filter(function(a){ return matches(a, q) || selected.has(a.id); })
+      .sort(function(a, b){
+        if (!!a.colour !== !!b.colour) return a.colour ? 1 : -1;   // not-yet-in first
+        return a.name.localeCompare(b.name, 'en', {sensitivity:'base'});
+      });
+    $('list-note').textContent = q ? list.length + ' match' + (list.length === 1 ? '' : 'es') : 'Everyone · not checked in first';
+    if (!list.length){
+      $('list').innerHTML = '<li class="empty">No one found. Try part of the name, or the Instagram handle. Not on the list? Use <strong>Add walk-in</strong>.</li>';
+      return;
+    }
+    $('list').innerHTML = list.map(function(a){
+      var c = a.colour && colourOf(a.colour);
+      var handles = [a.handle, a.alt].filter(Boolean).map(function(h){ return '@' + esc(h); }).join(' · ');
+      var status = c
+        ? '<span class="chip" style="background:' + esc(c.bg) + ';color:' + esc(c.fg) + '">' + esc(c.label) + '</span>' +
+          (a.late ? '<span class="chip late">Late</span>' : '')
+        : '<span class="chip none">Not in</span>';
+      if (a.walkIn) status += '<span class="chip walkin">Walk-in</span>';
+      var hint = partyHint(a);
+      var actions = c
+        ? '<div class="row-actions"><select data-move="' + a.id + '" aria-label="Move ' + esc(a.name) + ' to another colour"><option value="">Move…</option>' +
+          state.settings.colours.filter(function(o){ return o.key !== a.colour; })
+            .map(function(o){ return '<option value="' + esc(o.key) + '">' + esc(o.label) + '</option>'; }).join('') +
+          '</select><button type="button" data-undo="' + a.id + '">Undo</button></div>'
+        : '';
+      var sel = selected.has(a.id);
+      return '<li class="row' + (c ? '' : ' selectable') + (sel ? ' selected' : '') + '"' +
+             (c ? '' : ' data-pick="' + a.id + '" role="checkbox" tabindex="0" aria-checked="' + sel + '"') + '>' +
+             '<span class="tick' + (c ? ' placeholder' : '') + '">' + (sel ? '✓' : '') + '</span>' +
+             '<div class="who"><div class="name">' + esc(a.name) + '</div>' +
+             '<div class="handle">' + (handles || 'no handle') + '</div>' +
+             (hint ? '<div class="hint">' + esc(hint) + '</div>' : '') + '</div>' +
+             '<div class="status">' + status + actions + '</div></li>';
+    }).join('');
+  }
+
+  function renderResult(){
+    var el = $('result');
+    if (!lastResult){ el.hidden = true; el.innerHTML = ''; return; }
+    var c = colourOf(lastResult.colour) || {label:lastResult.colour, bg:'#22302f', fg:'#fff'};
+    el.hidden = false;
+    el.className = 'result';
+    el.style.background = c.bg;
+    el.style.color = c.fg;
+    el.innerHTML = '<div class="label">Your colour group</div>' +
+      '<div class="colour">' + esc(c.label) + '</div>' +
+      (c.station ? '<div class="start">Start at ' + esc(c.station) + ' · ' + esc(c.stationName) + '</div>' : '') +
+      '<div class="names">' + lastResult.names.map(esc).join(', ') + '</div>' +
+      (lastResult.overflow ? '<div class="alert warn">This colour is now over ' + state.settings.capacity + ' (' + lastResult.count + ' people).</div>' : '') +
+      (lastResult.late ? '<div class="alert">Wait in LATAG. Join at the next station change.</div>' : '');
+  }
+
+  // Auto + one button per station, with live seat counts. A full station
+  // can still be chosen; the result card then shows the over-capacity warning.
+  function stationButtons(current, k){
+    var cap = state.settings.capacity;
+    return '<button type="button" class="pick' + (current ? '' : ' on') + '" data-pref="" aria-pressed="' + !current + '">Auto</button>' +
+      state.settings.colours.map(function(c){
+        var n = countFor(c.key), full = n + k > cap, on = current === c.key;
+        return '<button type="button" class="pick' + (on ? ' on' : '') + (full ? ' full' : '') + '" data-pref="' + esc(c.key) + '" aria-pressed="' + on + '"' +
+               ' style="--c:' + esc(c.bg) + '"><span class="dot"></span><span><b>' + esc(c.station) + ' · ' + esc(c.stationName) + '</b>' +
+               '<small>' + esc(c.label) + ' ' + (full ? 'Full ' : '') + n + '/' + cap + '</small></span></button>';
+      }).join('');
+  }
+
+  function renderActionbar(){
+    var n = selected.size;
+    $('actionbar').hidden = n === 0;
+    if (!n) return;
+    var names = state.attendees.filter(function(a){ return selected.has(a.id); }).map(function(a){ return a.name; });
+    $('sel-text').textContent = names.join(', ');
+    $('stations').innerHTML = stationButtons(pref, n);
+    $('checkin').textContent = n > 1 ? 'Check in together (' + n + ')' : 'Check in';
+  }
+
+  function render(){
+    var has = state.attendees.length > 0;
+    $('setup').hidden = has;
+    $('desk').hidden = !has;
+    // Drop selections that are no longer valid (e.g. checked in from another tab).
+    selected.forEach(function(id){
+      var a = state.attendees.filter(function(x){ return x.id === id; })[0];
+      if (!a || a.colour) selected.delete(id);
+    });
+    renderTop();
+    if (has){ renderList(); renderResult(); }
+    renderActionbar();
+  }
+
+  // ---------- events ----------
+  $('csv').addEventListener('change', function(e){
+    var file = e.target.files[0];
+    if (!file) return;
+    var reader = new FileReader();
+    reader.onload = function(){
+      try {
+        var n = importList(String(reader.result));
+        showMsg('setup-msg', '');
+        render();
+        showMsg('desk-msg', '');
+        $('q').focus();
+        if (!n) showMsg('setup-msg', 'No attendees found in that file.');
+      } catch(err){ showMsg('setup-msg', err.message); }
+      e.target.value = '';
+    };
+    reader.onerror = function(){ showMsg('setup-msg', 'Could not read that file.'); };
+    reader.readAsText(file);
+  });
+
+  $('q').addEventListener('input', function(){
+    lastResult = null;   // result card stays until the next search
+    renderResult();
+    renderList();
+  });
+
+  function togglePick(id){
+    var a = state.attendees.filter(function(x){ return x.id === id; })[0];
+    if (!a || a.colour) return;
+    if (selected.has(id)){ selected.delete(id); if (!selected.size) pref = ''; }
+    else {
+      selected.add(id);
+      // Pre-select party members who are not in yet; the organiser can untick them.
+      if (a.party) state.attendees.forEach(function(o){ if (o.party === a.party && !o.colour) selected.add(o.id); });
+    }
+    renderList();
+    renderActionbar();
+  }
+
+  $('list').addEventListener('click', function(e){
+    if (e.target.closest('select')) return;
+    var undo = e.target.closest('[data-undo]');
+    if (undo){
+      var a = state.attendees.filter(function(x){ return x.id === undo.dataset.undo; })[0];
+      if (a && confirm('Undo check-in for ' + a.name + '?')){
+        a.colour = null; a.at = null; a.late = false;
+        save(); lastResult = null; render();
+      }
+      return;
+    }
+    var row = e.target.closest('[data-pick]');
+    if (row) togglePick(row.dataset.pick);
+  });
+  $('list').addEventListener('keydown', function(e){
+    var row = e.target.closest('[data-pick]');
+    if (row && (e.key === ' ' || e.key === 'Enter')){ e.preventDefault(); togglePick(row.dataset.pick); row = document.querySelector('[data-pick="' + row.dataset.pick + '"]'); if (row) row.focus(); }
+  });
+  $('list').addEventListener('change', function(e){
+    var sel = e.target.closest('[data-move]');
+    if (!sel || !sel.value) return;
+    var a = state.attendees.filter(function(x){ return x.id === sel.dataset.move; })[0];
+    if (!a) return;
+    a.colour = sel.value;
+    save();
+    var n = countFor(a.colour), cap = state.settings.capacity;
+    lastResult = {colour:a.colour, names:[a.name], late:a.late, count:n, overflow:n > cap};
+    render();
+  });
+
+  $('checkin').addEventListener('click', function(){ checkIn(Array.from(selected), pref); });
+  $('sel-clear').addEventListener('click', function(){ selected.clear(); pref = ''; renderList(); renderActionbar(); });
+  $('stations').addEventListener('click', function(e){
+    var b = e.target.closest('[data-pref]');
+    if (!b) return;
+    pref = b.dataset.pref;
+    renderActionbar();
+  });
+
+  // Walk-in
+  var dlg = $('walkin');
+  $('walkin-open').addEventListener('click', function(){
+    $('w-name').value = $('q').value.trim().replace(/^@.*/, '');
+    $('w-handle').value = /^@/.test($('q').value.trim()) ? $('q').value.trim().replace(/^@+/, '') : '';
+    var cap = state.settings.capacity;
+    $('w-station').innerHTML = '<option value="">Auto (smallest group)</option>' + state.settings.colours.map(function(c){
+      var n = countFor(c.key);
+      return '<option value="' + esc(c.key) + '">' + esc(c.station + ' · ' + c.stationName + ' (' + c.label + ' ' + n + '/' + cap + (n >= cap ? ', full' : '') + ')') + '</option>';
+    }).join('');
+    dlg.showModal();
+    $('w-name').focus();
+  });
+  $('walkin-cancel').addEventListener('click', function(){ dlg.close(); });
+  $('walkin-form').addEventListener('submit', function(e){
+    var name = $('w-name').value.trim();
+    if (!name){ e.preventDefault(); return; }
+    var a = {id:uid(), handle:$('w-handle').value.trim().replace(/^@+/, ''), alt:'', name:name,
+             party:'', colour:null, at:null, late:false, walkIn:true};
+    state.attendees.push(a);
+    save();
+    selected.clear();
+    checkIn([a.id], $('w-station').value);
+  });
+
+  // Settings
+  $('toggle-settings').addEventListener('click', function(){
+    var p = $('settings'), open = p.hidden;
+    p.hidden = !open;
+    this.setAttribute('aria-expanded', open);
+    this.textContent = open ? 'Close settings' : 'Settings';
+    if (open) renderSettings();
+  });
+  $('set-opens').addEventListener('change', function(){ state.settings.opens = fromManilaInput(this.value); save(); renderTop(); });
+  $('set-start').addEventListener('change', function(){ state.settings.start = fromManilaInput(this.value); save(); renderTop(); });
+  $('set-cap').addEventListener('change', function(){
+    var v = parseInt(this.value, 10);
+    if (v > 0){ state.settings.capacity = v; save(); render(); } else this.value = state.settings.capacity;
+  });
+  $('set-colours').addEventListener('change', function(e){
+    var i = e.target.dataset.colour;
+    if (i == null) return;
+    var v = e.target.value.trim();
+    if (v){ state.settings.colours[i].label = v; save(); render(); } else e.target.value = state.settings.colours[i].label;
+  });
+
+  $('reload-list').addEventListener('click', function(){ $('csv').click(); });
+  $('clear-device').addEventListener('click', function(){
+    if (!confirm('Remove the attendee list and every check-in from this device? Download results first if you need them.')) return;
+    try { localStorage.removeItem(STORE_KEY); } catch(e){}
+    state = blank(); selected.clear(); lastResult = null;
+    $('q').value = '';
+    $('list').innerHTML = '';
+    $('settings').hidden = true;
+    $('toggle-settings').textContent = 'Settings';
+    render();
+  });
+
+  $('export').addEventListener('click', function(){
+    var cell = function(v){ v = String(v == null ? '' : v); return /[",\n]/.test(v) ? '"' + v.replace(/"/g, '""') + '"' : v; };
+    var stamp = function(iso){ return iso ? toManilaInput(iso).replace('T', ' ') : ''; };
+    var lines = [['display_name','handle','alt_handle','colour','checked_in_at_manila','late','walk_in'].join(',')];
+    state.attendees.forEach(function(a){
+      var c = a.colour && colourOf(a.colour);
+      lines.push([a.name, a.handle, a.alt, c ? c.label : '', stamp(a.at), a.late ? 'yes' : '', a.walkIn ? 'yes' : ''].map(cell).join(','));
+    });
+    var blob = new Blob([lines.join('\n') + '\n'], {type:'text/csv'});
+    var link = document.createElement('a');
+    link.href = URL.createObjectURL(blob);
+    link.download = 'kss-checkin-results.csv';
+    document.body.appendChild(link); link.click(); link.remove();
+    setTimeout(function(){ URL.revokeObjectURL(link.href); }, 1000);
+  });
+
+  render();
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,3 @@
+# Attendee lists and check-in exports contain personal data. Never commit them.
+*.csv
+.DS_Store
