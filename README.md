@@ -34,6 +34,7 @@ There is currently no organiser/admin interface deployed on this site. It previo
 `check-in/index.html` is the organisers' door check-in for Vol. 8. It is not linked from the site and is marked `noindex`. It needs no backend:
 
 - At the door, open `/check-in/` and choose the attendee CSV (`handle, alt_handle, display_name, email, phone, party_key`). The file is read in the browser only. Emails and phone numbers are dropped on load and never stored or shown.
+- **Setup link (no file needed):** `/check-in/#list=<base64url of the CSV>` loads the list on open. The part after `#` is never sent to the server, so the list only lives in the link the organisers share privately. The page removes it from the address bar after loading, and opening it again keeps existing check-ins. Generate it locally; never commit it.
 - Search by name, handle or alt handle (a leading `@` is ignored). Select one or more people and check them in. Party members (same `party_key`) are pre-selected together.
 - Each colour starts at a station, matching the event map: Cyan → A Lakapati, Red → B Sitan, Orange → C Bathala. Everyone still rotates through all three.
 - Attendees can pick their starting station (the bar shows live seats per station). A full station can still be picked, with an over-capacity warning.
