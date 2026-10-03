@@ -30,7 +30,7 @@
 }
 *{box-sizing:border-box}
 html,body{margin:0}
-body{background:var(--paper);color:var(--ink);font-family:var(--sans);-webkit-font-smoothing:antialiased;padding-bottom:150px}
+body{background:var(--paper);color:var(--ink);font-family:var(--sans);-webkit-font-smoothing:antialiased;padding-bottom:300px}
 button,input,select{font:inherit;color:inherit}
 button{cursor:pointer}
 .wrap{width:min(860px,calc(100% - 32px));margin:0 auto}
@@ -112,7 +112,17 @@ button{cursor:pointer}
 .actionbar .wrap{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
 .actionbar .sel{flex:1 1 200px;font-size:15px;font-weight:600;min-width:0;overflow-wrap:anywhere}
 .actionbar .btn.primary{font-size:20px;padding:12px 26px;min-height:56px}
+.stations-label{flex-basis:100%;font-size:12px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);margin-bottom:-4px}
+.stations{flex-basis:100%;display:grid;grid-template-columns:auto repeat(3,1fr);gap:6px}
+.pick{display:flex;align-items:center;gap:8px;text-align:left;min-height:52px;padding:6px 10px;border-radius:10px;border:2px solid var(--line);background:#fff;line-height:1.15}
+.pick b{display:block;font-size:15px}
+.pick small{display:block;font-size:12px;color:var(--muted)}
+.pick .dot{width:12px;height:12px;border-radius:50%;background:var(--c);flex:none}
+.pick.on{border-color:var(--ink);background:#fffdf6;box-shadow:inset 0 0 0 1px var(--ink)}
+.pick.full small{color:var(--warn-ink);font-weight:700}
+.result .start{font-size:20px;font-weight:700;margin:-2px 0 10px}
 @media (max-width:560px){
+  .stations{grid-template-columns:1fr 1fr}
   .actionbar .sel{flex-basis:100%}
   .actionbar .btn.primary{flex:1}
 }
@@ -192,6 +202,8 @@ dialog h2{font-family:var(--display);font-weight:400;font-size:26px;margin:0 0 1
 
 <div class="actionbar" id="actionbar" hidden>
   <div class="wrap">
+    <div class="stations-label">Starting station</div>
+    <div class="stations" id="stations" role="group" aria-label="Starting station"></div>
     <div class="sel" id="sel-text"></div>
     <button class="btn" id="sel-clear" type="button">Clear</button>
     <button class="btn primary" id="checkin" type="button">Check in</button>
@@ -203,6 +215,7 @@ dialog h2{font-family:var(--display);font-weight:400;font-size:26px;margin:0 0 1
     <h2>Add walk-in</h2>
     <div class="field"><label for="w-name">Name (required)</label><input id="w-name" required autocomplete="off"></div>
     <div class="field"><label for="w-handle">Instagram handle (optional)</label><input id="w-handle" autocomplete="off" autocapitalize="off" spellcheck="false"></div>
+    <div class="field"><label for="w-station">Starting station</label><select id="w-station"></select></div>
     <div class="btn-row">
       <button class="btn primary" value="ok" type="submit">Add and check in</button>
       <button class="btn" value="cancel" type="button" id="walkin-cancel">Cancel</button>
@@ -225,14 +238,16 @@ dialog h2{font-family:var(--display);font-weight:400;font-size:26px;margin:0 0 1
     opens: '2026-10-04T08:30:00+08:00',
     start: '2026-10-04T09:00:00+08:00',
     colours: [
-      {key:'cyan',   label:'Cyan',   bg:'#13879a', fg:'#ffffff'},
-      {key:'red',    label:'Red',    bg:'#c0352b', fg:'#ffffff'},
-      {key:'orange', label:'Orange', bg:'#b9560c', fg:'#ffffff'}
+      // Starting station per colour, matching the badges on the event map.
+      {key:'cyan',   label:'Cyan',   bg:'#13879a', fg:'#ffffff', station:'A', stationName:'Lakapati'},
+      {key:'red',    label:'Red',    bg:'#c0352b', fg:'#ffffff', station:'B', stationName:'Sitan'},
+      {key:'orange', label:'Orange', bg:'#b9560c', fg:'#ffffff', station:'C', stationName:'Bathala'}
     ]
   };
 
   var state = load();
   var selected = new Set();
+  var pref = '';   // chosen starting station (colour key); '' = auto-balance
   var lastResult = null;
 
   // ---------- storage ----------
@@ -242,7 +257,14 @@ dialog h2{font-family:var(--display);font-weight:400;font-size:26px;margin:0 0 1
       var raw = localStorage.getItem(STORE_KEY);
       if (raw){
         var s = JSON.parse(raw);
-        if (s && Array.isArray(s.attendees) && s.settings) return s;
+        if (s && Array.isArray(s.attendees) && s.settings){
+          // Fill in fields added after this device first saved its list.
+          s.settings.colours.forEach(function(c){
+            var d = DEFAULT_SETTINGS.colours.filter(function(x){ return x.key === c.key; })[0];
+            if (d && !c.station){ c.station = d.station; c.stationName = d.stationName; }
+          });
+          return s;
+        }
       }
     } catch(e){}
     return blank();
@@ -354,7 +376,9 @@ dialog h2{font-family:var(--display);font-weight:400;font-size:26px;margin:0 0 1
     return !!s && Date.now() > new Date(s).getTime();
   }
 
-  function checkIn(ids){
+  // `choice` is a colour key when the attendee picked a starting station;
+  // empty means auto-balance. A chosen station is honoured even when full.
+  function checkIn(ids, choice){
     var people = ids.map(function(id){ return state.attendees.filter(function(a){ return a.id === id; })[0]; })
                     .filter(Boolean);
     if (!people.length) return;
@@ -362,15 +386,16 @@ dialog h2{font-family:var(--display);font-weight:400;font-size:26px;margin:0 0 1
       showMsg('desk-msg', 'Someone in this selection is already checked in. Refresh the list and try again.');
       return;
     }
-    var key = pickColour(people.length);
+    var key = (choice && colourOf(choice)) ? choice : pickColour(people.length);
     var now = new Date().toISOString();
     var late = isLateNow();
     people.forEach(function(a){ a.colour = key; a.at = now; a.late = late; });
     save();
     var n = countFor(key);
     lastResult = {colour:key, names:people.map(function(a){ return a.name; }), late:late,
-                  count:n, overflow:n > state.settings.capacity};
+                  count:n, overflow:n > state.settings.capacity, chosen:!!choice};
     selected.clear();
+    pref = '';
     $('q').value = '';
     showMsg('desk-msg', '');
     render();
@@ -383,7 +408,7 @@ dialog h2{font-family:var(--display);font-weight:400;font-size:26px;margin:0 0 1
     $('counts').innerHTML = state.settings.colours.map(function(c){
       var n = countFor(c.key), over = n > cap;
       return '<span class="count' + (over ? ' over' : '') + '"><span class="dot" style="background:' + esc(c.bg) + '"></span>' +
-             esc(c.label) + ' ' + n + '/' + cap + (over ? ' ⚠' : '') + '</span>';
+             esc(c.label) + ' · ' + esc(c.station) + ' ' + n + '/' + cap + (over ? ' ⚠' : '') + '</span>';
     }).join('');
     var total = state.attendees.length;
     $('total').innerHTML = '<strong>' + checkedIn().length + '</strong> of ' + total + ' checked in';
@@ -462,9 +487,23 @@ dialog h2{font-family:var(--display);font-weight:400;font-size:26px;margin:0 0 1
     el.style.color = c.fg;
     el.innerHTML = '<div class="label">Your colour group</div>' +
       '<div class="colour">' + esc(c.label) + '</div>' +
+      (c.station ? '<div class="start">Start at ' + esc(c.station) + ' · ' + esc(c.stationName) + '</div>' : '') +
       '<div class="names">' + lastResult.names.map(esc).join(', ') + '</div>' +
       (lastResult.overflow ? '<div class="alert warn">This colour is now over ' + state.settings.capacity + ' (' + lastResult.count + ' people).</div>' : '') +
       (lastResult.late ? '<div class="alert">Wait in LATAG. Join at the next station change.</div>' : '');
+  }
+
+  // Auto + one button per station, with live seat counts. A full station
+  // can still be chosen; the result card then shows the over-capacity warning.
+  function stationButtons(current, k){
+    var cap = state.settings.capacity;
+    return '<button type="button" class="pick' + (current ? '' : ' on') + '" data-pref="" aria-pressed="' + !current + '">Auto</button>' +
+      state.settings.colours.map(function(c){
+        var n = countFor(c.key), full = n + k > cap, on = current === c.key;
+        return '<button type="button" class="pick' + (on ? ' on' : '') + (full ? ' full' : '') + '" data-pref="' + esc(c.key) + '" aria-pressed="' + on + '"' +
+               ' style="--c:' + esc(c.bg) + '"><span class="dot"></span><span><b>' + esc(c.station) + ' · ' + esc(c.stationName) + '</b>' +
+               '<small>' + esc(c.label) + ' ' + (full ? 'Full ' : '') + n + '/' + cap + '</small></span></button>';
+      }).join('');
   }
 
   function renderActionbar(){
@@ -473,6 +512,7 @@ dialog h2{font-family:var(--display);font-weight:400;font-size:26px;margin:0 0 1
     if (!n) return;
     var names = state.attendees.filter(function(a){ return selected.has(a.id); }).map(function(a){ return a.name; });
     $('sel-text').textContent = names.join(', ');
+    $('stations').innerHTML = stationButtons(pref, n);
     $('checkin').textContent = n > 1 ? 'Check in together (' + n + ')' : 'Check in';
   }
 
@@ -519,7 +559,7 @@ dialog h2{font-family:var(--display);font-weight:400;font-size:26px;margin:0 0 1
   function togglePick(id){
     var a = state.attendees.filter(function(x){ return x.id === id; })[0];
     if (!a || a.colour) return;
-    if (selected.has(id)){ selected.delete(id); }
+    if (selected.has(id)){ selected.delete(id); if (!selected.size) pref = ''; }
     else {
       selected.add(id);
       // Pre-select party members who are not in yet; the organiser can untick them.
@@ -559,14 +599,25 @@ dialog h2{font-family:var(--display);font-weight:400;font-size:26px;margin:0 0 1
     render();
   });
 
-  $('checkin').addEventListener('click', function(){ checkIn(Array.from(selected)); });
-  $('sel-clear').addEventListener('click', function(){ selected.clear(); renderList(); renderActionbar(); });
+  $('checkin').addEventListener('click', function(){ checkIn(Array.from(selected), pref); });
+  $('sel-clear').addEventListener('click', function(){ selected.clear(); pref = ''; renderList(); renderActionbar(); });
+  $('stations').addEventListener('click', function(e){
+    var b = e.target.closest('[data-pref]');
+    if (!b) return;
+    pref = b.dataset.pref;
+    renderActionbar();
+  });
 
   // Walk-in
   var dlg = $('walkin');
   $('walkin-open').addEventListener('click', function(){
     $('w-name').value = $('q').value.trim().replace(/^@.*/, '');
     $('w-handle').value = /^@/.test($('q').value.trim()) ? $('q').value.trim().replace(/^@+/, '') : '';
+    var cap = state.settings.capacity;
+    $('w-station').innerHTML = '<option value="">Auto (smallest group)</option>' + state.settings.colours.map(function(c){
+      var n = countFor(c.key);
+      return '<option value="' + esc(c.key) + '">' + esc(c.station + ' · ' + c.stationName + ' (' + c.label + ' ' + n + '/' + cap + (n >= cap ? ', full' : '') + ')') + '</option>';
+    }).join('');
     dlg.showModal();
     $('w-name').focus();
   });
@@ -579,7 +630,7 @@ dialog h2{font-family:var(--display);font-weight:400;font-size:26px;margin:0 0 1
     state.attendees.push(a);
     save();
     selected.clear();
-    checkIn([a.id]);
+    checkIn([a.id], $('w-station').value);
   });
 
   // Settings

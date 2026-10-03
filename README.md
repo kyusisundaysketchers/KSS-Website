@@ -35,7 +35,9 @@ There is currently no organiser/admin interface deployed on this site. It previo
 
 - At the door, open `/check-in/` and choose the attendee CSV (`handle, alt_handle, display_name, email, phone, party_key`). The file is read in the browser only. Emails and phone numbers are dropped on load and never stored or shown.
 - Search by name, handle or alt handle (a leading `@` is ignored). Select one or more people and check them in. Party members (same `party_key`) are pre-selected together.
-- Colour is auto-balanced: a colour the whole party fits in, then the smallest group, then Cyan → Red → Orange. 8 seats per colour; a 9th is allowed with a warning. Check-ins after the event start are tagged late ("Wait in LATAG").
+- Each colour starts at a station, matching the event map: Cyan → A Lakapati, Red → B Sitan, Orange → C Bathala. Everyone still rotates through all three.
+- Attendees can pick their starting station (the bar shows live seats per station). A full station can still be picked, with an over-capacity warning.
+- Otherwise (Auto, the default) the colour is balanced: a colour the whole party fits in, then the smallest group, then Cyan → Red → Orange. 8 seats per colour; a 9th is allowed with a warning. Check-ins after the event start are tagged late ("Wait in LATAG").
 - Move, Undo and Add walk-in are on the page. Settings has the times, seats per colour, and colour names (marked not confirmed).
 - State is saved in that device's browser, so use **one device** for check-in. Use "Download results (CSV)" at the end, then "Clear all data on this device".
 
