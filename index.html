@@ -218,6 +218,12 @@ section{scroll-margin-top:100px}
 .section-head{display:flex;align-items:end;justify-content:space-between;gap:24px;margin-bottom:30px}
 .section-head h2{font-family:var(--display);font-size:clamp(42px,5vw,68px);font-weight:400;line-height:.95;margin:8px 0 0}
 .viewall{font-size:12px;text-decoration:underline;text-underline-offset:5px}
+.gallery-teaser{display:flex;align-items:center;gap:22px;margin:0 0 30px;padding:12px;border:1px solid var(--line);border-radius:14px;background:rgba(255,255,255,.22);transition:background .2s,transform .2s}
+.gallery-teaser:hover{background:rgba(255,255,255,.45);transform:translateY(-2px)}
+.gallery-teaser img{width:min(240px,38%);height:auto;aspect-ratio:16/9;object-fit:cover;border-radius:8px;flex:none}
+.gallery-teaser>span{display:flex;flex-direction:column;gap:6px}
+.gallery-teaser strong{font-family:var(--display);font-weight:400;font-size:clamp(24px,3vw,34px);line-height:1}
+.gallery-teaser em{font-style:normal;font-size:13px;color:#4a5754;text-decoration:underline;text-underline-offset:5px}
 
 /* Sketchbook */
 .sketch-row{
@@ -730,6 +736,7 @@ section{scroll-margin-top:100px}
         <div class="navpanel" id="navpanel-events" role="group" aria-labelledby="navtop-events">
           <a href="#vol-8">Current &amp; upcoming: Vol 8</a>
           <a href="#archive">The Archives</a>
+          <a href="gallery/">Gallery: Vol 8 photos</a>
         </div>
       </div>
     </nav>
@@ -1049,6 +1056,10 @@ section{scroll-margin-top:100px}
       <div><div class="label">Previous sessions</div><h2>The Archive</h2></div>
       <a class="viewall" href="https://www.instagram.com/kyusisundaysketchers/" target="_blank" rel="noopener">View all ↗</a>
     </div>
+    <a class="gallery-teaser" href="gallery/">
+      <img src="assets/gallery/vol8/drone_0024-t.jpg" alt="" loading="lazy" width="640" height="360">
+      <span><span class="label">New · Gallery</span><strong>Vol. 8 — Alamat, Likha at Katha</strong><em>See the photos from our first anniversary →</em></span>
+    </a>
     <div class="table-scroll-wrap">
       <table class="archive-table">
         <thead>
