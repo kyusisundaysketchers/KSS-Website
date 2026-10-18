@@ -198,7 +198,9 @@ async function loadVolume(v) {
   $("volMeta").innerHTML = v.meta.map(m => `<span>${m}</span>`).join("");
   $("vols").hidden = VOLUMES.length < 2;   // the volume tabs appear once a second volume is added
   $("vols").innerHTML = VOLUMES.map(x => `<button type="button" class="vol" data-vol="${x.id}" aria-pressed="${x === v}">${x.tab}</button>`).join("");
-  data = await fetch(base(v) + "photos.json").then(r => r.json());
+  // "no-cache" checks with the server every visit (a quick 304 when nothing changed), so added or
+  // removed photos show up right after a deploy instead of after the ~10 min GitHub Pages cache
+  data = await fetch(base(v) + "photos.json", { cache: "no-cache" }).then(r => r.json());
   const count = s => data.photos.filter(p => p.s === s).length;
   $("chips").innerHTML =
     `<button type="button" class="chip" data-f="all" aria-pressed="true">All <small>${data.photos.length}</small></button>` +
