@@ -1,6 +1,6 @@
 # Kyusi Sunday Sketchers — Website
 
-Public site for KSS Vol. 8 — Alamat, Katha, at Likha (the KSS 1st Anniversary), with an interactive Sketchbook.
+Public site for Kyusi Sunday Sketchers. Vol. 8 — Alamat, Likha at Katha (the KSS 1st Anniversary, 4 Oct 2026) is done; the home page is now a recap with a "next session" block and an interactive Sketchbook. Live at https://kss.guhit.art.
 
 ## Sketchbook interaction
 
